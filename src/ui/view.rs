@@ -88,7 +88,7 @@ fn run_app<B: Backend>(
             .unwrap_or_else(|| Duration::from_secs(0));
         if crossterm::event::poll(timeout)? {
             if let Event::Key(key) = event::read()? {
-                if let KeyCode::Char('q') = key.code {
+                if KeyCode::Char('q') == key.code || KeyCode::Esc == key.code {
                     return Ok(());
                 }
             }
@@ -104,8 +104,8 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
-            Constraint::Percentage(5),
-            Constraint::Percentage(95),
+            Constraint::Percentage(10),
+            Constraint::Percentage(90),
         ])
         .split(f.size());
 
