@@ -12,22 +12,28 @@ use crossterm::{
 };
 use ratatui::{prelude::*, widgets::*};
 
+use sysinfo::{System, SystemExt};
+
 struct App {
-    progress1: u16,
+    progress: u64,
+    sys: System,
 }
 
 impl App {
     fn new() -> App {
         App {
-            progress1: 0,
+            progress: 0,
+            sys: System::new(),
         }
     }
 
     fn on_tick(&mut self) {
-        self.progress1 += 1;
-        if self.progress1 > 100 {
-            self.progress1 = 0;
-        }
+        self.sys.refresh_memory();
+
+        let mut used = self.sys.used_memory() as f64 * 100.0;
+        used /= self.sys.total_memory() as f64;
+
+        self.progress = used.floor() as u64;
     }
 }
 
@@ -104,8 +110,8 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
         .split(f.size());
 
     let gauge = Gauge::default()
-        .block(Block::default().title("Gauge1").borders(Borders::ALL))
+        .block(Block::default().title("Memory usage").borders(Borders::ALL))
         .gauge_style(Style::default().fg(Color::LightBlue))
-        .percent(app.progress1);
+        .percent(app.progress as u16);
     f.render_widget(gauge, chunks[0]);
 }
