@@ -12,33 +12,7 @@ use crossterm::{
 };
 use ratatui::{prelude::*, widgets::*};
 
-use sysinfo::{System, SystemExt};
-
-struct App {
-    progress: u64,
-    sys: System,
-}
-
-impl App {
-    fn new() -> App {
-        App {
-            progress: 0,
-            sys: System::new(),
-        }
-    }
-
-    fn on_tick(&mut self) {
-        self.sys.refresh_memory();
-        self.progress = get_percentage(self.sys.used_memory(), self.sys.total_memory());
-    }
-}
-
-fn get_percentage(part: u64, total: u64) -> u64 {
-    let mut used = part as f64 * 100.0;
-    used /= total as f64;
-
-    used.floor() as u64    
-}
+use crate::backend::app::App;
 
 pub fn start() -> Result<(), Box<dyn Error>> {
     enable_raw_mode()?;
@@ -115,6 +89,6 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     let gauge = Gauge::default()
         .block(Block::default().title("Memory usage").borders(Borders::ALL))
         .gauge_style(Style::default().fg(Color::LightBlue))
-        .percent(app.progress as u16);
+        .percent(app.get_memory_usage() as u16);
     f.render_widget(gauge, chunks[0]);
 }
