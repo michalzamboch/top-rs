@@ -29,12 +29,15 @@ impl App {
 
     fn on_tick(&mut self) {
         self.sys.refresh_memory();
-
-        let mut used = self.sys.used_memory() as f64 * 100.0;
-        used /= self.sys.total_memory() as f64;
-
-        self.progress = used.floor() as u64;
+        self.progress = get_percentage(self.sys.used_memory(), self.sys.total_memory());
     }
+}
+
+fn get_percentage(part: u64, total: u64) -> u64 {
+    let mut used = part as f64 * 100.0;
+    used /= total as f64;
+
+    used.floor() as u64    
 }
 
 pub fn start() -> Result<(), Box<dyn Error>> {
