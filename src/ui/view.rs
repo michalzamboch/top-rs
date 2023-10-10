@@ -1,7 +1,7 @@
 
 use std::{
     error::Error,
-    io,
+    io::{self, Stdout},
     time::{Duration, Instant},
 };
 
@@ -32,19 +32,31 @@ impl App {
 }
 
 pub fn start() -> Result<(), Box<dyn Error>> {
-    // setup terminal
     enable_raw_mode()?;
     let mut stdout = io::stdout();
     execute!(stdout, EnterAlternateScreen, EnableMouseCapture)?;
     let backend = CrosstermBackend::new(stdout);
     let mut terminal = Terminal::new(backend)?;
 
-    // create app and run it
+    let res = create_app(&mut terminal);
+    restore_terminal(&mut terminal)?;
+
+    if let Err(err) = res {
+        println!("{err:?}");
+    }
+
+    Ok(())
+}
+
+fn create_app(terminal: &mut Terminal<CrosstermBackend<Stdout>>) -> Result<(), Box<dyn Error>> {
     let tick_rate = Duration::from_millis(250);
     let app = App::new();
-    let res = run_app(&mut terminal, app, tick_rate);
+    run_app(terminal, app, tick_rate)?;
 
-    // restore terminal
+    Ok(())
+}
+
+fn restore_terminal(terminal: &mut Terminal<CrosstermBackend<Stdout>>) -> Result<(), Box<dyn Error>> {
     disable_raw_mode()?;
     execute!(
         terminal.backend_mut(),
@@ -52,10 +64,6 @@ pub fn start() -> Result<(), Box<dyn Error>> {
         DisableMouseCapture
     )?;
     terminal.show_cursor()?;
-
-    if let Err(err) = res {
-        println!("{err:?}");
-    }
 
     Ok(())
 }
@@ -90,16 +98,14 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
-            Constraint::Percentage(25),
-            Constraint::Percentage(25),
-            Constraint::Percentage(25),
-            Constraint::Percentage(25),
+            Constraint::Percentage(5),
+            Constraint::Percentage(95),
         ])
         .split(f.size());
 
     let gauge = Gauge::default()
         .block(Block::default().title("Gauge1").borders(Borders::ALL))
-        .gauge_style(Style::default().fg(Color::Yellow))
+        .gauge_style(Style::default().fg(Color::LightBlue))
         .percent(app.progress1);
     f.render_widget(gauge, chunks[0]);
 }
