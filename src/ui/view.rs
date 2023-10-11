@@ -1,4 +1,3 @@
-
 use std::{
     error::Error,
     io::{self, Stdout},
@@ -39,7 +38,9 @@ fn create_app(terminal: &mut Terminal<CrosstermBackend<Stdout>>) -> Result<(), B
     Ok(())
 }
 
-fn restore_terminal(terminal: &mut Terminal<CrosstermBackend<Stdout>>) -> Result<(), Box<dyn Error>> {
+fn restore_terminal(
+    terminal: &mut Terminal<CrosstermBackend<Stdout>>,
+) -> Result<(), Box<dyn Error>> {
     disable_raw_mode()?;
     execute!(
         terminal.backend_mut(),
@@ -62,14 +63,18 @@ fn run_app<B: Backend>(
 
         let timeout = tick_rate
             .checked_sub(last_tick.elapsed())
-            .unwrap_or_else(|| Duration::from_secs(0));
+            .unwrap_or_else(|| Duration::from_secs(1));
+
         if crossterm::event::poll(timeout)? {
             if let Event::Key(key) = event::read()? {
                 if KeyCode::Char('q') == key.code || KeyCode::Esc == key.code {
                     return Ok(());
+                } else if KeyCode::Char('r') == key.code || KeyCode::F(5) == key.code {
+                    app.on_tick();
                 }
             }
         }
+
         if last_tick.elapsed() >= tick_rate {
             app.on_tick();
             last_tick = Instant::now();
@@ -80,15 +85,16 @@ fn run_app<B: Backend>(
 fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
-        .constraints([
-            Constraint::Percentage(10),
-            Constraint::Percentage(90),
-        ])
+        .constraints([Constraint::Percentage(10), Constraint::Percentage(90)])
         .split(f.size());
 
-    let gauge = Gauge::default()
+    let memory_gauge = get_memory_gauge(app);
+    f.render_widget(memory_gauge, chunks[0]);
+}
+
+fn get_memory_gauge(app: &App) -> Gauge<'_> {
+    Gauge::default()
         .block(Block::default().title("Memory usage").borders(Borders::ALL))
         .gauge_style(Style::default().fg(Color::LightBlue))
-        .percent(app.get_memory_usage() as u16);
-    f.render_widget(gauge, chunks[0]);
+        .percent(app.get_memory_usage() as u16)
 }
