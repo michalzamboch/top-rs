@@ -1,5 +1,4 @@
 
-
 pub trait IApp : Sized {
     fn on_tick(&mut self);
     fn get_memory_usage(&self) -> u64 ;

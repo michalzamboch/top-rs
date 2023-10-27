@@ -1,1 +1,1 @@
-pub mod IApp;
+pub mod app_trait;
