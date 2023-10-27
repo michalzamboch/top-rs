@@ -33,8 +33,19 @@ fn get_memory_gauge(app: &App) -> Gauge<'_> {
 }
 
 fn get_cpu_gauge(app: &App) -> Gauge<'_> {
+    let color = cpu_usage_color(app);
+
     Gauge::default()
         .block(Block::default().title("CPU usage").borders(Borders::ALL))
-        .gauge_style(Style::default().fg(Color::Green))
+        .gauge_style(Style::default().fg(color))
         .percent(app.get_total_cpu_usage() as u16)
+}
+
+fn cpu_usage_color(app: &App) -> Color {
+    if app.get_total_cpu_usage() >= 95 {
+        return Color::Red;
+    }
+    else {
+        return Color::Green;
+    }
 }
