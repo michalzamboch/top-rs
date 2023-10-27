@@ -10,7 +10,10 @@ pub struct App {
 
 impl App {
     pub fn new() -> App {
-        App { sys: System::new() }
+        let mut system = System::new();
+        system.refresh_all();
+
+        App { sys: system }
     }
 
     pub fn on_tick(&mut self) {
@@ -25,11 +28,18 @@ impl App {
     pub fn get_core_usage(&self) -> Vec<u64> {
         let mut percentage = vec![];
 
-        for cpu in self.sys.cpus().clone() {
+        for cpu in self.sys.cpus() {
             percentage.push(cpu.cpu_usage() as u64);
         }
 
         percentage
+    }
+
+    pub fn get_total_cpu_usage(&self) -> u64 {
+        let percentages = self.get_core_usage();
+        let total: u64 = percentages.iter().sum();
+
+        total / percentages.len() as u64
     }
 
     pub fn get_process_info(&self) {

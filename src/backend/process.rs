@@ -1,7 +1,6 @@
 #![allow(dead_code)]
 
-use sysinfo::{CpuExt, ProcessExt, System, SystemExt, Pid, Process};
-use super::utils::get_floored_percentage;
+use sysinfo::{Pid, Process};
 
 pub struct ProcessInfo {
     pid: Pid,
