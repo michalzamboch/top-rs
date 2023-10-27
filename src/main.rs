@@ -1,4 +1,4 @@
-use ui::view;
+use ui::runner;
 
 mod ui;
 mod backend;
@@ -6,5 +6,5 @@ mod backend;
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    view::start()
+    runner::start()
 }
