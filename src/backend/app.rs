@@ -36,10 +36,9 @@ impl App {
     }
 
     pub fn get_total_cpu_usage(&self) -> u64 {
-        let percentages = self.get_core_usage();
-        let total: u64 = percentages.iter().sum();
+        let usage = self.sys.global_cpu_info().cpu_usage();
 
-        total / percentages.len() as u64
+        usage as u64
     }
 
     pub fn get_process_info(&self) {
