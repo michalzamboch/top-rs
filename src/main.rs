@@ -2,6 +2,7 @@ use ui::runner;
 
 mod ui;
 mod backend;
+mod types;
 
 use std::error::Error;
 
