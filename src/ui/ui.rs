@@ -18,34 +18,36 @@ fn create_chucks<B: Backend>(f: &mut Frame<B>) -> Rc<[Rect]> {
     Layout::default()
         .direction(Direction::Vertical)
         .constraints([
-            Constraint::Percentage(10),
-            Constraint::Percentage(10),
-            Constraint::Percentage(80),
+            Constraint::Percentage(7),
+            Constraint::Percentage(7),
+            Constraint::Percentage(86),
         ])
         .split(f.size())
 }
 
 fn get_memory_gauge(app: &App) -> Gauge<'_> {
+    let color = cpu_usage_color(app, Color::Blue);
+    
     Gauge::default()
-        .block(Block::default().title("Memory usage").borders(Borders::ALL))
-        .gauge_style(Style::default().fg(Color::Blue))
+        .block(Block::default().title("Memory usage").borders(Borders::NONE))
+        .gauge_style(Style::default().fg(color))
         .percent(app.get_memory_usage() as u16)
 }
 
 fn get_cpu_gauge(app: &App) -> Gauge<'_> {
-    let color = cpu_usage_color(app);
+    let color = cpu_usage_color(app, Color::Green);
 
     Gauge::default()
-        .block(Block::default().title("CPU usage").borders(Borders::ALL))
+        .block(Block::default().title("CPU usage").borders(Borders::NONE))
         .gauge_style(Style::default().fg(color))
         .percent(app.get_total_cpu_usage() as u16)
 }
 
-fn cpu_usage_color(app: &App) -> Color {
+fn cpu_usage_color(app: &App, regular_color: Color) -> Color {
     if app.get_total_cpu_usage() >= 95 {
         return Color::Red;
     }
     else {
-        return Color::Green;
+        return regular_color;
     }
 }

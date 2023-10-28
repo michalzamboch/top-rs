@@ -1,11 +1,14 @@
 #![allow(dead_code)]
 
-use sysinfo::{CpuExt, ProcessExt, System, SystemExt};
+use sysinfo::{CpuExt, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
+use std::cmp;
 
 use super::utils::get_floored_percentage;
 
 pub struct App {
     sys: System,
+    max_received_net: u64,
+    max_transmited_net: u64,
 }
 
 impl App {
@@ -13,12 +16,14 @@ impl App {
         let mut system = System::new();
         system.refresh_all();
 
-        App { sys: system }
+        App { sys: system, max_received_net: 0, max_transmited_net: 0 }
     }
 
     pub fn on_tick(&mut self) {
         self.sys.refresh_memory();
         self.sys.refresh_cpu();
+        self.sys.refresh_networks();
+        self.sys.refresh_networks_list();
     }
 
     pub fn get_memory_usage(&self) -> u64 {
@@ -39,6 +44,22 @@ impl App {
         let usage = self.sys.global_cpu_info().cpu_usage();
 
         usage as u64
+    }
+
+    fn network(&self) {
+        println!("=> networks:");
+        for (interface_name, data) in self.sys.networks() {
+            println!(
+                "{}: {}/{} B",
+                interface_name,
+                data.received(),
+                data.transmitted()
+            );
+        }
+    }
+
+    fn update_net_info(&mut self) {
+        
     }
 
     pub fn get_process_info(&self) {
