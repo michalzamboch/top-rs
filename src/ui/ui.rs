@@ -16,7 +16,7 @@ pub fn ui(f: &mut Frame, app: &App) {
     let memory_gauge = get_memory_gauge(app);
     f.render_widget(memory_gauge, chunks[2]);
 
-    let processes = get_processes_paragraph(app, " Processes ");
+    let processes = get_processes_paragraph(app, "Processes ");
     f.render_widget(processes, chunks[3]);
 }
 
@@ -27,7 +27,7 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
             Constraint::Length(2),
             Constraint::Length(3),
             Constraint::Length(3),
-            Constraint::Percentage(75),
+            Constraint::Length(20),
             Constraint::Length(1),
         ])
         .split(f.size())

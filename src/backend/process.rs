@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
-use sysinfo::{Pid, Process, ProcessExt, System, SystemExt};
 use std::cmp::Reverse;
+use sysinfo::{Pid, Process, ProcessExt, System, SystemExt};
 
 struct ProcessItem {
     pub pid: Pid,
@@ -25,7 +25,15 @@ impl ProcessItem {
     }
 
     pub fn to_string(item: &ProcessItem) -> String {
-        format!("[{}] {} {}", item.pid, item.name, item.cpu_usage)
+        format!(
+            "{:8} {:35} {:4} {:10} {:10} {:10}",
+            item.pid.to_string(),
+            item.name,
+            item.cpu_usage.to_string(),
+            item.memory_usage.to_string(),
+            item.disk_read_usage.to_string(),
+            item.disk_write_usage.to_string(),
+        )
     }
 }
 
@@ -43,7 +51,6 @@ fn process_info_sorted_by_cpu(sys: &System) -> Vec<ProcessItem> {
 
     process_vec
 }
-
 
 pub fn process_info_sorted_by_name_to_string(sys: &System) -> Vec<String> {
     let vec_string: Vec<String> = process_info_sorted_by_name(sys)

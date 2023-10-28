@@ -33,7 +33,7 @@ pub fn start() -> Result<(), Box<dyn Error>> {
 }
 
 fn create_app(terminal: &mut Terminal<CrosstermBackend<Stdout>>) -> Result<(), Box<dyn Error>> {
-    let tick_rate = Duration::from_millis(250);
+    let tick_rate = Duration::from_millis(600);
     let app = App::new();
     run_app(terminal, app, tick_rate)?;
 
@@ -65,7 +65,7 @@ fn run_app<B: Backend>(
 
         let timeout = tick_rate
             .checked_sub(last_tick.elapsed())
-            .unwrap_or_else(|| Duration::from_secs(2));
+            .unwrap_or_else(|| Duration::from_secs(1));
 
         if crossterm::event::poll(timeout)? {
             if let Event::Key(key) = event::read()? {
