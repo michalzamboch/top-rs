@@ -1,8 +1,8 @@
 use ui::runner;
 
-mod ui;
 mod backend;
 mod types;
+mod ui;
 
 use std::error::Error;
 

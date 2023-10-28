@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
-use std::cmp::Reverse;
 use pretty_bytes::converter;
+use std::cmp::Reverse;
 use sysinfo::{Pid, Process, ProcessExt, System, SystemExt};
 
 struct ProcessItem {
@@ -31,15 +31,10 @@ impl ProcessItem {
         let tmp_mem_usage = converter::convert(item.memory_usage as f64);
         let tmp_disk_read = converter::convert(item.disk_read_usage as f64);
         let tmp_disk_write = converter::convert(item.disk_write_usage as f64);
-        
+
         format!(
             "{:9} {:35} {:4} {:12} {:12} {:12}",
-            tmp_pid,
-            item.name,
-            tmp_cpu_usage,
-            tmp_mem_usage,
-            tmp_disk_read,
-            tmp_disk_write,
+            tmp_pid, item.name, tmp_cpu_usage, tmp_mem_usage, tmp_disk_read, tmp_disk_write,
         )
     }
 }
