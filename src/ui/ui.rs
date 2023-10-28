@@ -27,7 +27,7 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
             Constraint::Length(2),
             Constraint::Length(3),
             Constraint::Length(3),
-            Constraint::Length(20),
+            Constraint::Percentage(90),
             Constraint::Length(1),
         ])
         .split(f.size())

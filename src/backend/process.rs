@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 use std::cmp::Reverse;
+use pretty_bytes::converter;
 use sysinfo::{Pid, Process, ProcessExt, System, SystemExt};
 
 struct ProcessItem {
@@ -25,14 +26,20 @@ impl ProcessItem {
     }
 
     pub fn to_string(item: &ProcessItem) -> String {
+        let tmp_pid = format!("[{}]", item.pid);
+        let tmp_cpu_usage = format!("{}%", item.cpu_usage);
+        let tmp_mem_usage = converter::convert(item.memory_usage as f64);
+        let tmp_disk_read = converter::convert(item.disk_read_usage as f64);
+        let tmp_disk_write = converter::convert(item.disk_write_usage as f64);
+        
         format!(
-            "{:8} {:35} {:4} {:10} {:10} {:10}",
-            item.pid.to_string(),
+            "{:9} {:35} {:4} {:12} {:12} {:12}",
+            tmp_pid,
             item.name,
-            item.cpu_usage.to_string(),
-            item.memory_usage.to_string(),
-            item.disk_read_usage.to_string(),
-            item.disk_write_usage.to_string(),
+            tmp_cpu_usage,
+            tmp_mem_usage,
+            tmp_disk_read,
+            tmp_disk_write,
         )
     }
 }
