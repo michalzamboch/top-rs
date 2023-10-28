@@ -13,7 +13,7 @@ use ratatui::prelude::*;
 
 use crate::backend::app::App;
 
-use super::{config, ui::ui};
+use super::{config, ui_builder::ui};
 
 pub fn start() -> Result<(), Box<dyn Error>> {
     enable_raw_mode()?;
