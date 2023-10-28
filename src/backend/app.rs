@@ -3,7 +3,7 @@
 use std::cmp;
 use sysinfo::{CpuExt, NetworkData, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
-use super::utils::get_floored_percentage;
+use super::{utils::get_floored_percentage, process::process_info_vec};
 
 pub struct App {
     sys: System,
@@ -37,6 +37,7 @@ impl App {
         self.sys.refresh_cpu();
         self.sys.refresh_networks();
         self.sys.refresh_networks_list();
+        self.sys.refresh_processes();
     }
 
     pub fn get_memory_usage(&self) -> u64 {
@@ -123,5 +124,9 @@ impl App {
             Some(version) => version,
             None => "Unknown".to_owned(),
         }
+    }
+
+    pub fn get_processes_vec(&self) -> Vec<String> {
+        process_info_vec(&self.sys)
     }
 }
