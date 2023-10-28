@@ -18,9 +18,9 @@ fn create_chucks<B: Backend>(f: &mut Frame<B>) -> Rc<[Rect]> {
     Layout::default()
         .direction(Direction::Vertical)
         .constraints([
-            Constraint::Percentage(7),
-            Constraint::Percentage(7),
-            Constraint::Percentage(86),
+            Constraint::Length(3),
+            Constraint::Length(3),
+            Constraint::Length(4),
         ])
         .split(f.size())
 }
@@ -29,7 +29,7 @@ fn get_memory_gauge(app: &App) -> Gauge<'_> {
     let color = cpu_usage_color(app, Color::Blue);
     
     Gauge::default()
-        .block(Block::default().title("Memory usage").borders(Borders::NONE))
+        .block(Block::default().title("Memory usage").borders(Borders::ALL))
         .gauge_style(Style::default().fg(color))
         .percent(app.get_memory_usage() as u16)
 }
@@ -38,7 +38,7 @@ fn get_cpu_gauge(app: &App) -> Gauge<'_> {
     let color = cpu_usage_color(app, Color::Green);
 
     Gauge::default()
-        .block(Block::default().title("CPU usage").borders(Borders::NONE))
+        .block(Block::default().title("CPU usage").borders(Borders::ALL))
         .gauge_style(Style::default().fg(color))
         .percent(app.get_total_cpu_usage() as u16)
 }
