@@ -39,7 +39,7 @@ fn get_pc_info(app: &App) -> Paragraph<'static> {
 }
 
 fn get_memory_gauge(app: &App) -> Gauge<'_> {
-    let color = cpu_usage_color(app, Color::Blue);
+    let color = cpu_usage_color(app.get_memory_usage(), Color::Blue);
 
     Gauge::default()
         .block(
@@ -52,7 +52,7 @@ fn get_memory_gauge(app: &App) -> Gauge<'_> {
 }
 
 fn get_cpu_gauge(app: &App) -> Gauge<'_> {
-    let color = cpu_usage_color(app, Color::Green);
+    let color = cpu_usage_color(app.get_total_cpu_usage(), Color::Green);
 
     Gauge::default()
         .block(Block::default().title(" CPU usage ").borders(Borders::ALL))
@@ -60,8 +60,8 @@ fn get_cpu_gauge(app: &App) -> Gauge<'_> {
         .percent(app.get_total_cpu_usage() as u16)
 }
 
-fn cpu_usage_color(app: &App, regular_color: Color) -> Color {
-    if app.get_total_cpu_usage() >= 95 {
+fn cpu_usage_color(usage: u64, regular_color: Color) -> Color {
+    if usage >= 95 {
         return Color::Red;
     } else {
         return regular_color;
