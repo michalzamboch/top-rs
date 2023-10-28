@@ -3,7 +3,7 @@
 use std::cmp;
 use sysinfo::{CpuExt, NetworkData, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
-use super::{utils::get_floored_percentage, process::*};
+use super::{process::*, utils::*};
 
 pub struct App {
     sys: System,
@@ -14,7 +14,9 @@ pub struct App {
 impl App {
     pub fn new() -> App {
         let mut system = System::new();
-        system.refresh_all();
+        for _ in 0..2 {
+            system.refresh_all();
+        }
         let network_count = App::get_network_count(&mut system);
 
         App {
