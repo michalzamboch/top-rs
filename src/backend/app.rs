@@ -124,10 +124,4 @@ impl App {
             None => "Unknown".to_owned(),
         }
     }
-
-    pub fn get_process_info(&self) {
-        for (pid, process) in self.sys.processes() {
-            println!("[{}] {} {:?}", pid, process.name(), process.disk_usage());
-        }
-    }
 }
