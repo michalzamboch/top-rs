@@ -5,7 +5,7 @@ use std::{
 };
 
 use crossterm::{
-    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
+    event::{self, DisableMouseCapture, EnableMouseCapture, Event},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
@@ -13,7 +13,7 @@ use ratatui::prelude::*;
 
 use crate::backend::app::App;
 
-use super::ui::ui;
+use super::{config, ui::ui};
 
 pub fn start() -> Result<(), Box<dyn Error>> {
     enable_raw_mode()?;
@@ -33,7 +33,7 @@ pub fn start() -> Result<(), Box<dyn Error>> {
 }
 
 fn create_app(terminal: &mut Terminal<CrosstermBackend<Stdout>>) -> Result<(), Box<dyn Error>> {
-    let tick_rate = Duration::from_millis(600);
+    let tick_rate = Duration::from_millis(config::REFRESH_MILIS);
     let app = App::new();
     run_app(terminal, app, tick_rate)?;
 
@@ -65,13 +65,13 @@ fn run_app<B: Backend>(
 
         let timeout = tick_rate
             .checked_sub(last_tick.elapsed())
-            .unwrap_or_else(|| Duration::from_secs(1));
+            .unwrap_or_else(|| Duration::from_secs(config::REFRESH_MILIS));
 
         if crossterm::event::poll(timeout)? {
             if let Event::Key(key) = event::read()? {
-                if KeyCode::Char('q') == key.code || KeyCode::Esc == key.code {
+                if config::EXIT_KEY_CODES.contains(&key.code) {
                     return Ok(());
-                } else if KeyCode::Char('r') == key.code || KeyCode::F(5) == key.code {
+                } else if config::REFRESH_KEY_CODES.contains(&key.code) {
                     app.on_tick();
                 }
             }
