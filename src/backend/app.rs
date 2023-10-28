@@ -47,11 +47,12 @@ impl App {
     }
 
     pub fn get_core_usage(&self) -> Vec<u64> {
-        let mut percentage = vec![];
-
-        for cpu in self.sys.cpus() {
-            percentage.push(cpu.cpu_usage() as u64);
-        }
+        let percentage: Vec<u64> = self
+            .sys
+            .cpus()
+            .iter()
+            .map(|cpu| cpu.cpu_usage() as u64)
+            .collect();
 
         percentage
     }
