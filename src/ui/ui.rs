@@ -4,7 +4,7 @@ use ratatui::{prelude::*, widgets::*};
 
 use crate::backend::app::App;
 
-pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
+pub fn ui(f: &mut Frame, app: &App) {
     let chunks = create_chucks(f);
 
     let cpu_gauge = get_cpu_gauge(app);
@@ -14,7 +14,7 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     f.render_widget(memory_gauge, chunks[1]);
 }
 
-fn create_chucks<B: Backend>(f: &mut Frame<B>) -> Rc<[Rect]> {
+fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
     Layout::default()
         .direction(Direction::Vertical)
         .constraints([
