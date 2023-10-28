@@ -31,14 +31,14 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
 
 fn get_pc_info(app: &App) -> Paragraph<'static> {
     let text = app.get_sys_info();
-    Paragraph::new(text.green()).wrap(Wrap { trim: true })
+    Paragraph::new(text.cyan()).wrap(Wrap { trim: true })
 }
 
 fn get_memory_gauge(app: &App) -> Gauge<'_> {
     let color = cpu_usage_color(app, Color::Blue);
     
     Gauge::default()
-        .block(Block::default().title("Memory usage").borders(Borders::ALL))
+        .block(Block::default().title(" Memory usage ").borders(Borders::ALL))
         .gauge_style(Style::default().fg(color))
         .percent(app.get_memory_usage() as u16)
 }
@@ -47,7 +47,7 @@ fn get_cpu_gauge(app: &App) -> Gauge<'_> {
     let color = cpu_usage_color(app, Color::Green);
 
     Gauge::default()
-        .block(Block::default().title("CPU usage").borders(Borders::ALL))
+        .block(Block::default().title(" CPU usage ").borders(Borders::ALL))
         .gauge_style(Style::default().fg(color))
         .percent(app.get_total_cpu_usage() as u16)
 }
