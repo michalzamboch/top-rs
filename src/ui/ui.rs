@@ -62,9 +62,9 @@ fn get_cpu_gauge(app: &App) -> Gauge<'_> {
 
 fn cpu_usage_color(usage: u64, regular_color: Color) -> Color {
     if usage >= 95 {
-        return Color::Red;
+        Color::Red
     } else {
-        return regular_color;
+        regular_color
     }
 }
 

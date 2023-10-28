@@ -16,7 +16,7 @@ struct ProcessItem {
 impl ProcessItem {
     pub fn new(pid: Pid, proc: &Process) -> ProcessItem {
         ProcessItem {
-            pid: pid,
+            pid,
             name: proc.name().to_owned(),
             cpu_usage: proc.cpu_usage() as u64,
             memory_usage: proc.memory(),
@@ -47,14 +47,14 @@ impl ProcessItem {
 pub fn process_info_sorted_by_cpu_to_string(sys: &System) -> Vec<String> {
     let vec_string: Vec<String> = process_info_sorted_by_cpu(sys)
         .iter()
-        .map(|item| ProcessItem::to_string(item))
+        .map(ProcessItem::to_string)
         .collect();
     vec_string
 }
 
 fn process_info_sorted_by_cpu(sys: &System) -> Vec<ProcessItem> {
     let mut process_vec = process_info_items(sys);
-    process_vec.sort_by_key(|item| Reverse(item.cpu_usage.clone()));
+    process_vec.sort_by_key(|item| Reverse(item.cpu_usage));
 
     process_vec
 }
@@ -62,7 +62,7 @@ fn process_info_sorted_by_cpu(sys: &System) -> Vec<ProcessItem> {
 pub fn process_info_sorted_by_name_to_string(sys: &System) -> Vec<String> {
     let vec_string: Vec<String> = process_info_sorted_by_name(sys)
         .iter()
-        .map(|item| ProcessItem::to_string(item))
+        .map(ProcessItem::to_string)
         .collect();
     vec_string
 }
@@ -78,7 +78,7 @@ fn process_info_items(sys: &System) -> Vec<ProcessItem> {
     let process_vec: Vec<ProcessItem> = sys
         .processes()
         .iter()
-        .map(|(pid, proc)| ProcessItem::new(pid.clone(), proc))
+        .map(|(pid, proc)| ProcessItem::new(*pid, proc))
         .collect();
 
     process_vec
