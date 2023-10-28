@@ -27,7 +27,7 @@ impl App {
     fn get_network_count(sys: &mut System) -> usize {
         sys.refresh_networks();
         sys.refresh_networks_list();
-        
+
         let net = sys.networks();
         net.into_iter().count()
     }
@@ -85,6 +85,44 @@ impl App {
             net_info.1.received(),
             net_info.1.transmitted()
         );
+    }
+
+    pub fn get_sys_info(&self) -> String {
+        format!(
+            "System name: {}, Kernel version: {}, OS version: {}, Host name: {}",
+            self.get_sys_name(),
+            self.get_kernel_version(),
+            self.get_os_version(),
+            self.get_host_name(),
+        )
+    }
+
+    pub fn get_sys_name(&self) -> String {
+        match self.sys.name() {
+            Some(version) => version,
+            None => "Unknown".to_owned(),
+        }
+    }
+
+    pub fn get_kernel_version(&self) -> String {
+        match self.sys.kernel_version() {
+            Some(version) => version,
+            None => "Unknown".to_owned(),
+        }
+    }
+
+    pub fn get_os_version(&self) -> String {
+        match self.sys.os_version() {
+            Some(version) => version,
+            None => "Unknown".to_owned(),
+        }
+    }
+
+    pub fn get_host_name(&self) -> String {
+        match self.sys.host_name() {
+            Some(version) => version,
+            None => "Unknown".to_owned(),
+        }
     }
 
     pub fn get_process_info(&self) {

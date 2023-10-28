@@ -7,22 +7,31 @@ use crate::backend::app::App;
 pub fn ui(f: &mut Frame, app: &App) {
     let chunks = create_chucks(f);
 
+    let info_paragraph = get_pc_info(app);
+    f.render_widget(info_paragraph, chunks[0]);
+
     let cpu_gauge = get_cpu_gauge(app);
-    f.render_widget(cpu_gauge, chunks[0]);
+    f.render_widget(cpu_gauge, chunks[1]);
 
     let memory_gauge = get_memory_gauge(app);
-    f.render_widget(memory_gauge, chunks[1]);
+    f.render_widget(memory_gauge, chunks[2]);
 }
 
 fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
     Layout::default()
         .direction(Direction::Vertical)
         .constraints([
+            Constraint::Length(2),
             Constraint::Length(3),
             Constraint::Length(3),
-            Constraint::Length(4),
+            Constraint::Length(1),
         ])
         .split(f.size())
+}
+
+fn get_pc_info(app: &App) -> Paragraph<'static> {
+    let text = app.get_sys_info();
+    Paragraph::new(text.green()).wrap(Wrap { trim: true })
 }
 
 fn get_memory_gauge(app: &App) -> Gauge<'_> {
