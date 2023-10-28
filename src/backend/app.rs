@@ -3,7 +3,7 @@
 use std::cmp;
 use sysinfo::{CpuExt, NetworkData, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
-use super::{utils::get_floored_percentage, process::process_info_vec};
+use super::{utils::get_floored_percentage, process::*};
 
 pub struct App {
     sys: System,
@@ -127,6 +127,6 @@ impl App {
     }
 
     pub fn get_processes_vec(&self) -> Vec<String> {
-        process_info_vec(&self.sys)
+        process_info_sorted_by_cpu_to_string(&self.sys)
     }
 }

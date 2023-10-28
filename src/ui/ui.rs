@@ -70,7 +70,7 @@ fn cpu_usage_color(app: &App, regular_color: Color) -> Color {
 
 fn get_processes_paragraph<'a>(app: &'a App, title: &'a str) -> Paragraph<'a> {
     let block = Block::default()
-        .borders(Borders::ALL)
+        .borders(Borders::TOP)
         .style(Style::default().fg(Color::Gray))
         .title(Span::styled(
             title,
