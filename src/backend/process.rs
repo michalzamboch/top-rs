@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 
 use pretty_bytes::converter;
 use std::cmp::Reverse;
@@ -44,10 +43,6 @@ impl ProcessItem {
     }
 }
 
-pub fn process_info_sorted_by_cpu_to_string(sys: &System) -> Vec<String> {
-    string_processes_sorted_by(sys, SortBy::Cpu)
-}
-
 pub fn string_processes_sorted_by(sys: &System, sort_by: SortBy) -> Vec<String> {
     processes_sorted_by(sys, sort_by)
         .iter()
@@ -69,7 +64,7 @@ fn process_info_items(sys: &System) -> Vec<ProcessItem> {
         .collect()
 }
 
-fn sort_processes_by(process_vec: &mut Vec<ProcessItem>, sort_by: SortBy) {
+fn sort_processes_by(process_vec: &mut [ProcessItem], sort_by: SortBy) {
     match sort_by {
         SortBy::Pid => process_vec.sort_by_key(|item| item.pid),
         SortBy::Name => process_vec.sort_by_key(|item| item.name.clone()),
