@@ -1,3 +1,4 @@
 pub mod app;
-pub mod process;
+mod config;
+mod process;
 mod utils;

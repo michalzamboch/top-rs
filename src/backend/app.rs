@@ -3,7 +3,7 @@
 use std::cmp;
 use sysinfo::{CpuExt, NetworkData, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
-use super::{process::*, utils::*};
+use super::{process::*, utils::*, config};
 
 pub struct App {
     sys: System,
@@ -14,9 +14,7 @@ pub struct App {
 impl App {
     pub fn new() -> App {
         let mut system = System::new();
-        for _ in 0..2 {
-            system.refresh_all();
-        }
+        App::initial_sys_refresh(&mut system);
         let network_count = App::get_network_count(&mut system);
 
         App {
@@ -26,12 +24,18 @@ impl App {
         }
     }
 
+    fn initial_sys_refresh(sys: &mut System) {
+        for _ in 0..config::INITIAL_REFRESH_COUNT {
+            sys.refresh_all();
+        }
+    }
+
     fn get_network_count(sys: &mut System) -> usize {
         sys.refresh_networks();
         sys.refresh_networks_list();
 
         let net = sys.networks();
-        net.into_iter().count()
+        net.iter().count()
     }
 
     pub fn on_tick(&mut self) {

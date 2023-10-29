@@ -4,6 +4,9 @@ use pretty_bytes::converter;
 use std::cmp::Reverse;
 use sysinfo::{Pid, Process, ProcessExt, System, SystemExt};
 
+use crate::backend::config::*;
+use crate::backend::utils::*;
+
 struct ProcessItem {
     pub pid: Pid,
     pub name: String,
@@ -27,14 +30,15 @@ impl ProcessItem {
 
     pub fn to_string(item: &ProcessItem) -> String {
         let tmp_pid = format!("[{}]", item.pid);
+        let tmp_name = fancy_trim_to_length(&item.name, NAME_STR_TRIM_LEN);
         let tmp_cpu_usage = format!("{}%", item.cpu_usage);
         let tmp_mem_usage = converter::convert(item.memory_usage as f64);
         let tmp_disk_read = converter::convert(item.disk_read_usage as f64);
         let tmp_disk_write = converter::convert(item.disk_write_usage as f64);
 
         format!(
-            "{:9} {:35} {:4} {:12} {:12} {:12}",
-            tmp_pid, item.name, tmp_cpu_usage, tmp_mem_usage, tmp_disk_read, tmp_disk_write,
+            "{:PID_STR_LEN$} {:NAME_STR_LEN$} {:CPU_USAGE_STR_LEN$} {:PRETTY_BZTES_STR_LEN$} {:PRETTY_BZTES_STR_LEN$} {:PRETTY_BZTES_STR_LEN$}",
+            tmp_pid, tmp_name, tmp_cpu_usage, tmp_mem_usage, tmp_disk_read, tmp_disk_write,
         )
     }
 }
