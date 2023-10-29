@@ -3,11 +3,14 @@
 use std::cmp;
 use sysinfo::{CpuExt, NetworkData, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
+use crate::types::sort_by::{SortBy, self};
+
 use super::{config, cpu, memory, network::*, pc_info, process};
 
 pub struct App {
     sys: System,
     network: Networking,
+    processes_sorted_by: SortBy,
 }
 
 impl App {
@@ -17,7 +20,11 @@ impl App {
 
         let network = Networking::new(&mut sys);
 
-        App { sys, network }
+        App {
+            sys,
+            network,
+            processes_sorted_by: SortBy::Cpu,
+        }
     }
 
     fn initial_sys_refresh(sys: &mut System) {
@@ -55,6 +62,10 @@ impl App {
     }
 
     pub fn get_processes_vec(&self) -> Vec<String> {
-        process::process_info_sorted_by_cpu_to_string(&self.sys)
+        process::string_processes_sorted_by(&self.sys, self.processes_sorted_by)
+    }
+
+    pub fn sort_processes_by(&mut self, sort_by: SortBy) {
+        self.processes_sorted_by = sort_by;
     }
 }

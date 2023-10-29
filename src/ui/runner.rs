@@ -5,13 +5,13 @@ use std::{
 };
 
 use crossterm::{
-    event::{self, DisableMouseCapture, EnableMouseCapture, Event},
+    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use ratatui::prelude::*;
 
-use crate::backend::app::App;
+use crate::{backend::app::App, types::sort_by::SortBy};
 
 use super::{config, ui_builder::ui};
 
@@ -60,6 +60,7 @@ fn run_app<B: Backend>(
     tick_rate: Duration,
 ) -> io::Result<()> {
     let mut last_tick = Instant::now();
+
     loop {
         terminal.draw(|f| ui(f, &app))?;
 
@@ -71,8 +72,20 @@ fn run_app<B: Backend>(
             if let Event::Key(key) = event::read()? {
                 if config::EXIT_KEY_CODES.contains(&key.code) {
                     return Ok(());
-                } else if config::REFRESH_KEY_CODES.contains(&key.code) {
+                } else if KeyCode::F(5) == key.code {
                     app.on_tick();
+                } else if KeyCode::Char('c') == key.code {
+                    app.sort_processes_by(SortBy::Cpu);
+                } else if KeyCode::Char('p') == key.code {
+                    app.sort_processes_by(SortBy::Pid);
+                } else if KeyCode::Char('n') == key.code {
+                    app.sort_processes_by(SortBy::Name);
+                } else if KeyCode::Char('m') == key.code {
+                    app.sort_processes_by(SortBy::Memory);
+                } else if KeyCode::Char('r') == key.code {
+                    app.sort_processes_by(SortBy::DiskRead);
+                } else if KeyCode::Char('w') == key.code {
+                    app.sort_processes_by(SortBy::DiskWrite);
                 }
             }
         }

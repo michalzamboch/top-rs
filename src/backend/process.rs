@@ -6,6 +6,7 @@ use sysinfo::{Pid, Process, ProcessExt, System, SystemExt};
 
 use crate::backend::config::*;
 use crate::backend::utils::*;
+use crate::types::sort_by::SortBy;
 
 struct ProcessItem {
     pub pid: Pid,
@@ -44,29 +45,19 @@ impl ProcessItem {
 }
 
 pub fn process_info_sorted_by_cpu_to_string(sys: &System) -> Vec<String> {
-    process_info_sorted_by_cpu(sys)
+    string_processes_sorted_by(sys, SortBy::Cpu)
+}
+
+pub fn string_processes_sorted_by(sys: &System, sort_by: SortBy) -> Vec<String> {
+    processes_sorted_by(sys, sort_by)
         .iter()
         .map(ProcessItem::to_string)
         .collect()
 }
 
-fn process_info_sorted_by_cpu(sys: &System) -> Vec<ProcessItem> {
+fn processes_sorted_by(sys: &System, sort_by: SortBy) -> Vec<ProcessItem> {
     let mut process_vec = process_info_items(sys);
-    process_vec.sort_by_key(|item| Reverse(item.cpu_usage));
-
-    process_vec
-}
-
-pub fn process_info_sorted_by_name_to_string(sys: &System) -> Vec<String> {
-    process_info_sorted_by_name(sys)
-        .iter()
-        .map(ProcessItem::to_string)
-        .collect()
-}
-
-fn process_info_sorted_by_name(sys: &System) -> Vec<ProcessItem> {
-    let mut process_vec = process_info_items(sys);
-    process_vec.sort_by_key(|item| item.name.clone());
+    sort_processes_by(&mut process_vec, sort_by);
 
     process_vec
 }
@@ -76,4 +67,15 @@ fn process_info_items(sys: &System) -> Vec<ProcessItem> {
         .iter()
         .map(|(pid, proc)| ProcessItem::new(*pid, proc))
         .collect()
+}
+
+fn sort_processes_by(process_vec: &mut Vec<ProcessItem>, sort_by: SortBy) {
+    match sort_by {
+        SortBy::Pid => process_vec.sort_by_key(|item| item.pid),
+        SortBy::Name => process_vec.sort_by_key(|item| item.name.clone()),
+        SortBy::Cpu => process_vec.sort_by_key(|item| Reverse(item.cpu_usage)),
+        SortBy::Memory => process_vec.sort_by_key(|item| Reverse(item.memory_usage)),
+        SortBy::DiskRead => process_vec.sort_by_key(|item| Reverse(item.disk_read_usage)),
+        SortBy::DiskWrite => process_vec.sort_by_key(|item| Reverse(item.disk_write_usage)),
+    }
 }
