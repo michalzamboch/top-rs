@@ -1,4 +1,4 @@
-use std::rc::Rc;
+use std::{rc::Rc, cmp::*};
 
 use ratatui::{prelude::*, widgets::*};
 
@@ -59,7 +59,8 @@ fn get_memory_detail(app: &App) -> Paragraph<'static> {
 }
 
 fn get_memory_gauge(app: &App) -> Gauge<'_> {
-    let color = cpu_usage_color(app.get_memory_usage(), config::MEMORY_COLOR);
+    let usage = min(app.get_memory_usage(), config::HUNDERED_PERCENT) as u16;
+    let color = cpu_usage_color(usage, config::MEMORY_COLOR);
 
     Gauge::default()
         .block(
@@ -68,11 +69,12 @@ fn get_memory_gauge(app: &App) -> Gauge<'_> {
                 .borders(Borders::ALL),
         )
         .gauge_style(Style::default().fg(color))
-        .percent(app.get_memory_usage() as u16)
+        .percent(usage)
 }
 
 fn get_cpu_gauge(app: &App) -> Gauge<'_> {
-    let color = cpu_usage_color(app.get_total_cpu_usage(), config::CPU_COLOR);
+    let usage = min(app.get_total_cpu_usage(), config::HUNDERED_PERCENT) as u16;
+    let color = cpu_usage_color(usage, config::CPU_COLOR);
 
     Gauge::default()
         .block(
@@ -81,7 +83,7 @@ fn get_cpu_gauge(app: &App) -> Gauge<'_> {
                 .borders(Borders::ALL),
         )
         .gauge_style(Style::default().fg(color))
-        .percent(app.get_total_cpu_usage() as u16)
+        .percent(usage)
 }
 
 fn get_cpu_detail(app: &App) -> Paragraph<'static> {
@@ -93,7 +95,7 @@ fn get_cpu_detail(app: &App) -> Paragraph<'static> {
         .style(Style::default().fg(config::CPU_COLOR))
 }
 
-fn cpu_usage_color(usage: u64, regular_color: Color) -> Color {
+fn cpu_usage_color(usage: u16, regular_color: Color) -> Color {
     if usage >= 95 {
         config::OVERLOAD_COLOR
     } else {
