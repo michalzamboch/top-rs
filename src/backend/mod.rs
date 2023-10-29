@@ -4,3 +4,5 @@ mod cpu;
 mod pc_info;
 mod process;
 mod utils;
+mod memory;
+mod network;

@@ -4,7 +4,7 @@ use pretty_bytes::converter::convert;
 use std::cmp;
 use sysinfo::{CpuExt, NetworkData, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
-use super::{config, cpu, process::*, utils::*};
+use super::{config, cpu, memory, pc_info, process, utils::*};
 
 pub struct App {
     sys: System,
@@ -48,18 +48,11 @@ impl App {
     }
 
     pub fn get_memory_usage(&self) -> u64 {
-        get_floored_percentage(self.sys.used_memory(), self.sys.total_memory())
+        memory::get_memory_usage(&self.sys)
     }
 
     pub fn get_memory_details(&self) -> String {
-        let tmp_free_mem = convert(self.sys.free_memory() as f64);
-        let tmp_used_mem = convert(self.sys.used_memory() as f64);
-        let tmp_total_mem = convert(self.sys.total_memory() as f64);
-
-        format!(
-            "Free: {} | Used: {} | Total {}",
-            tmp_free_mem, tmp_used_mem, tmp_total_mem
-        )
+        memory::get_memory_details(&self.sys)
     }
 
     pub fn get_total_cpu_usage(&self) -> u64 {
@@ -103,44 +96,10 @@ impl App {
     }
 
     pub fn get_sys_info(&self) -> String {
-        format!(
-            "System name: {}, Kernel version: {}, OS version: {}, Host name: {}",
-            self.get_sys_name(),
-            self.get_kernel_version(),
-            self.get_os_version(),
-            self.get_host_name(),
-        )
-    }
-
-    pub fn get_sys_name(&self) -> String {
-        match self.sys.name() {
-            Some(version) => version,
-            None => "Unknown".to_owned(),
-        }
-    }
-
-    pub fn get_kernel_version(&self) -> String {
-        match self.sys.kernel_version() {
-            Some(version) => version,
-            None => "Unknown".to_owned(),
-        }
-    }
-
-    pub fn get_os_version(&self) -> String {
-        match self.sys.os_version() {
-            Some(version) => version,
-            None => "Unknown".to_owned(),
-        }
-    }
-
-    pub fn get_host_name(&self) -> String {
-        match self.sys.host_name() {
-            Some(version) => version,
-            None => "Unknown".to_owned(),
-        }
+        pc_info::get_sys_info(&self.sys)
     }
 
     pub fn get_processes_vec(&self) -> Vec<String> {
-        process_info_sorted_by_cpu_to_string(&self.sys)
+        process::process_info_sorted_by_cpu_to_string(&self.sys)
     }
 }
