@@ -1,5 +1,6 @@
 #![allow(dead_code, unused_imports)]
 
+use pretty_bytes::converter::convert;
 use std::cmp;
 use sysinfo::{CpuExt, NetworkData, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
@@ -50,6 +51,17 @@ impl App {
         get_floored_percentage(self.sys.used_memory(), self.sys.total_memory())
     }
 
+    pub fn get_memory_details(&self) -> String {
+        let tmp_free_mem = convert(self.sys.free_memory() as f64);
+        let tmp_used_mem = convert(self.sys.used_memory() as f64);
+        let tmp_total_mem = convert(self.sys.total_memory() as f64);
+
+        format!(
+            "Free: {} | Used: {} | Total {}",
+            tmp_free_mem, tmp_used_mem, tmp_total_mem
+        )
+    }
+
     pub fn get_core_usage(&self) -> Vec<u64> {
         self.sys
             .cpus()
@@ -62,6 +74,16 @@ impl App {
         let usage = self.sys.global_cpu_info().cpu_usage();
 
         usage as u64
+    }
+
+    pub fn get_cpu_details(&self) -> String {
+        let tmp_core_count = self.sys.cpus().len();
+        let tmp_cpu_brand = self.sys.global_cpu_info().brand().trim_end();
+
+        format!(
+            "{} | {} Core",
+            tmp_cpu_brand, tmp_core_count
+        )
     }
 
     pub fn network(&mut self) {
