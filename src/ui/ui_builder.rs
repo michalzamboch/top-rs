@@ -64,7 +64,7 @@ fn get_memory_gauge(app: &App) -> Gauge<'_> {
     Gauge::default()
         .block(
             Block::default()
-                .title(" Memory usage ")
+                .title(config::MEM_USAGE_TITLE)
                 .borders(Borders::ALL),
         )
         .gauge_style(Style::default().fg(color))
@@ -75,7 +75,11 @@ fn get_cpu_gauge(app: &App) -> Gauge<'_> {
     let color = cpu_usage_color(app.get_total_cpu_usage(), Color::Green);
 
     Gauge::default()
-        .block(Block::default().title(" CPU usage ").borders(Borders::ALL))
+        .block(
+            Block::default()
+                .title(config::CPU_USAGE_TITLE)
+                .borders(Borders::ALL),
+        )
         .gauge_style(Style::default().fg(color))
         .percent(app.get_total_cpu_usage() as u16)
 }
@@ -97,18 +101,15 @@ fn cpu_usage_color(usage: u64, regular_color: Color) -> Color {
     }
 }
 
-fn get_processes_paragraph(app: & App) -> Paragraph<'_> {
-    let block = Block::default()
-        .borders(Borders::TOP)
-        .title(Span::styled(
-            "Processes ",
-            Style::default().add_modifier(Modifier::BOLD),
-        ));
+fn get_processes_paragraph(app: &App) -> Paragraph<'_> {
+    let block = Block::default().borders(Borders::TOP).title(Span::styled(
+        config::PROCESSES_TITLE,
+        Style::default().add_modifier(Modifier::BOLD),
+    ));
 
     let text = get_processes_list(app);
 
-    Paragraph::new(text.clone())
-        .block(block)
+    Paragraph::new(text).block(block)
 }
 
 fn get_processes_list(app: &App) -> Vec<Line<'_>> {

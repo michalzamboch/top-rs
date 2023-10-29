@@ -8,3 +8,7 @@ pub static EXIT_KEY_CODES: &[KeyCode] = &[KeyCode::Char('q'), KeyCode::Esc];
 pub const MEMORY_COLOR: Color = Color::Blue;
 pub const CPU_COLOR: Color = Color::Green;
 pub const OVERLOAD_COLOR: Color = Color::Red;
+
+pub const PROCESSES_TITLE: &str = "Processes ";
+pub const CPU_USAGE_TITLE: &str = " CPU usage ";
+pub const MEM_USAGE_TITLE: &str = " Memory usage ";
