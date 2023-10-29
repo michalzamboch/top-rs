@@ -45,8 +45,8 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
 
 fn get_pc_info(app: &App) -> Paragraph<'static> {
     let text = app.get_sys_info();
-    
-    Paragraph::new(text.cyan()).wrap(Wrap { trim: true })
+
+    Paragraph::new(text).wrap(Wrap { trim: true })
 }
 
 fn get_memory_detail(app: &App) -> Paragraph<'static> {
@@ -100,7 +100,6 @@ fn cpu_usage_color(usage: u64, regular_color: Color) -> Color {
 fn get_processes_paragraph<'a>(app: &'a App) -> Paragraph<'a> {
     let block = Block::default()
         .borders(Borders::TOP)
-        .style(Style::default().fg(Color::Gray))
         .title(Span::styled(
             "Processes ",
             Style::default().add_modifier(Modifier::BOLD),
@@ -109,7 +108,6 @@ fn get_processes_paragraph<'a>(app: &'a App) -> Paragraph<'a> {
     let text = get_processes_list(app);
 
     Paragraph::new(text.clone())
-        .style(Style::default().fg(Color::Gray))
         .block(block)
 }
 
