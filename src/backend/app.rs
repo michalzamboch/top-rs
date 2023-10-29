@@ -3,7 +3,7 @@
 use std::cmp;
 use sysinfo::{CpuExt, NetworkData, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
-use super::{process::*, utils::*, config};
+use super::{config, process::*, utils::*};
 
 pub struct App {
     sys: System,
@@ -51,14 +51,11 @@ impl App {
     }
 
     pub fn get_core_usage(&self) -> Vec<u64> {
-        let percentage: Vec<u64> = self
-            .sys
+        self.sys
             .cpus()
             .iter()
             .map(|cpu| cpu.cpu_usage() as u64)
-            .collect();
-
-        percentage
+            .collect()
     }
 
     pub fn get_total_cpu_usage(&self) -> u64 {

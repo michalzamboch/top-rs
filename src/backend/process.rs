@@ -44,11 +44,10 @@ impl ProcessItem {
 }
 
 pub fn process_info_sorted_by_cpu_to_string(sys: &System) -> Vec<String> {
-    let vec_string: Vec<String> = process_info_sorted_by_cpu(sys)
+    process_info_sorted_by_cpu(sys)
         .iter()
         .map(ProcessItem::to_string)
-        .collect();
-    vec_string
+        .collect()
 }
 
 fn process_info_sorted_by_cpu(sys: &System) -> Vec<ProcessItem> {
@@ -59,11 +58,10 @@ fn process_info_sorted_by_cpu(sys: &System) -> Vec<ProcessItem> {
 }
 
 pub fn process_info_sorted_by_name_to_string(sys: &System) -> Vec<String> {
-    let vec_string: Vec<String> = process_info_sorted_by_name(sys)
+    process_info_sorted_by_name(sys)
         .iter()
         .map(ProcessItem::to_string)
-        .collect();
-    vec_string
+        .collect()
 }
 
 fn process_info_sorted_by_name(sys: &System) -> Vec<ProcessItem> {
@@ -74,22 +72,17 @@ fn process_info_sorted_by_name(sys: &System) -> Vec<ProcessItem> {
 }
 
 fn process_info_items(sys: &System) -> Vec<ProcessItem> {
-    let process_vec: Vec<ProcessItem> = sys
-        .processes()
+    sys.processes()
         .iter()
         .map(|(pid, proc)| ProcessItem::new(*pid, proc))
-        .collect();
-
-    process_vec
+        .collect()
 }
 
 pub fn process_info_vec(sys: &System) -> Vec<String> {
-    let mut process_vec = vec![];
-    for (pid, process) in sys.processes() {
-        process_vec.push(process_to_string(pid, process));
-    }
-
-    process_vec
+    sys.processes()
+        .iter()
+        .map(|(pid, process)| process_to_string(pid, process))
+        .collect()
 }
 
 pub fn print_process_info(sys: &System) {
