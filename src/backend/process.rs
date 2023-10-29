@@ -77,24 +77,3 @@ fn process_info_items(sys: &System) -> Vec<ProcessItem> {
         .map(|(pid, proc)| ProcessItem::new(*pid, proc))
         .collect()
 }
-
-pub fn process_info_vec(sys: &System) -> Vec<String> {
-    sys.processes()
-        .iter()
-        .map(|(pid, process)| process_to_string(pid, process))
-        .collect()
-}
-
-pub fn print_process_info(sys: &System) {
-    for (pid, process) in sys.processes() {
-        print_process(pid, process);
-    }
-}
-
-fn print_process(pid: &Pid, process: &Process) {
-    println!("{}", process_to_string(pid, process));
-}
-
-fn process_to_string(pid: &Pid, process: &Process) -> String {
-    format!("[{}] {} {}", pid, process.name(), process.cpu_usage())
-}

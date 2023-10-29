@@ -20,7 +20,7 @@ pub fn ui(f: &mut Frame, app: &App) {
 
     let memory_datails = get_memory_detail(app);
     f.render_widget(memory_datails, chunks[3]);
-    
+
     let memory_gauge = get_memory_gauge(app);
     f.render_widget(memory_gauge, chunks[4]);
 
@@ -45,6 +45,7 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
 
 fn get_pc_info(app: &App) -> Paragraph<'static> {
     let text = app.get_sys_info();
+    
     Paragraph::new(text.cyan()).wrap(Wrap { trim: true })
 }
 
@@ -113,11 +114,8 @@ fn get_processes_paragraph<'a>(app: &'a App) -> Paragraph<'a> {
 }
 
 fn get_processes_list(app: &App) -> Vec<Line<'_>> {
-    let result: Vec<Line<'_>> = app
-        .get_processes_vec()
+    app.get_processes_vec()
         .iter()
         .map(|item| Line::from(item.clone()))
-        .collect();
-
-    result
+        .collect()
 }

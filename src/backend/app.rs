@@ -4,7 +4,7 @@ use pretty_bytes::converter::convert;
 use std::cmp;
 use sysinfo::{CpuExt, NetworkData, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
-use super::{config, process::*, utils::*};
+use super::{config, cpu, process::*, utils::*};
 
 pub struct App {
     sys: System,
@@ -62,28 +62,16 @@ impl App {
         )
     }
 
-    pub fn get_core_usage(&self) -> Vec<u64> {
-        self.sys
-            .cpus()
-            .iter()
-            .map(|cpu| cpu.cpu_usage() as u64)
-            .collect()
-    }
-
     pub fn get_total_cpu_usage(&self) -> u64 {
-        let usage = self.sys.global_cpu_info().cpu_usage();
-
-        usage as u64
+        cpu::get_total_cpu_usage(&self.sys)
     }
 
     pub fn get_cpu_details(&self) -> String {
-        let tmp_core_count = self.sys.cpus().len();
-        let tmp_cpu_brand = self.sys.global_cpu_info().brand().trim_end();
+        cpu::get_cpu_details(&self.sys)
+    }
 
-        format!(
-            "{} | {} Core",
-            tmp_cpu_brand, tmp_core_count
-        )
+    pub fn get_core_usage(&self) -> Vec<u64> {
+        cpu::get_core_usage(&self.sys)
     }
 
     pub fn network(&mut self) {
