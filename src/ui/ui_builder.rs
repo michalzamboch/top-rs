@@ -72,7 +72,7 @@ fn get_memory_gauge(app: &App) -> Gauge<'_> {
 }
 
 fn get_cpu_gauge(app: &App) -> Gauge<'_> {
-    let color = cpu_usage_color(app.get_total_cpu_usage(), Color::Green);
+    let color = cpu_usage_color(app.get_total_cpu_usage(), config::CPU_COLOR);
 
     Gauge::default()
         .block(
