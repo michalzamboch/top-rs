@@ -5,13 +5,16 @@ use std::{
 };
 
 use crossterm::{
-    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
+    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEvent},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use ratatui::prelude::*;
 
-use crate::{backend::app::App, types::{sort_by::SortBy, app_trait::IApp}};
+use crate::{
+    backend::app::App,
+    types::{app_trait::IApp, sort_by::SortBy},
+};
 
 use super::{config, ui_builder::ui};
 
@@ -70,34 +73,9 @@ fn run_app<B: Backend>(
 
         if crossterm::event::poll(timeout)? {
             if let Event::Key(key) = event::read()? {
-                if config::EXIT_KEY_CODES.contains(&key.code) {
+                let exit = handle_input(key, &mut app);
+                if exit {
                     return Ok(());
-                } else if KeyCode::F(5) == key.code {
-                    app.on_tick();
-                } else if KeyCode::Char('c') == key.code {
-                    app.sort_processes_by(SortBy::Cpu);
-                } else if KeyCode::Char('C') == key.code {
-                    app.sort_processes_by(SortBy::CpuReverse);
-                } else if KeyCode::Char('p') == key.code {
-                    app.sort_processes_by(SortBy::Pid);
-                } else if KeyCode::Char('P') == key.code {
-                    app.sort_processes_by(SortBy::PidReverse);
-                } else if KeyCode::Char('n') == key.code {
-                    app.sort_processes_by(SortBy::Name);
-                } else if KeyCode::Char('N') == key.code {
-                    app.sort_processes_by(SortBy::NameReverse);
-                } else if KeyCode::Char('m') == key.code {
-                    app.sort_processes_by(SortBy::Memory);
-                } else if KeyCode::Char('M') == key.code {
-                    app.sort_processes_by(SortBy::MemoryReverse);
-                } else if KeyCode::Char('r') == key.code {
-                    app.sort_processes_by(SortBy::DiskRead);
-                } else if KeyCode::Char('R') == key.code {
-                    app.sort_processes_by(SortBy::DiskReadReverse);
-                } else if KeyCode::Char('w') == key.code {
-                    app.sort_processes_by(SortBy::DiskWrite);
-                } else if KeyCode::Char('W') == key.code {
-                    app.sort_processes_by(SortBy::DiskWriteReverse);
                 }
             }
         }
@@ -107,4 +85,26 @@ fn run_app<B: Backend>(
             last_tick = Instant::now();
         }
     }
+}
+
+fn handle_input(key: KeyEvent, app: &mut impl IApp) -> bool {
+    match key.code {
+        KeyCode::Char('q') | KeyCode::Esc => return true,
+        KeyCode::F(5) => app.on_tick(),
+        KeyCode::Char('c') => app.sort_processes_by(SortBy::Cpu),
+        KeyCode::Char('C') => app.sort_processes_by(SortBy::CpuReverse),
+        KeyCode::Char('p') => app.sort_processes_by(SortBy::Pid),
+        KeyCode::Char('P') => app.sort_processes_by(SortBy::PidReverse),
+        KeyCode::Char('n') => app.sort_processes_by(SortBy::Name),
+        KeyCode::Char('N') => app.sort_processes_by(SortBy::NameReverse),
+        KeyCode::Char('m') => app.sort_processes_by(SortBy::Memory),
+        KeyCode::Char('M') => app.sort_processes_by(SortBy::MemoryReverse),
+        KeyCode::Char('r') => app.sort_processes_by(SortBy::DiskRead),
+        KeyCode::Char('R') => app.sort_processes_by(SortBy::DiskReadReverse),
+        KeyCode::Char('w') => app.sort_processes_by(SortBy::DiskWrite),
+        KeyCode::Char('W') => app.sort_processes_by(SortBy::DiskWriteReverse),
+        _ => (),
+    }
+
+    false
 }
