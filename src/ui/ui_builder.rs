@@ -1,6 +1,7 @@
 use std::{rc::Rc, cmp::*};
 
 use ratatui::{prelude::*, widgets::*};
+use rayon::prelude::*;
 
 use crate::backend::app::App;
 
@@ -116,7 +117,7 @@ fn get_processes_paragraph(app: &App) -> Paragraph<'_> {
 
 fn get_processes_list(app: &App) -> Vec<Line<'_>> {
     app.get_processes_vec()
-        .iter()
+        .par_iter()
         .map(|item| Line::from(item.clone()))
         .collect()
 }

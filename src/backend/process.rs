@@ -1,4 +1,5 @@
 
+use rayon::prelude::*;
 use pretty_bytes::converter;
 use std::cmp::Reverse;
 use sysinfo::{Pid, Process, ProcessExt, System, SystemExt};
@@ -45,7 +46,7 @@ impl ProcessItem {
 
 pub fn string_processes_sorted_by(sys: &System, sort_by: SortBy) -> Vec<String> {
     processes_sorted_by(sys, sort_by)
-        .iter()
+        .par_iter()
         .map(ProcessItem::to_string)
         .collect()
 }
@@ -59,7 +60,7 @@ fn processes_sorted_by(sys: &System, sort_by: SortBy) -> Vec<ProcessItem> {
 
 fn process_info_items(sys: &System) -> Vec<ProcessItem> {
     sys.processes()
-        .iter()
+        .par_iter()
         .map(|(pid, proc)| ProcessItem::new(*pid, proc))
         .collect()
 }

@@ -1,5 +1,5 @@
 pub mod app;
-mod config;
+pub mod config;
 mod cpu;
 mod pc_info;
 mod process;

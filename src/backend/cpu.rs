@@ -1,10 +1,11 @@
 #![allow(dead_code)]
 
 use sysinfo::{CpuExt, System, SystemExt};
+use rayon::prelude::*;
 
 pub fn get_core_usage(sys: &System) -> Vec<u64> {
     sys.cpus()
-        .iter()
+        .par_iter()
         .map(|cpu| cpu.cpu_usage() as u64)
         .collect()
 }
