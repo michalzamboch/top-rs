@@ -76,16 +76,28 @@ fn run_app<B: Backend>(
                     app.on_tick();
                 } else if KeyCode::Char('c') == key.code {
                     app.sort_processes_by(SortBy::Cpu);
+                } else if KeyCode::Char('C') == key.code {
+                    app.sort_processes_by(SortBy::CpuReverse);
                 } else if KeyCode::Char('p') == key.code {
                     app.sort_processes_by(SortBy::Pid);
+                } else if KeyCode::Char('P') == key.code {
+                    app.sort_processes_by(SortBy::PidReverse);
                 } else if KeyCode::Char('n') == key.code {
                     app.sort_processes_by(SortBy::Name);
+                } else if KeyCode::Char('N') == key.code {
+                    app.sort_processes_by(SortBy::NameReverse);
                 } else if KeyCode::Char('m') == key.code {
                     app.sort_processes_by(SortBy::Memory);
+                } else if KeyCode::Char('M') == key.code {
+                    app.sort_processes_by(SortBy::MemoryReverse);
                 } else if KeyCode::Char('r') == key.code {
                     app.sort_processes_by(SortBy::DiskRead);
+                } else if KeyCode::Char('R') == key.code {
+                    app.sort_processes_by(SortBy::DiskReadReverse);
                 } else if KeyCode::Char('w') == key.code {
                     app.sort_processes_by(SortBy::DiskWrite);
+                } else if KeyCode::Char('W') == key.code {
+                    app.sort_processes_by(SortBy::DiskWriteReverse);
                 }
             }
         }

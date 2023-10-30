@@ -1,11 +1,11 @@
-use std::{rc::Rc, cmp::*};
+use std::{cmp::*, rc::Rc};
 
 use ratatui::{prelude::*, widgets::*};
 use rayon::prelude::*;
 
 use crate::backend::app::App;
 
-use super::config;
+use super::{config, util::*};
 
 pub fn ui(f: &mut Frame, app: &App) {
     let chunks = create_chucks(f);
@@ -38,7 +38,7 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
             Constraint::Length(3),
             Constraint::Length(1),
             Constraint::Length(3),
-            Constraint::Percentage(90),
+            Constraint::Length(get_terminal_height() as u16),
             Constraint::Length(1),
         ])
         .split(f.size())
@@ -87,7 +87,7 @@ fn get_cpu_gauge(app: &App) -> Gauge<'_> {
         .percent(usage)
 }
 
-fn get_cpu_detail(app: &App) -> Paragraph<'static> {
+fn get_cpu_detail(app: &App) -> Paragraph<'_> {
     let text = app.get_cpu_details();
 
     Paragraph::new(text)
@@ -116,7 +116,9 @@ fn get_processes_paragraph(app: &App) -> Paragraph<'_> {
 }
 
 fn get_processes_list(app: &App) -> Vec<Line<'_>> {
-    app.get_processes_vec()
+    let max_count = get_terminal_height();
+
+    app.get_filtered_processes_vec(max_count)
         .par_iter()
         .map(|item| Line::from(item.clone()))
         .collect()

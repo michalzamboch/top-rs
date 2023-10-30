@@ -3,7 +3,7 @@
 use std::cmp;
 use sysinfo::{CpuExt, NetworkData, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
-use crate::types::sort_by::{SortBy, self};
+use crate::types::sort_by::{self, SortBy};
 
 use super::{config, cpu, memory, network::*, pc_info, process};
 
@@ -23,7 +23,7 @@ impl App {
         App {
             sys,
             network,
-            processes_sorted_by: SortBy::Cpu,
+            processes_sorted_by: config::DEFAULT_PROCESS_SORT_ORDER,
         }
     }
 
@@ -61,8 +61,8 @@ impl App {
         pc_info::get_sys_info(&self.sys)
     }
 
-    pub fn get_processes_vec(&self) -> Vec<String> {
-        process::string_processes_sorted_by(&self.sys, self.processes_sorted_by)
+    pub fn get_filtered_processes_vec(&self, max_count: usize) -> Vec<String> {
+        process::string_processes_sorted_by(&self.sys, self.processes_sorted_by, max_count)
     }
 
     pub fn sort_processes_by(&mut self, sort_by: SortBy) {
