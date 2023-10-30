@@ -3,7 +3,7 @@
 use std::cmp;
 use sysinfo::{CpuExt, NetworkData, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
-use crate::types::sort_by::{self, SortBy};
+use crate::types::{sort_by::{self, SortBy}, app_trait::IApp};
 
 use super::{config, cpu, memory, network::*, pc_info, process};
 
@@ -14,6 +14,7 @@ pub struct App {
 }
 
 impl App {
+    
     pub fn new() -> App {
         let mut sys = System::new();
         App::initial_sys_refresh(&mut sys);
@@ -32,8 +33,10 @@ impl App {
             sys.refresh_all();
         }
     }
+}
 
-    pub fn on_tick(&mut self) {
+impl IApp for App {
+    fn on_tick(&mut self) {
         self.sys.refresh_memory();
         self.sys.refresh_cpu();
         self.sys.refresh_networks();
@@ -41,31 +44,31 @@ impl App {
         self.sys.refresh_processes();
     }
 
-    pub fn get_memory_usage(&self) -> u64 {
+    fn get_memory_usage(&self) -> u64 {
         memory::get_memory_usage(&self.sys)
     }
 
-    pub fn get_memory_details(&self) -> String {
+    fn get_memory_details(&self) -> String {
         memory::get_memory_details(&self.sys)
     }
 
-    pub fn get_total_cpu_usage(&self) -> u64 {
+    fn get_total_cpu_usage(&self) -> u64 {
         cpu::get_total_cpu_usage(&self.sys)
     }
 
-    pub fn get_cpu_details(&self) -> String {
+    fn get_cpu_details(&self) -> String {
         cpu::get_cpu_details(&self.sys)
     }
 
-    pub fn get_sys_info(&self) -> String {
+    fn get_sys_info(&self) -> String {
         pc_info::get_sys_info(&self.sys)
     }
 
-    pub fn get_filtered_processes_vec(&self, max_count: usize) -> Vec<String> {
+    fn get_filtered_processes_vec(&self, max_count: usize) -> Vec<String> {
         process::string_processes_sorted_by(&self.sys, self.processes_sorted_by, max_count)
     }
 
-    pub fn sort_processes_by(&mut self, sort_by: SortBy) {
+    fn sort_processes_by(&mut self, sort_by: SortBy) {
         self.processes_sorted_by = sort_by;
     }
 }

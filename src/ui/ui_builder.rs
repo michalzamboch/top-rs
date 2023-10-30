@@ -3,11 +3,11 @@ use std::{cmp::*, rc::Rc};
 use ratatui::{prelude::*, widgets::*};
 use rayon::prelude::*;
 
-use crate::backend::app::App;
+use crate::types::app_trait::*;
 
 use super::{config, util::*};
 
-pub fn ui(f: &mut Frame, app: &App) {
+pub fn ui(f: &mut Frame, app: &impl IApp) {
     let chunks = create_chucks(f);
 
     let info_paragraph = get_pc_info(app);
@@ -44,13 +44,13 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
         .split(f.size())
 }
 
-fn get_pc_info(app: &App) -> Paragraph<'static> {
+fn get_pc_info(app: &impl IApp) -> Paragraph<'static> {
     let text = app.get_sys_info();
 
     Paragraph::new(text).wrap(Wrap { trim: true })
 }
 
-fn get_memory_detail(app: &App) -> Paragraph<'static> {
+fn get_memory_detail(app: &impl IApp) -> Paragraph<'static> {
     let text = app.get_memory_details();
 
     Paragraph::new(text)
@@ -59,7 +59,7 @@ fn get_memory_detail(app: &App) -> Paragraph<'static> {
         .style(Style::default().fg(config::MEMORY_COLOR))
 }
 
-fn get_memory_gauge(app: &App) -> Gauge<'_> {
+fn get_memory_gauge(app: &impl IApp) -> Gauge<'_> {
     let usage = min(app.get_memory_usage(), config::HUNDERED_PERCENT) as u16;
     let color = cpu_usage_color(usage, config::MEMORY_COLOR);
 
@@ -73,7 +73,7 @@ fn get_memory_gauge(app: &App) -> Gauge<'_> {
         .percent(usage)
 }
 
-fn get_cpu_gauge(app: &App) -> Gauge<'_> {
+fn get_cpu_gauge(app: &impl IApp) -> Gauge<'_> {
     let usage = min(app.get_total_cpu_usage(), config::HUNDERED_PERCENT) as u16;
     let color = cpu_usage_color(usage, config::CPU_COLOR);
 
@@ -87,7 +87,7 @@ fn get_cpu_gauge(app: &App) -> Gauge<'_> {
         .percent(usage)
 }
 
-fn get_cpu_detail(app: &App) -> Paragraph<'_> {
+fn get_cpu_detail(app: &impl IApp) -> Paragraph<'_> {
     let text = app.get_cpu_details();
 
     Paragraph::new(text)
@@ -104,7 +104,7 @@ fn cpu_usage_color(usage: u16, regular_color: Color) -> Color {
     }
 }
 
-fn get_processes_paragraph(app: &App) -> Paragraph<'_> {
+fn get_processes_paragraph(app: &impl IApp) -> Paragraph<'_> {
     let block = Block::default().borders(Borders::TOP).title(Span::styled(
         config::PROCESSES_TITLE,
         Style::default().add_modifier(Modifier::BOLD),
@@ -115,7 +115,7 @@ fn get_processes_paragraph(app: &App) -> Paragraph<'_> {
     Paragraph::new(text).block(block)
 }
 
-fn get_processes_list(app: &App) -> Vec<Line<'_>> {
+fn get_processes_list(app: &impl IApp) -> Vec<Line<'_>> {
     let max_count = get_terminal_height();
 
     app.get_filtered_processes_vec(max_count)
