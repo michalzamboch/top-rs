@@ -52,10 +52,10 @@ pub fn string_processes_sorted_by(sys: &System, sort_by: SortBy, max_count: usiz
 }
 
 fn processes_sorted_by(sys: &System, sort_by: SortBy) -> Vec<ProcessItem> {
-    let mut process_vec = process_info_items(sys);
-    sort_processes_by(&mut process_vec, sort_by);
+    let mut processes = process_info_items(sys);
+    sort_processes_by(&mut processes, sort_by);
 
-    process_vec
+    processes
 }
 
 fn process_info_items(sys: &System) -> Vec<ProcessItem> {
@@ -65,20 +65,20 @@ fn process_info_items(sys: &System) -> Vec<ProcessItem> {
         .collect()
 }
 
-fn sort_processes_by(process_vec: &mut [ProcessItem], sort_by: SortBy) {
+fn sort_processes_by(processes: &mut [ProcessItem], sort_by: SortBy) {
     match sort_by {
-        SortBy::Pid => process_vec.par_sort_by_key(|item| item.pid),
-        SortBy::Name => process_vec.par_sort_by_key(|item| item.name.clone()),
-        SortBy::Cpu => process_vec.par_sort_by_key(|item| item.cpu_usage),
-        SortBy::Memory => process_vec.par_sort_by_key(|item| item.memory_usage),
-        SortBy::DiskRead => process_vec.par_sort_by_key(|item| item.disk_read_usage),
-        SortBy::DiskWrite => process_vec.par_sort_by_key(|item| item.disk_write_usage),
+        SortBy::Pid => processes.par_sort_by_key(|p| p.pid),
+        SortBy::Name => processes.par_sort_by_key(|p| p.name.clone()),
+        SortBy::Cpu => processes.par_sort_by_key(|p| p.cpu_usage),
+        SortBy::Memory => processes.par_sort_by_key(|p| p.memory_usage),
+        SortBy::DiskRead => processes.par_sort_by_key(|p| p.disk_read_usage),
+        SortBy::DiskWrite => processes.par_sort_by_key(|p| p.disk_write_usage),
 
-        SortBy::PidReverse => process_vec.par_sort_by_key(|item| Reverse(item.pid)),
-        SortBy::NameReverse => process_vec.par_sort_by_key(|item| Reverse(item.name.clone())),
-        SortBy::CpuReverse => process_vec.par_sort_by_key(|item| Reverse(item.cpu_usage)),
-        SortBy::MemoryReverse => process_vec.par_sort_by_key(|item| Reverse(item.memory_usage)),
-        SortBy::DiskReadReverse => process_vec.par_sort_by_key(|item| Reverse(item.disk_read_usage)),
-        SortBy::DiskWriteReverse => process_vec.par_sort_by_key(|item| Reverse(item.disk_write_usage)),
+        SortBy::PidReverse => processes.par_sort_by_key(|p| Reverse(p.pid)),
+        SortBy::NameReverse => processes.par_sort_by_key(|p| Reverse(p.name.clone())),
+        SortBy::CpuReverse => processes.par_sort_by_key(|p| Reverse(p.cpu_usage)),
+        SortBy::MemoryReverse => processes.par_sort_by_key(|p| Reverse(p.memory_usage)),
+        SortBy::DiskReadReverse => processes.par_sort_by_key(|p| Reverse(p.disk_read_usage)),
+        SortBy::DiskWriteReverse => processes.par_sort_by_key(|p| Reverse(p.disk_write_usage)),
     }
 }
