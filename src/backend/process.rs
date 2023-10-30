@@ -7,6 +7,7 @@ use crate::backend::config::*;
 use crate::backend::utils::*;
 use crate::types::sort_by::SortBy;
 
+#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone)]
 struct ProcessItem {
     pub pid: Pid,
     pub name: String,
@@ -16,38 +17,36 @@ struct ProcessItem {
     pub disk_write_usage: u64,
 }
 
-impl ProcessItem {
-    pub fn new(pid: Pid, proc: &Process) -> ProcessItem {
-        ProcessItem {
-            pid,
-            name: proc.name().to_owned(),
-            cpu_usage: proc.cpu_usage() as u64,
-            memory_usage: proc.memory(),
-            disk_read_usage: proc.disk_usage().read_bytes,
-            disk_write_usage: proc.disk_usage().written_bytes,
-        }
+fn new_process_item(pid: Pid, proc: &Process) -> ProcessItem {
+    ProcessItem {
+        pid,
+        name: proc.name().to_owned(),
+        cpu_usage: proc.cpu_usage() as u64,
+        memory_usage: proc.memory(),
+        disk_read_usage: proc.disk_usage().read_bytes,
+        disk_write_usage: proc.disk_usage().written_bytes,
     }
+}
 
-    pub fn to_string(item: &ProcessItem) -> String {
-        let tmp_pid = format!("[{}]", item.pid);
-        let tmp_name = fancy_trim_to_length(&item.name, NAME_STR_TRIM_LEN);
-        let tmp_cpu_usage = format!("{}%", item.cpu_usage);
-        let tmp_mem_usage = converter::convert(item.memory_usage as f64);
-        let tmp_disk_read = converter::convert(item.disk_read_usage as f64);
-        let tmp_disk_write = converter::convert(item.disk_write_usage as f64);
+fn process_item_to_string(item: &ProcessItem) -> String {
+    let pid = format!("[{}]", item.pid);
+    let name = fancy_trim_to_length(&item.name, NAME_STR_TRIM_LEN);
+    let cpu_usage = format!("{}%", item.cpu_usage);
+    let mem_usage = converter::convert(item.memory_usage as f64);
+    let disk_read = converter::convert(item.disk_read_usage as f64);
+    let disk_write = converter::convert(item.disk_write_usage as f64);
 
-        format!(
-            "{:PID_STR_LEN$} {:NAME_STR_LEN$} {:CPU_USAGE_STR_LEN$} {:PRETTY_BZTES_STR_LEN$} {:PRETTY_BZTES_STR_LEN$} {:PRETTY_BZTES_STR_LEN$}",
-            tmp_pid, tmp_name, tmp_cpu_usage, tmp_mem_usage, tmp_disk_read, tmp_disk_write,
-        )
-    }
+    format!(
+        "{:PID_STR_LEN$} {:NAME_STR_LEN$} {:CPU_USAGE_STR_LEN$} {:PRETTY_BYTES_STR_LEN$} {:PRETTY_BYTES_STR_LEN$} {:PRETTY_BYTES_STR_LEN$}",
+        pid, name, cpu_usage, mem_usage, disk_read, disk_write,
+    )
 }
 
 pub fn string_processes_sorted_by(sys: &System, sort_by: SortBy, max_count: usize) -> Vec<String> {
     processes_sorted_by(sys, sort_by)
         .par_iter()
         .take(max_count)
-        .map(ProcessItem::to_string)
+        .map(process_item_to_string)
         .collect()
 }
 
@@ -61,7 +60,7 @@ fn processes_sorted_by(sys: &System, sort_by: SortBy) -> Vec<ProcessItem> {
 fn process_info_items(sys: &System) -> Vec<ProcessItem> {
     sys.processes()
         .par_iter()
-        .map(|(pid, proc)| ProcessItem::new(*pid, proc))
+        .map(|(pid, proc)| new_process_item(*pid, proc))
         .collect()
 }
 
