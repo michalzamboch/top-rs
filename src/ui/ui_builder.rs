@@ -44,13 +44,13 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
         .split(f.size())
 }
 
-fn get_pc_info(app: &impl IApp) -> Paragraph<'static> {
+fn get_pc_info(app: &impl IApp) -> Paragraph<'_> {
     let text = app.get_sys_info();
 
     Paragraph::new(text).wrap(Wrap { trim: true })
 }
 
-fn get_memory_detail(app: &impl IApp) -> Paragraph<'static> {
+fn get_memory_detail(app: &impl IApp) -> Paragraph<'_> {
     let text = app.get_memory_details();
 
     Paragraph::new(text)

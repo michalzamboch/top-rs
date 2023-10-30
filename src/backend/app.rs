@@ -3,7 +3,7 @@
 use std::cmp;
 use sysinfo::{CpuExt, NetworkData, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
-use crate::types::{sort_by::{self, SortBy}, app_trait::IApp};
+use crate::types::{app_trait::IApp, sort_by::SortBy};
 
 use super::{config, cpu, memory, network::*, pc_info, process};
 
@@ -14,7 +14,6 @@ pub struct App {
 }
 
 impl App {
-    
     pub fn new() -> App {
         let mut sys = System::new();
         App::initial_sys_refresh(&mut sys);
