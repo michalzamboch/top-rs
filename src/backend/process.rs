@@ -5,16 +5,43 @@ use sysinfo::{Pid, Process, ProcessExt, System, SystemExt};
 
 use crate::backend::config::*;
 use crate::backend::utils::*;
+use crate::types::process_trait::IProcessItem;
 use crate::types::sort_by::SortBy;
 
 #[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone)]
-struct ProcessItem {
+pub struct ProcessItem {
     pub pid: Pid,
     pub name: String,
     pub cpu_usage: u64,
     pub memory_usage: u64,
     pub disk_read_usage: u64,
     pub disk_write_usage: u64,
+}
+
+impl IProcessItem for ProcessItem {
+    fn get_pid(&self) -> usize {
+        self.pid.into()
+    }
+
+    fn get_name(&self) -> String {
+        self.name.clone()
+    }
+
+    fn get_cpu_usage(&self) -> u64 {
+        self.cpu_usage
+    }
+
+    fn get_memory_usage(&self) -> u64 {
+        self.memory_usage
+    }
+
+    fn get_disk_read_usage(&self) -> u64 {
+        self.disk_read_usage
+    }
+
+    fn get_disk_write_usage(&self) -> u64 {
+        self.disk_write_usage
+    }
 }
 
 fn new_process_item(pid: Pid, proc: &Process) -> ProcessItem {
