@@ -3,6 +3,7 @@
 use std::cmp;
 use sysinfo::{NetworkData, NetworkExt, NetworksExt, System, SystemExt};
 
+#[derive(Debug, Clone, Hash, Default, PartialEq, Eq)]
 pub struct Networking {
     max_received_net: Vec<u64>,
     max_transmited_net: Vec<u64>,

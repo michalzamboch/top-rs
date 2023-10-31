@@ -7,6 +7,7 @@ use crate::types::{app_trait::IApp, sort_by::SortBy};
 
 use super::{config, cpu, memory, network::*, pc_info, process};
 
+#[derive(Debug, Default)]
 pub struct App {
     sys: System,
     network: Networking,

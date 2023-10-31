@@ -105,7 +105,7 @@ fn cpu_usage_color(usage: u16, regular_color: Color) -> Color {
 }
 
 fn get_processes_paragraph(app: &impl IApp) -> Paragraph<'_> {
-    let block = Block::default().borders(Borders::TOP).title(Span::styled(
+    let block = Block::default().borders(Borders::ALL).title(Span::styled(
         config::PROCESSES_TITLE,
         Style::default().add_modifier(Modifier::BOLD),
     ));

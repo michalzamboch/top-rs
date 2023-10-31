@@ -11,12 +11,9 @@ use crossterm::{
 };
 use ratatui::prelude::*;
 
-use crate::{
-    backend::app::App,
-    types::{app_trait::IApp, sort_by::SortBy},
-};
+use crate::types::{app_trait::IApp, sort_by::SortBy};
 
-use super::{config, ui_builder::ui};
+use super::{app_handler::AppHandler, config, ui_builder::ui};
 
 pub fn start() -> Result<(), Box<dyn Error>> {
     enable_raw_mode()?;
@@ -37,8 +34,8 @@ pub fn start() -> Result<(), Box<dyn Error>> {
 
 fn create_app(terminal: &mut Terminal<CrosstermBackend<Stdout>>) -> Result<(), Box<dyn Error>> {
     let tick_rate = Duration::from_millis(config::REFRESH_MILIS);
-    let app = App::new();
-    run_app(terminal, app, tick_rate)?;
+    let app_handler = AppHandler::new();
+    run_app(terminal, app_handler, tick_rate)?;
 
     Ok(())
 }
@@ -59,13 +56,13 @@ fn restore_terminal(
 
 fn run_app<B: Backend>(
     terminal: &mut Terminal<B>,
-    mut app: App,
+    mut app_handler: AppHandler,
     tick_rate: Duration,
 ) -> io::Result<()> {
     let mut last_tick = Instant::now();
 
     loop {
-        terminal.draw(|f| ui(f, &app))?;
+        terminal.draw(|f| ui(f, &app_handler.app))?;
 
         let timeout = tick_rate
             .checked_sub(last_tick.elapsed())
@@ -73,7 +70,7 @@ fn run_app<B: Backend>(
 
         if crossterm::event::poll(timeout)? {
             if let Event::Key(key) = event::read()? {
-                let exit = handle_input(key, &mut app);
+                let exit = handle_input(key, &mut app_handler.app);
                 if exit {
                     return Ok(());
                 }
@@ -81,7 +78,7 @@ fn run_app<B: Backend>(
         }
 
         if last_tick.elapsed() >= tick_rate {
-            app.on_tick();
+            app_handler.app.on_tick();
             last_tick = Instant::now();
         }
     }
