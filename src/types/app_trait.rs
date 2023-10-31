@@ -9,5 +9,6 @@ pub trait IApp: Sized {
     fn get_cpu_details(&self) -> String;
     fn get_sys_info(&self) -> String;
     fn get_filtered_processes_vec(&self, max_count: usize) -> Vec<String>;
+    fn get_filtered_processes_vec_strings(&self) -> Vec<Vec<String>>;
     fn sort_processes_by(&mut self, sort_by: SortBy);
 }

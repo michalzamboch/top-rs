@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use pretty_bytes::converter;
 use rayon::prelude::*;
 use std::cmp::Reverse;
@@ -69,11 +71,41 @@ fn process_item_to_string(item: &ProcessItem) -> String {
     )
 }
 
+fn process_into_string_vec(item: &ProcessItem) -> Vec<String> {
+    vec![
+        format!("[{}]", item.pid),
+        fancy_trim_to_length(&item.name, NAME_STR_TRIM_LEN),
+        format!("{}%", item.cpu_usage),
+        converter::convert(item.memory_usage as f64),
+        converter::convert(item.disk_read_usage as f64),
+        converter::convert(item.disk_write_usage as f64),
+    ]
+}
+
 pub fn string_processes_sorted_by(sys: &System, sort_by: SortBy, max_count: usize) -> Vec<String> {
     processes_sorted_by(sys, sort_by)
         .par_iter()
         .take(max_count)
         .map(process_item_to_string)
+        .collect()
+}
+
+pub fn all_processes_strings_vec_sorted_by(sys: &System, sort_by: SortBy) -> Vec<Vec<String>> {
+    processes_sorted_by(sys, sort_by)
+        .par_iter()
+        .map(process_into_string_vec)
+        .collect()
+}
+
+pub fn processes_strings_vec_sorted_by(
+    sys: &System,
+    sort_by: SortBy,
+    max_count: usize,
+) -> Vec<Vec<String>> {
+    processes_sorted_by(sys, sort_by)
+        .par_iter()
+        .take(max_count)
+        .map(process_into_string_vec)
         .collect()
 }
 

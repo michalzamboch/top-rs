@@ -66,6 +66,10 @@ impl IApp for App {
     fn get_filtered_processes_vec(&self, max_count: usize) -> Vec<String> {
         process::string_processes_sorted_by(&self.sys, self.processes_sorted_by, max_count)
     }
+    
+    fn get_filtered_processes_vec_strings(&self) -> Vec<Vec<String>> {
+        process::all_processes_strings_vec_sorted_by(&self.sys, self.processes_sorted_by)
+    }
 
     fn sort_processes_by(&mut self, sort_by: SortBy) {
         self.processes_sorted_by = sort_by;
