@@ -3,8 +3,6 @@ use rayon::prelude::*;
 use std::cmp::Reverse;
 use sysinfo::{Pid, Process, ProcessExt, System, SystemExt};
 
-use crate::backend::config::*;
-use crate::backend::utils::*;
 use crate::types::process_trait::IProcessItem;
 use crate::types::sort_by::SortBy;
 
@@ -55,20 +53,6 @@ fn new_process_item(pid: Pid, proc: &Process) -> ProcessItem {
     }
 }
 
-fn process_item_to_string(item: &ProcessItem) -> String {
-    let pid = format!("[{}]", item.pid);
-    let name = fancy_trim_to_length(&item.name, NAME_STR_TRIM_LEN);
-    let cpu_usage = format!("{}%", item.cpu_usage);
-    let mem_usage = converter::convert(item.memory_usage as f64);
-    let disk_read = converter::convert(item.disk_read_usage as f64);
-    let disk_write = converter::convert(item.disk_write_usage as f64);
-
-    format!(
-        "{:PID_STR_LEN$} {:NAME_STR_LEN$} {:CPU_USAGE_STR_LEN$} {:PRETTY_BYTES_STR_LEN$} {:PRETTY_BYTES_STR_LEN$} {:PRETTY_BYTES_STR_LEN$}",
-        pid, name, cpu_usage, mem_usage, disk_read, disk_write,
-    )
-}
-
 fn process_into_string_vec(item: &ProcessItem) -> Vec<String> {
     vec![
         format!("{}", item.pid),
@@ -78,14 +62,6 @@ fn process_into_string_vec(item: &ProcessItem) -> Vec<String> {
         converter::convert(item.disk_read_usage as f64),
         converter::convert(item.disk_write_usage as f64),
     ]
-}
-
-pub fn string_processes_sorted_by(sys: &System, sort_by: SortBy, max_count: usize) -> Vec<String> {
-    processes_sorted_by(sys, sort_by)
-        .par_iter()
-        .take(max_count)
-        .map(process_item_to_string)
-        .collect()
 }
 
 pub fn all_processes_strings_vec_sorted_by(sys: &System, sort_by: SortBy) -> Vec<Vec<String>> {
