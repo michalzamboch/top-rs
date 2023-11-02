@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use std::cell::RefCell;
 
 use ratatui::widgets::*;
@@ -22,7 +20,7 @@ impl UiHandler {
     }
 
     pub fn next_process(&mut self) {
-        if self.process_table.len() == 0 {
+        if self.process_table.is_empty() {
             return;
         }
 
@@ -40,7 +38,7 @@ impl UiHandler {
     }
 
     pub fn previous_process(&mut self) {
-        if self.process_table.len() == 0 {
+        if self.process_table.is_empty() {
             return;
         }
 

@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use pretty_bytes::converter;
 use rayon::prelude::*;
 use std::cmp::Reverse;
@@ -93,18 +91,6 @@ pub fn string_processes_sorted_by(sys: &System, sort_by: SortBy, max_count: usiz
 pub fn all_processes_strings_vec_sorted_by(sys: &System, sort_by: SortBy) -> Vec<Vec<String>> {
     processes_sorted_by(sys, sort_by)
         .par_iter()
-        .map(process_into_string_vec)
-        .collect()
-}
-
-pub fn processes_strings_vec_sorted_by(
-    sys: &System,
-    sort_by: SortBy,
-    max_count: usize,
-) -> Vec<Vec<String>> {
-    processes_sorted_by(sys, sort_by)
-        .par_iter()
-        .take(max_count)
         .map(process_into_string_vec)
         .collect()
 }

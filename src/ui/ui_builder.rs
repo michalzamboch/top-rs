@@ -108,25 +108,9 @@ fn cpu_usage_color(usage: u16, regular_color: Color) -> Color {
 }
 
 fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
+    let rows = get_process_rows(app_handler);
+    let header = get_process_header();
     let selected_style = Style::default().add_modifier(Modifier::REVERSED);
-    let normal_style = Style::default().bg(Color::Blue);
-
-    let header_cells = ["Pid", "Process", "Cpu", "Memory", "Disk Read", "Disk Write"]
-        .iter()
-        .map(|h| Cell::from(*h));
-
-    let header = Row::new(header_cells).style(normal_style).height(1);
-
-    let rows = app_handler.ui.process_table.iter().map(|item| {
-        let height = item
-            .par_iter()
-            .map(|content| content.chars().filter(|c| *c == '\n').count())
-            .max()
-            .unwrap_or(0)
-            + 1;
-        let cells = item.iter().map(|c| Cell::from(c.clone()));
-        Row::new(cells).height(height as u16)
-    });
 
     Table::new(rows)
         .header(header)
@@ -139,4 +123,34 @@ fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
             Constraint::Ratio(2, 12),
             Constraint::Ratio(2, 12),
         ])
+}
+
+fn get_process_rows(app_handler: &AppHandler) -> impl Iterator<Item = Row<'_>> {
+    app_handler.ui.process_table.iter().map(|item| {
+        let height = item
+            .par_iter()
+            .map(|content| content.chars().filter(|c| *c == '\n').count())
+            .max()
+            .unwrap_or(0)
+            + 1;
+        let cells = item.iter().map(|c| Cell::from(c.clone()));
+        Row::new(cells).height(height as u16)
+    })
+}
+
+fn get_process_header() -> Row<'static> {
+    let normal_style = Style::default().bg(Color::Blue);
+
+    let header_cells = [
+        "Pid [P]",
+        "Process [N]",
+        "Cpu [C]",
+        "Memory [M]",
+        "Read [R]",
+        "Write [W]",
+    ]
+    .iter()
+    .map(|h| Cell::from(*h));
+
+    Row::new(header_cells).style(normal_style).height(1)
 }
