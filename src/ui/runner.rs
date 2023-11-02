@@ -11,9 +11,12 @@ use crossterm::{
 };
 use ratatui::prelude::*;
 
-use crate::types::{app_trait::IApp, sort_by::SortBy};
+use crate::{
+    backend::app::App,
+    types::{app_trait::IApp, sort_by::SortBy},
+};
 
-use super::{app_handler::AppHandler, config, ui_builder::ui};
+use super::{app_handler::AppHandler, config, ui_builder::*};
 
 pub fn start() -> Result<(), Box<dyn Error>> {
     enable_raw_mode()?;
@@ -62,7 +65,7 @@ fn run_app<B: Backend>(
     let mut last_tick = Instant::now();
 
     loop {
-        terminal.draw(|f| ui(f, &app_handler.app))?;
+        terminal.draw(|f| handle_ui(f, &app_handler))?;
 
         let timeout = tick_rate
             .checked_sub(last_tick.elapsed())
@@ -78,13 +81,13 @@ fn run_app<B: Backend>(
         }
 
         if last_tick.elapsed() >= tick_rate {
-            app_handler.app.on_tick();
+            app_handler.update();
             last_tick = Instant::now();
         }
     }
 }
 
-fn handle_input(key: KeyEvent, app: &mut impl IApp) -> bool {
+fn handle_input(key: KeyEvent, app: &mut App) -> bool {
     match key.code {
         KeyCode::Char('q') | KeyCode::Esc => return true,
         KeyCode::F(5) => app.on_tick(),
