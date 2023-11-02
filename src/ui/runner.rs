@@ -5,7 +5,7 @@ use std::{
 };
 
 use crossterm::{
-    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEvent},
+    event::{*, self},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
@@ -66,7 +66,7 @@ fn run_app<B: Backend>(
 
         let timeout = tick_rate
             .checked_sub(last_tick.elapsed())
-            .unwrap_or_else(|| Duration::from_secs(config::REFRESH_MILIS));
+            .unwrap_or_else(|| Duration::from_millis(config::REFRESH_MILIS));
 
         if crossterm::event::poll(timeout)? {
             if let Event::Key(key) = event::read()? {
@@ -85,6 +85,10 @@ fn run_app<B: Backend>(
 }
 
 fn handle_input(key: KeyEvent, app_handler: &mut AppHandler) -> bool {
+    if key.kind != KeyEventKind::Press {
+        return false;
+    }
+
     match key.code {
         KeyCode::Char('q') | KeyCode::Esc => return true,
         KeyCode::F(5) => app_handler.app.on_tick(),
