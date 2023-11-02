@@ -15,13 +15,25 @@ impl UiHandler {
         UiHandler {
             process_table_state: RefCell::new(TableState::default()),
             process_table: vec![
-                vec!["Row11".to_owned(), "Row12".to_owned(), "Row13".to_owned()],
+                vec!["YYY".to_owned(), "YYY".to_owned(), "YYY".to_owned()],
                 vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
                 vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
                 vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
                 vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
                 vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
                 vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
+                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
+                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
+                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
+                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
+                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
+                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
+                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
+                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
+                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
+                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
+                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
+                vec!["XXX".to_owned(), "XXX".to_owned(), "XXX".to_owned()],
             ],
         }
     }
