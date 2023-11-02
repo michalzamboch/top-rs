@@ -1,7 +1,6 @@
 use std::{cmp::*, rc::Rc};
 
 use ratatui::{prelude::*, widgets::*};
-use rayon::prelude::*;
 
 use crate::{backend::app::App, types::app_trait::*};
 
@@ -127,14 +126,8 @@ fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
 
 fn get_process_rows(app_handler: &AppHandler) -> impl Iterator<Item = Row<'_>> {
     app_handler.ui.process_table.iter().map(|item| {
-        let height = item
-            .par_iter()
-            .map(|content| content.chars().filter(|c| *c == '\n').count())
-            .max()
-            .unwrap_or(0)
-            + 1;
         let cells = item.iter().map(|c| Cell::from(c.clone()));
-        Row::new(cells).height(height as u16)
+        Row::new(cells)
     })
 }
 
