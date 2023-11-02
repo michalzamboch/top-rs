@@ -12,33 +12,20 @@ pub struct UiHandler {
 
 impl UiHandler {
     pub fn new() -> UiHandler {
+        let mut tmp_table_state = TableState::default();
+        tmp_table_state.select(Some(0));
+
         UiHandler {
-            process_table_state: RefCell::new(TableState::default()),
-            process_table: vec![
-                vec!["YYY".to_owned(), "YYY".to_owned(), "YYY".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-                vec!["XXX".to_owned(), "XXX".to_owned(), "XXX".to_owned()],
-            ],
+            process_table_state: RefCell::new(tmp_table_state),
+            process_table: vec![],
         }
     }
 
     pub fn next_process(&mut self) {
+        if self.process_table.len() == 0 {
+            return;
+        }
+
         let i = match self.process_table_state.borrow().selected() {
             Some(i) => {
                 if i >= self.process_table.len() - 1 {
@@ -53,6 +40,10 @@ impl UiHandler {
     }
 
     pub fn previous_process(&mut self) {
+        if self.process_table.len() == 0 {
+            return;
+        }
+
         let i = match self.process_table_state.borrow().selected() {
             Some(i) => {
                 if i == 0 {

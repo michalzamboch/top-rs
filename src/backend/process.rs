@@ -73,8 +73,8 @@ fn process_item_to_string(item: &ProcessItem) -> String {
 
 fn process_into_string_vec(item: &ProcessItem) -> Vec<String> {
     vec![
-        format!("[{}]", item.pid),
-        fancy_trim_to_length(&item.name, NAME_STR_TRIM_LEN),
+        format!("{}", item.pid),
+        item.name.clone(),
         format!("{}%", item.cpu_usage),
         converter::convert(item.memory_usage as f64),
         converter::convert(item.disk_read_usage as f64),

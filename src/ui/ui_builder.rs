@@ -154,10 +154,10 @@ fn get_processes_list(app: &App) -> Vec<Line<'_>> {
 fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
     let selected_style = Style::default().add_modifier(Modifier::REVERSED);
     let normal_style = Style::default().bg(Color::Blue);
-    
-    let header_cells = ["Header1", "Header2", "Header3"]
+
+    let header_cells = ["Pid", "Process", "Cpu", "Memory", "Disk Read", "Disk Write"]
         .iter()
-        .map(|h| Cell::from(*h).style(Style::default().fg(Color::Red)));
+        .map(|h| Cell::from(*h));
 
     let header = Row::new(header_cells).style(normal_style).height(1);
 
@@ -174,12 +174,13 @@ fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
 
     Table::new(rows)
         .header(header)
-        .block(Block::default().borders(Borders::ALL).title("Table"))
         .highlight_style(selected_style)
-        .highlight_symbol(">> ")
         .widths(&[
-            Constraint::Percentage(50),
-            Constraint::Max(30),
-            Constraint::Min(10),
+            Constraint::Ratio(1, 12),
+            Constraint::Ratio(4, 12),
+            Constraint::Ratio(1, 12),
+            Constraint::Ratio(2, 12),
+            Constraint::Ratio(2, 12),
+            Constraint::Ratio(2, 12),
         ])
 }

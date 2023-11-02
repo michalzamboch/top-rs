@@ -18,19 +18,7 @@ impl AppHandler {
 
     pub fn update(&mut self) {
         self.app.on_tick();
-        //let processes = self.app.get_filtered_processes_vec_strings();
-        let processes = vec![
-            vec!["YYY".to_owned(), "YYY".to_owned(), "YYY".to_owned()],
-            vec!["ZZZ".to_owned(), "ZZZ".to_owned(), "ZZZ".to_owned()],
-            vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-            vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-            vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-            vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-            vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-            vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-            vec!["Row21".to_owned(), "Row22".to_owned(), "Row23".to_owned()],
-            vec!["XXX".to_owned(), "XXX".to_owned(), "XXX".to_owned()],
-        ];
+        let processes = self.app.get_filtered_processes_vec_strings();
         self.ui.set_process_table(processes);
     }
 
