@@ -11,10 +11,7 @@ use crossterm::{
 };
 use ratatui::prelude::*;
 
-use crate::{
-    backend::app::App,
-    types::{app_trait::IApp, sort_by::SortBy},
-};
+use crate::types::{app_trait::IApp, sort_by::SortBy};
 
 use super::{app_handler::AppHandler, config, ui_builder::*};
 
@@ -73,7 +70,7 @@ fn run_app<B: Backend>(
 
         if crossterm::event::poll(timeout)? {
             if let Event::Key(key) = event::read()? {
-                let exit = handle_input(key, &mut app_handler.app);
+                let exit = handle_input(key, &mut app_handler);
                 if exit {
                     return Ok(());
                 }
@@ -87,22 +84,24 @@ fn run_app<B: Backend>(
     }
 }
 
-fn handle_input(key: KeyEvent, app: &mut App) -> bool {
+fn handle_input(key: KeyEvent, app_handler: &mut AppHandler) -> bool {
     match key.code {
         KeyCode::Char('q') | KeyCode::Esc => return true,
-        KeyCode::F(5) => app.on_tick(),
-        KeyCode::Char('c') => app.sort_processes_by(SortBy::Cpu),
-        KeyCode::Char('C') => app.sort_processes_by(SortBy::CpuReverse),
-        KeyCode::Char('p') => app.sort_processes_by(SortBy::Pid),
-        KeyCode::Char('P') => app.sort_processes_by(SortBy::PidReverse),
-        KeyCode::Char('n') => app.sort_processes_by(SortBy::Name),
-        KeyCode::Char('N') => app.sort_processes_by(SortBy::NameReverse),
-        KeyCode::Char('m') => app.sort_processes_by(SortBy::Memory),
-        KeyCode::Char('M') => app.sort_processes_by(SortBy::MemoryReverse),
-        KeyCode::Char('r') => app.sort_processes_by(SortBy::DiskRead),
-        KeyCode::Char('R') => app.sort_processes_by(SortBy::DiskReadReverse),
-        KeyCode::Char('w') => app.sort_processes_by(SortBy::DiskWrite),
-        KeyCode::Char('W') => app.sort_processes_by(SortBy::DiskWriteReverse),
+        KeyCode::F(5) => app_handler.app.on_tick(),
+        KeyCode::Char('c') => app_handler.app.sort_processes_by(SortBy::Cpu),
+        KeyCode::Char('C') => app_handler.app.sort_processes_by(SortBy::CpuReverse),
+        KeyCode::Char('p') => app_handler.app.sort_processes_by(SortBy::Pid),
+        KeyCode::Char('P') => app_handler.app.sort_processes_by(SortBy::PidReverse),
+        KeyCode::Char('n') => app_handler.app.sort_processes_by(SortBy::Name),
+        KeyCode::Char('N') => app_handler.app.sort_processes_by(SortBy::NameReverse),
+        KeyCode::Char('m') => app_handler.app.sort_processes_by(SortBy::Memory),
+        KeyCode::Char('M') => app_handler.app.sort_processes_by(SortBy::MemoryReverse),
+        KeyCode::Char('r') => app_handler.app.sort_processes_by(SortBy::DiskRead),
+        KeyCode::Char('R') => app_handler.app.sort_processes_by(SortBy::DiskReadReverse),
+        KeyCode::Char('w') => app_handler.app.sort_processes_by(SortBy::DiskWrite),
+        KeyCode::Char('W') => app_handler.app.sort_processes_by(SortBy::DiskWriteReverse),
+        KeyCode::Down => app_handler.process_down(),
+        KeyCode::Up => app_handler.process_up(),
         _ => (),
     }
 

@@ -21,4 +21,12 @@ impl AppHandler {
         //let processes = self.app.get_filtered_processes_vec_strings();
         //self.ui.set_process_table(processes);
     }
+
+    pub fn process_down(&mut self) {
+        self.ui.next_process();
+    }
+
+    pub fn process_up(&mut self) {
+        self.ui.previous_process();
+    }
 }
