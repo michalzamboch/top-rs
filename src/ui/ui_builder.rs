@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use std::{cmp::*, rc::Rc};
 
 use ratatui::{prelude::*, widgets::*};
@@ -28,7 +30,7 @@ pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
     f.render_stateful_widget(
         processes,
         chunks[5],
-        &mut app_handler.ui.process_table_state.borrow_mut(),
+        &mut app_handler.ui.get_process_table_state()
     );
 }
 
@@ -98,8 +100,12 @@ fn get_cpu_detail(app: &App) -> Paragraph<'_> {
         .style(Style::default().fg(config::CPU_COLOR))
 }
 
-fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
-    let rows = get_process_rows(app_handler);
+fn get_process_table(app_handler: &AppHandler) -> Table<'static> {
+    get_process_table_from_vec(app_handler.ui.get_process_table())
+}
+
+fn get_process_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
+    let rows = get_rows(&data);
     let header = get_process_header();
     let selected_style = Style::default().add_modifier(Modifier::REVERSED);
 
@@ -116,8 +122,8 @@ fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
         ])
 }
 
-fn get_process_rows(app_handler: &AppHandler) -> impl Iterator<Item = Row<'_>> {
-    app_handler.ui.process_table.iter().map(|item| {
+fn get_rows(data: &[Vec<String>]) -> impl Iterator<Item = Row<'static>> + '_ {
+    data.iter().map(|item| {
         let cells = item.iter().map(|c| Cell::from(c.clone()));
         Row::new(cells)
     })

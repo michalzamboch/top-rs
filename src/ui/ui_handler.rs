@@ -1,61 +1,38 @@
-use std::cell::RefCell;
+use std::cell::RefMut;
 
-use ratatui::widgets::*;
+use ratatui::widgets::TableState;
+
+use super::ui_controls::table_handler::TableHandler;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UiHandler {
-    pub process_table_state: RefCell<TableState>,
-    pub process_table: Vec<Vec<String>>,
+    processes: TableHandler,
 }
 
 impl UiHandler {
     pub fn new() -> UiHandler {
-        let mut tmp_table_state = TableState::default();
-        tmp_table_state.select(Some(0));
-
         UiHandler {
-            process_table_state: RefCell::new(tmp_table_state),
-            process_table: vec![],
+            processes: TableHandler::default(),
         }
     }
 
     pub fn next_process(&mut self) {
-        if self.process_table.is_empty() {
-            return;
-        }
-
-        let i = match self.process_table_state.borrow().selected() {
-            Some(i) => {
-                if i >= self.process_table.len() - 1 {
-                    0
-                } else {
-                    i + 1
-                }
-            }
-            None => 0,
-        };
-        self.process_table_state.borrow_mut().select(Some(i));
+        self.processes.next();
     }
 
     pub fn previous_process(&mut self) {
-        if self.process_table.is_empty() {
-            return;
-        }
-
-        let i = match self.process_table_state.borrow().selected() {
-            Some(i) => {
-                if i == 0 {
-                    self.process_table.len() - 1
-                } else {
-                    i - 1
-                }
-            }
-            None => 0,
-        };
-        self.process_table_state.borrow_mut().select(Some(i));
+        self.processes.previous();
     }
 
     pub fn set_process_table(&mut self, processes: Vec<Vec<String>>) {
-        self.process_table = processes;
+        self.processes.set_data(processes);
+    }
+    
+    pub fn get_process_table(&self) -> Vec<Vec<String>> {
+        self.processes.get_data()
+    }
+    
+    pub fn get_process_table_state(&self) -> RefMut<'_, TableState> {
+        self.processes.get_state()
     }
 }
