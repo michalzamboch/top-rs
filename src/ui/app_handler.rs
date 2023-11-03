@@ -2,7 +2,7 @@ use super::ui_handler::UiHandler;
 
 use crate::{backend::app::App, types::app_trait::IApp};
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct AppHandler {
     pub ui: UiHandler,
     pub app: App,
