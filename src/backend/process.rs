@@ -3,7 +3,7 @@ use rayon::prelude::*;
 use std::cmp::Reverse;
 use sysinfo::{Pid, Process, ProcessExt, System, SystemExt};
 
-use crate::types::process_trait::IProcessItem;
+use crate::types::process_trait::IProcessStringView;
 use crate::types::sort_by::SortBy;
 
 #[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone)]
@@ -16,29 +16,29 @@ pub struct ProcessItem {
     pub disk_write_usage: u64,
 }
 
-impl IProcessItem for ProcessItem {
-    fn get_pid(&self) -> usize {
-        self.pid.into()
+impl IProcessStringView for ProcessItem {
+    fn get_pid(&self) -> String {
+        format!("{}", self.pid)
     }
 
     fn get_name(&self) -> String {
         self.name.clone()
     }
 
-    fn get_cpu_usage(&self) -> u64 {
-        self.cpu_usage
+    fn get_cpu_usage(&self) -> String {
+        format!("{} %", self.cpu_usage as f32 / 10.0)
     }
 
-    fn get_memory_usage(&self) -> u64 {
-        self.memory_usage
+    fn get_memory_usage(&self) -> String {
+        converter::convert(self.memory_usage as f64)
     }
 
-    fn get_disk_read_usage(&self) -> u64 {
-        self.disk_read_usage
+    fn get_disk_read_usage(&self) -> String {
+        converter::convert(self.disk_read_usage as f64)
     }
 
-    fn get_disk_write_usage(&self) -> u64 {
-        self.disk_write_usage
+    fn get_disk_write_usage(&self) -> String {
+        converter::convert(self.disk_write_usage as f64)
     }
 }
 
@@ -55,12 +55,12 @@ fn new_process_item(pid: Pid, proc: &Process) -> ProcessItem {
 
 fn process_into_string_vec(item: &ProcessItem) -> Vec<String> {
     vec![
-        format!("{}", item.pid),
-        item.name.clone(),
-        format!("{} %", item.cpu_usage as f32 / 10.0),
-        converter::convert(item.memory_usage as f64),
-        converter::convert(item.disk_read_usage as f64),
-        converter::convert(item.disk_write_usage as f64),
+        item.get_pid(),
+        item.get_name(),
+        item.get_cpu_usage(),
+        item.get_memory_usage(),
+        item.get_disk_read_usage(),
+        item.get_disk_write_usage(),
     ]
 }
 
@@ -72,13 +72,13 @@ pub fn all_processes_strings_vec_sorted_by(sys: &System, sort_by: SortBy) -> Vec
 }
 
 fn processes_sorted_by(sys: &System, sort_by: SortBy) -> Vec<ProcessItem> {
-    let mut processes = process_info_items(sys);
+    let mut processes = processes_into_items(sys);
     sort_processes_by(&mut processes, sort_by);
 
     processes
 }
 
-fn process_info_items(sys: &System) -> Vec<ProcessItem> {
+fn processes_into_items(sys: &System) -> Vec<ProcessItem> {
     sys.processes()
         .par_iter()
         .map(|(pid, proc)| new_process_item(*pid, proc))
