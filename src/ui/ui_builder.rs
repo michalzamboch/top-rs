@@ -63,7 +63,7 @@ fn get_memory_detail(app: &App) -> Paragraph<'_> {
 
 fn get_memory_gauge(app: &App) -> Gauge<'_> {
     let usage = min(app.get_memory_usage(), config::HUNDERED_PERCENT) as u16;
-    let color = cpu_usage_color(usage, config::MEMORY_COLOR);
+    let color = get_usage_color(usage, config::MEMORY_COLOR);
 
     Gauge::default()
         .block(
@@ -77,7 +77,7 @@ fn get_memory_gauge(app: &App) -> Gauge<'_> {
 
 fn get_cpu_gauge(app: &App) -> Gauge<'_> {
     let usage = min(app.get_total_cpu_usage(), config::HUNDERED_PERCENT) as u16;
-    let color = cpu_usage_color(usage, config::CPU_COLOR);
+    let color = get_usage_color(usage, config::CPU_COLOR);
 
     Gauge::default()
         .block(
@@ -98,14 +98,6 @@ fn get_cpu_detail(app: &App) -> Paragraph<'_> {
         .style(Style::default().fg(config::CPU_COLOR))
 }
 
-fn cpu_usage_color(usage: u16, regular_color: Color) -> Color {
-    if usage >= 95 {
-        config::OVERLOAD_COLOR
-    } else {
-        regular_color
-    }
-}
-
 fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
     let rows = get_process_rows(app_handler);
     let header = get_process_header();
@@ -115,12 +107,12 @@ fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
         .header(header)
         .highlight_style(selected_style)
         .widths(&[
-            Constraint::Ratio(1, 12),
-            Constraint::Ratio(4, 12),
-            Constraint::Ratio(1, 12),
-            Constraint::Ratio(2, 12),
-            Constraint::Ratio(2, 12),
-            Constraint::Ratio(2, 12),
+            Constraint::Min(9),
+            Constraint::Max(500),
+            Constraint::Min(9),
+            Constraint::Min(12),
+            Constraint::Min(12),
+            Constraint::Min(12),
         ])
 }
 

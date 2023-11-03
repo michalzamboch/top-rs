@@ -5,7 +5,7 @@ use std::{
 };
 
 use crossterm::{
-    event::{*, self},
+    event::{self, *},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
@@ -90,8 +90,11 @@ fn handle_input(key: KeyEvent, app_handler: &mut AppHandler) -> bool {
     }
 
     match key.code {
-        KeyCode::Char('q') | KeyCode::Esc => return true,
-        KeyCode::F(5) => app_handler.app.on_tick(),
+        KeyCode::Esc => return true,
+
+        KeyCode::F(5) => app_handler.update(),
+        KeyCode::F(6) => app_handler.pause_unpause(),
+
         KeyCode::Char('c') => app_handler.app.sort_processes_by(SortBy::Cpu),
         KeyCode::Char('C') => app_handler.app.sort_processes_by(SortBy::CpuReverse),
         KeyCode::Char('p') => app_handler.app.sort_processes_by(SortBy::Pid),
@@ -104,6 +107,7 @@ fn handle_input(key: KeyEvent, app_handler: &mut AppHandler) -> bool {
         KeyCode::Char('R') => app_handler.app.sort_processes_by(SortBy::DiskReadReverse),
         KeyCode::Char('w') => app_handler.app.sort_processes_by(SortBy::DiskWrite),
         KeyCode::Char('W') => app_handler.app.sort_processes_by(SortBy::DiskWriteReverse),
+
         KeyCode::Down => app_handler.process_down(),
         KeyCode::Up => app_handler.process_up(),
         _ => (),

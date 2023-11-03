@@ -57,7 +57,7 @@ fn process_into_string_vec(item: &ProcessItem) -> Vec<String> {
     vec![
         format!("{}", item.pid),
         item.name.clone(),
-        format!("{}%", item.cpu_usage),
+        format!("{} %", item.cpu_usage as f32 / 10.0),
         converter::convert(item.memory_usage as f64),
         converter::convert(item.disk_read_usage as f64),
         converter::convert(item.disk_write_usage as f64),
