@@ -1,13 +1,13 @@
 #![allow(dead_code)]
 
-use std::cell::RefCell;
+use std::cell::{RefCell, RefMut};
 
 use ratatui::widgets::*;
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct TableHandler {
-    pub state: RefCell<TableState>,
-    pub data: Vec<Vec<String>>,
+    state: RefCell<TableState>,
+    data: RefCell<Vec<Vec<String>>>,
 }
 
 impl TableHandler {
@@ -17,18 +17,18 @@ impl TableHandler {
 
         TableHandler {
             state: RefCell::new(tmp_state),
-            data: vec![],
+            data: RefCell::new(vec![]),
         }
     }
 
     pub fn next(&mut self) {
-        if self.data.is_empty() {
+        if self.data.borrow().is_empty() {
             return;
         }
 
         let i = match self.state.borrow().selected() {
             Some(i) => {
-                if i >= self.data.len() - 1 {
+                if i >= self.data.borrow().len() - 1 {
                     0
                 } else {
                     i + 1
@@ -40,14 +40,14 @@ impl TableHandler {
     }
 
     pub fn previous(&mut self) {
-        if self.data.is_empty() {
+        if self.data.borrow().is_empty() {
             return;
         }
 
         let i = match self.state.borrow().selected() {
             Some(i) => {
                 if i == 0 {
-                    self.data.len() - 1
+                    self.data.borrow().len() - 1
                 } else {
                     i - 1
                 }
@@ -58,6 +58,15 @@ impl TableHandler {
     }
 
     pub fn set_data(&mut self, processes: Vec<Vec<String>>) {
-        self.data = processes;
+        self.data.borrow_mut().clone_from(&processes);
     }
+
+    pub fn get_data(&self) -> RefMut<'_, Vec<Vec<String>>> {
+        self.data.borrow_mut()
+    }
+
+    pub fn get_state(&self) -> RefMut<'_, TableState> {
+        self.state.borrow_mut()
+    }
+
 }
