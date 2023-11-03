@@ -105,7 +105,7 @@ fn get_process_table(app_handler: &AppHandler) -> Table<'static> {
 }
 
 fn get_process_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
-    let rows = get_rows(&data);
+    let rows = get_process_rows(&data);
     let header = get_process_header();
     let selected_style = Style::default().add_modifier(Modifier::REVERSED);
 
@@ -122,7 +122,7 @@ fn get_process_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
         ])
 }
 
-fn get_rows(data: &[Vec<String>]) -> impl Iterator<Item = Row<'static>> + '_ {
+fn get_process_rows(data: &[Vec<String>]) -> impl Iterator<Item = Row<'static>> + '_ {
     data.iter().map(|item| {
         let cells = item.iter().map(|c| Cell::from(c.clone()));
         Row::new(cells)
