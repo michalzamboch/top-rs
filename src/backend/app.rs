@@ -23,7 +23,7 @@ impl App {
         App {
             sys,
             network,
-            processes_sorted_by: config::DEFAULT_PROCESS_SORT_ORDER,
+            processes_sorted_by: SortBy::default(),
         }
     }
 

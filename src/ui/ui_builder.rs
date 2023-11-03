@@ -107,12 +107,12 @@ fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
         .header(header)
         .highlight_style(selected_style)
         .widths(&[
-            Constraint::Min(9),
-            Constraint::Max(500),
-            Constraint::Min(9),
-            Constraint::Min(12),
-            Constraint::Min(12),
-            Constraint::Min(12),
+            Constraint::Min(config::PID_COL_LEN),
+            Constraint::Max(config::NAME_COL_MAX_LEN),
+            Constraint::Min(config::CPU_USAGE_COL_LEN),
+            Constraint::Min(config::PRETTY_BYTES_COL_LEN),
+            Constraint::Min(config::PRETTY_BYTES_COL_LEN),
+            Constraint::Min(config::PRETTY_BYTES_COL_LEN),
         ])
 }
 
