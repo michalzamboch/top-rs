@@ -21,6 +21,21 @@ impl TableHandler {
         }
     }
 
+    pub fn first(&mut self) {
+        if self.data.is_empty() {
+            return;
+        }
+        self.state.borrow_mut().select(Some(0));
+    }
+
+    pub fn last(&mut self) {
+        if self.data.is_empty() {
+            return;
+        }
+        let last_pos = self.data.len() - 1;
+        self.state.borrow_mut().select(Some(last_pos));
+    }
+
     pub fn next(&mut self) {
         if self.data.is_empty() {
             return;

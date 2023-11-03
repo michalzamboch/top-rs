@@ -110,6 +110,8 @@ fn handle_input(key: KeyEvent, app_handler: &mut AppHandler) -> bool {
 
         KeyCode::Down => app_handler.process_down(),
         KeyCode::Up => app_handler.process_up(),
+        KeyCode::Home => app_handler.first_process(),
+        KeyCode::End => app_handler.last_process(),
         _ => (),
     }
 

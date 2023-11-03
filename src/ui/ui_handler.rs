@@ -24,6 +24,14 @@ impl UiHandler {
         self.processes.previous();
     }
 
+    pub fn first_process(&mut self) {
+        self.processes.first();
+    }
+
+    pub fn last_process(&mut self) {
+        self.processes.last();
+    }
+
     pub fn set_process_table(&mut self, processes: Vec<Vec<String>>) {
         self.processes.set_data(processes);
     }

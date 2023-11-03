@@ -36,6 +36,14 @@ impl AppHandler {
         self.ui.previous_process();
     }
 
+    pub fn first_process(&mut self) {
+        self.ui.first_process();
+    }
+
+    pub fn last_process(&mut self) {
+        self.ui.last_process();
+    }
+
     pub fn pause_unpause(&mut self) {
         self.pause = !self.pause;
     }
