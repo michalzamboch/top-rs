@@ -1,8 +1,8 @@
+use ratatui::widgets::TableState;
 use std::cell::RefMut;
 
-use ratatui::widgets::TableState;
-
 use super::ui_controls::table_handler::TableHandler;
+use crate::types::ui_handler_trait::IUiHandler;
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct UiHandler {
@@ -17,32 +17,34 @@ impl UiHandler {
             temperatures: TableHandler::default(),
         }
     }
+}
 
-    pub fn next_process(&mut self) {
+impl IUiHandler for UiHandler {
+    fn next_process(&mut self) {
         self.processes.next();
     }
 
-    pub fn previous_process(&mut self) {
+    fn previous_process(&mut self) {
         self.processes.previous();
     }
 
-    pub fn first_process(&mut self) {
+    fn first_process(&mut self) {
         self.processes.first();
     }
 
-    pub fn last_process(&mut self) {
+    fn last_process(&mut self) {
         self.processes.last();
     }
 
-    pub fn set_process_table(&mut self, processes: Vec<Vec<String>>) {
+    fn set_process_table(&mut self, processes: Vec<Vec<String>>) {
         self.processes.set_data(processes);
     }
 
-    pub fn get_process_table(&self) -> Vec<Vec<String>> {
+    fn get_process_table(&self) -> Vec<Vec<String>> {
         self.processes.get_data()
     }
 
-    pub fn get_process_table_state(&self) -> RefMut<'_, TableState> {
+    fn get_process_table_state(&self) -> RefMut<'_, TableState> {
         self.processes.get_state()
     }
 }
