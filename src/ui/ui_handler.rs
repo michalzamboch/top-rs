@@ -7,12 +7,14 @@ use super::ui_controls::table_handler::TableHandler;
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct UiHandler {
     processes: TableHandler,
+    temperatures: TableHandler,
 }
 
 impl UiHandler {
     pub fn new() -> UiHandler {
         UiHandler {
             processes: TableHandler::default(),
+            temperatures: TableHandler::default(),
         }
     }
 

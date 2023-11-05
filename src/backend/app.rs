@@ -1,10 +1,11 @@
 #![allow(dead_code)]
 
+use std::collections::*;
 use sysinfo::*;
 
-use crate::types::{app_trait::IApp, sort_by::SortBy};
+use crate::types::{app_trait::IApp, sort_by::SortBy, temperature_traits::ITemperature};
 
-use super::{config, cpu, memory, network::*, pc_info, process};
+use super::{config, cpu, memory, network::*, pc_info, process, temperatures};
 
 #[derive(Debug, Default)]
 pub struct App {
@@ -41,6 +42,7 @@ impl IApp for App {
         self.sys.refresh_networks();
         self.sys.refresh_networks_list();
         self.sys.refresh_processes();
+        self.sys.refresh_components();
     }
 
     fn get_memory_usage(&self) -> u64 {
@@ -65,6 +67,10 @@ impl IApp for App {
 
     fn get_filtered_processes_vec_strings(&self) -> Vec<Vec<String>> {
         process::all_processes_strings_vec_sorted_by(&self.sys, self.processes_sorted_by)
+    }
+    
+    fn get_temperatures(&self) -> HashMap<String, Box<dyn ITemperature>> {
+        temperatures::get_temperatures_boxed(&self.sys)
     }
 
     fn sort_processes_by(&mut self, sort_by: SortBy) {
