@@ -2,10 +2,10 @@ use super::ui_handler::UiHandler;
 
 use crate::{backend::app::App, types::app_trait::IApp};
 
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct AppHandler {
     pub ui: UiHandler,
-    pub app: App,
+    pub app: Box<dyn IApp>,
     pause: bool,
 }
 
@@ -13,7 +13,7 @@ impl AppHandler {
     pub fn new() -> AppHandler {
         AppHandler {
             ui: UiHandler::new(),
-            app: App::new(),
+            app: Box::new(App::new()),
             pause: false,
         }
     }

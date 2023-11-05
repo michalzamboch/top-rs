@@ -1,9 +1,9 @@
 
-use std::collections::HashMap;
+use std::{collections::HashMap, fmt::Debug};
 
 use super::{sort_by::*, temperature_traits::ITemperature};
 
-pub trait IApp: Sized {
+pub trait IApp: Send + Debug {
     fn on_tick(&mut self);
     fn get_memory_usage(&self) -> u64;
     fn get_memory_details(&self) -> String;
