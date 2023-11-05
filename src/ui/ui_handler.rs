@@ -1,20 +1,22 @@
+#![allow(dead_code)]
+
 use ratatui::widgets::TableState;
 use std::cell::RefMut;
 
 use super::ui_controls::table_handler::TableHandler;
-use crate::types::ui_handler_trait::IUiHandler;
+use crate::types::{ui_handler_trait::IUiHandler, table_handler_trait::ITableHandler};
 
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug)]
 pub struct UiHandler {
-    processes: TableHandler,
-    temperatures: TableHandler,
+    processes: Box<dyn ITableHandler>,
+    temperatures: Box<dyn ITableHandler>,
 }
 
 impl UiHandler {
     pub fn new() -> UiHandler {
         UiHandler {
-            processes: TableHandler::default(),
-            temperatures: TableHandler::default(),
+            processes: Box::<TableHandler>::default(),
+            temperatures: Box::<TableHandler>::default(),
         }
     }
 }

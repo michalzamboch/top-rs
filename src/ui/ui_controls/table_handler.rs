@@ -1,10 +1,11 @@
 #![allow(dead_code)]
 
 use std::cell::{RefCell, RefMut};
-
 use ratatui::widgets::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+use crate::types::table_handler_trait::ITableHandler;
+
+#[derive(Debug, PartialEq, Eq, Default)]
 pub struct TableHandler {
     state: RefCell<TableState>,
     data: Vec<Vec<String>>,
@@ -20,15 +21,17 @@ impl TableHandler {
             data: vec![],
         }
     }
+}
 
-    pub fn first(&mut self) {
+impl ITableHandler for TableHandler{
+    fn first(&mut self) {
         if self.data.is_empty() {
             return;
         }
         self.state.borrow_mut().select(Some(0));
     }
 
-    pub fn last(&mut self) {
+    fn last(&mut self) {
         if self.data.is_empty() {
             return;
         }
@@ -36,7 +39,7 @@ impl TableHandler {
         self.state.borrow_mut().select(Some(last_pos));
     }
 
-    pub fn next(&mut self) {
+    fn next(&mut self) {
         if self.data.is_empty() {
             return;
         }
@@ -54,7 +57,7 @@ impl TableHandler {
         self.state.borrow_mut().select(Some(i));
     }
 
-    pub fn previous(&mut self) {
+    fn previous(&mut self) {
         if self.data.is_empty() {
             return;
         }
@@ -72,15 +75,15 @@ impl TableHandler {
         self.state.borrow_mut().select(Some(i));
     }
 
-    pub fn set_data(&mut self, data: Vec<Vec<String>>) {
+    fn set_data(&mut self, data: Vec<Vec<String>>) {
         self.data = data
     }
 
-    pub fn get_data(&self) -> Vec<Vec<String>> {
+    fn get_data(&self) -> Vec<Vec<String>> {
         self.data.clone()
     }
 
-    pub fn get_state(&self) -> RefMut<'_, TableState> {
+    fn get_state(&self) -> RefMut<'_, TableState> {
         self.state.borrow_mut()
     }
 }
