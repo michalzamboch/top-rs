@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use sysinfo::{CpuExt, System, SystemExt};
+use sysinfo::*;
 use rayon::prelude::*;
 
 pub fn get_core_usage(sys: &System) -> Vec<u64> {

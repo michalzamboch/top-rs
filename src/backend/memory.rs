@@ -1,6 +1,6 @@
 use super::utils::*;
 use pretty_bytes::converter::convert;
-use sysinfo::{System, SystemExt};
+use sysinfo::*;
 
 pub fn get_memory_usage(sys: &System) -> u64 {
     get_floored_percentage(sys.used_memory(), sys.total_memory())

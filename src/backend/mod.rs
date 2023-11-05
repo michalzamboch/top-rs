@@ -6,3 +6,4 @@ mod network;
 mod pc_info;
 mod process;
 mod utils;
+mod temperatures;

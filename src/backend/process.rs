@@ -1,7 +1,7 @@
 use pretty_bytes::converter;
 use rayon::prelude::*;
 use std::cmp::Reverse;
-use sysinfo::{Pid, Process, ProcessExt, System, SystemExt};
+use sysinfo::*;
 
 use crate::types::process_trait::IProcessStringView;
 use crate::types::sort_by::SortBy;

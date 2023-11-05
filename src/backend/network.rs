@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use std::cmp;
-use sysinfo::{NetworkData, NetworkExt, NetworksExt, System, SystemExt};
+use sysinfo::*;
 
 #[derive(Debug, Clone, Hash, Default, PartialEq, Eq)]
 pub struct Networking {

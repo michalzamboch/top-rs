@@ -1,4 +1,4 @@
-use sysinfo::{System, SystemExt};
+use sysinfo::*;
 
 pub fn get_sys_info(sys: &System) -> String {
     format!(
