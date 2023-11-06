@@ -1,11 +1,11 @@
 use super::ui_handler::UiHandler;
 
-use crate::{backend::app::App, types::{app_trait::IApp, ui_handler_trait::IUiHandler}};
+use crate::{backend::app::App, types::{app_trait::IApp, ui_handler_trait::IUiHandler, sort_by::SortBy}};
 
 #[derive(Debug)]
 pub struct AppHandler {
-    pub ui: Box<dyn IUiHandler>,
-    pub app: Box<dyn IApp>,
+    ui: Box<dyn IUiHandler>,
+    app: Box<dyn IApp>,
     pause: bool,
 }
 
@@ -28,6 +28,14 @@ impl AppHandler {
         self.ui.set_process_table(processes);
     }
 
+    pub fn get_app_ref(&self) -> &dyn IApp {
+        self.app.as_ref()
+    }
+
+    pub fn get_ui_ref(&self) -> &dyn IUiHandler {
+        self.ui.as_ref()
+    }
+
     pub fn process_down(&mut self) {
         self.ui.next_process();
     }
@@ -42,6 +50,10 @@ impl AppHandler {
 
     pub fn last_process(&mut self) {
         self.ui.last_process();
+    }
+
+    pub fn sort_processes_by(&mut self, sort_by: SortBy) {
+        self.app.sort_processes_by(sort_by);
     }
 
     pub fn pause_unpause(&mut self) {

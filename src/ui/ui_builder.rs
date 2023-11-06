@@ -9,26 +9,26 @@ use super::{app_handler::AppHandler, config, util::*};
 pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
     let chunks = create_chucks(f);
 
-    let info_paragraph = get_pc_info(app_handler.app.as_ref());
+    let info_paragraph = get_pc_info(app_handler.get_app_ref());
     f.render_widget(info_paragraph, chunks[0]);
 
-    let cpu_detail = get_cpu_detail(app_handler.app.as_ref());
+    let cpu_detail = get_cpu_detail(app_handler.get_app_ref());
     f.render_widget(cpu_detail, chunks[1]);
 
-    let cpu_gauge = get_cpu_gauge(app_handler.app.as_ref());
+    let cpu_gauge = get_cpu_gauge(app_handler.get_app_ref());
     f.render_widget(cpu_gauge, chunks[2]);
 
-    let memory_datails = get_memory_detail(app_handler.app.as_ref());
+    let memory_datails = get_memory_detail(app_handler.get_app_ref());
     f.render_widget(memory_datails, chunks[3]);
 
-    let memory_gauge = get_memory_gauge(app_handler.app.as_ref());
+    let memory_gauge = get_memory_gauge(app_handler.get_app_ref());
     f.render_widget(memory_gauge, chunks[4]);
 
     let processes = get_process_table(app_handler);
     f.render_stateful_widget(
         processes,
         chunks[5],
-        &mut app_handler.ui.get_process_table_state()
+        &mut app_handler.get_ui_ref().get_process_table_state()
     );
 }
 
@@ -99,7 +99,7 @@ fn get_cpu_detail(app: &dyn IApp) -> Paragraph<'_> {
 }
 
 fn get_process_table(app_handler: &AppHandler) -> Table<'static> {
-    get_process_table_from_vec(app_handler.ui.get_process_table())
+    get_process_table_from_vec(app_handler.get_ui_ref().get_process_table())
 }
 
 fn get_process_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
