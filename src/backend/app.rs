@@ -40,7 +40,6 @@ impl IApp for App {
         self.sys.refresh_memory();
         self.sys.refresh_cpu();
         self.sys.refresh_networks();
-        self.sys.refresh_networks_list();
         self.sys.refresh_processes();
         self.sys.refresh_components();
     }

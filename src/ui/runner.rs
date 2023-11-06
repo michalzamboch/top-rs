@@ -7,7 +7,7 @@ use std::{
 use crossterm::{
     event::{self, *},
     execute,
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    terminal::*,
 };
 use ratatui::prelude::*;
 
