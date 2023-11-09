@@ -2,6 +2,7 @@ use super::ui_handler::UiHandler;
 
 use crate::{
     backend::app::App,
+    backend::mock::MockApp,
     types::{app_trait::IApp, sort_by::SortBy, ui_handler_trait::IUiHandler},
 };
 
@@ -13,10 +14,15 @@ pub struct AppHandler {
 }
 
 impl AppHandler {
-    pub fn new() -> AppHandler {
+    pub fn new(use_mock: bool) -> AppHandler {
+        let app: Box<dyn IApp> = match use_mock {
+            true => Box::new(MockApp::new()),
+            false => Box::new(App::new()),
+        };
+
         AppHandler {
             ui: Box::new(UiHandler::new()),
-            app: Box::new(App::new()),
+            app,
             pause: false,
         }
     }
