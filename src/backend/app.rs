@@ -1,11 +1,14 @@
 #![allow(dead_code)]
 
-use std::collections::*;
 use sysinfo::*;
 
-use crate::types::{app_trait::IApp, sort_by::SortBy, temperature_traits::ITemperature};
+use crate::types::{app_trait::IApp, sort_by::SortBy};
 
-use super::{config, cpu, memory, network::*, pc_info, process, temperatures};
+use super::{
+    config, cpu, memory,
+    network::{self, *},
+    pc_info, process, temperatures,
+};
 
 #[derive(Debug, Default)]
 pub struct App {
@@ -67,9 +70,13 @@ impl IApp for App {
     fn get_filtered_processes_vec_strings(&self) -> Vec<Vec<String>> {
         process::all_processes_strings_vec_sorted_by(&self.sys, self.processes_sorted_by)
     }
-    
-    fn get_temperatures(&self) -> HashMap<String, Box<dyn ITemperature>> {
-        temperatures::get_temperatures_boxed(&self.sys)
+
+    fn get_temperatures(&self) -> Vec<Vec<String>> {
+        temperatures::get_temperatures_vec_strings(&self.sys)
+    }
+
+    fn get_networks_list(&self) -> Vec<Vec<String>> {
+        network::get_temperatures_vec_strings(&self.sys)
     }
 
     fn sort_processes_by(&mut self, sort_by: SortBy) {

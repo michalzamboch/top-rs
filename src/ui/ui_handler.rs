@@ -4,12 +4,13 @@ use ratatui::widgets::TableState;
 use std::cell::RefMut;
 
 use super::ui_controls::table_handler::TableHandler;
-use crate::types::{ui_handler_trait::IUiHandler, table_handler_trait::ITableHandler};
+use crate::types::{table_handler_trait::ITableHandler, ui_handler_trait::IUiHandler};
 
 #[derive(Debug)]
 pub struct UiHandler {
-    processes: Box<dyn ITableHandler>,
-    temperatures: Box<dyn ITableHandler>,
+    pub processes: Box<dyn ITableHandler>,
+    pub temperatures: Box<dyn ITableHandler>,
+    pub networks: Box<dyn ITableHandler>,
 }
 
 impl UiHandler {
@@ -17,6 +18,7 @@ impl UiHandler {
         UiHandler {
             processes: Box::<TableHandler>::default(),
             temperatures: Box::<TableHandler>::default(),
+            networks: Box::<TableHandler>::default(),
         }
     }
 }
@@ -38,8 +40,8 @@ impl IUiHandler for UiHandler {
         self.processes.last();
     }
 
-    fn set_process_table(&mut self, processes: Vec<Vec<String>>) {
-        self.processes.set_data(processes);
+    fn set_process_table(&mut self, data: Vec<Vec<String>>) {
+        self.processes.set_data(data);
     }
 
     fn get_process_table(&self) -> Vec<Vec<String>> {
@@ -49,4 +51,30 @@ impl IUiHandler for UiHandler {
     fn get_process_table_state(&self) -> RefMut<'_, TableState> {
         self.processes.get_state()
     }
+
+    fn set_temperature_table(&mut self, data: Vec<Vec<String>>) {
+        self.temperatures.set_data(data)
+    }
+
+    fn get_temperature_table(&self) -> Vec<Vec<String>> {
+        self.temperatures.get_data()
+    }
+
+    fn get_temperature_table_state(&self) -> RefMut<'_, TableState> {
+        self.processes.get_state()
+    }
+
+    /*
+    fn set_networks_table(&mut self, data: Vec<Vec<String>>) {
+        self.temperatures.set_data(data)
+    }
+
+    fn get_temperature_table(&self) -> Vec<Vec<String>> {
+        self.temperatures.get_data()
+    }
+
+    fn get_temperature_table_state(&self) -> RefMut<'_, TableState> {
+        self.processes.get_state()
+    }
+    */
 }

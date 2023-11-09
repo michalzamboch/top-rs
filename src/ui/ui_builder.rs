@@ -1,10 +1,10 @@
 #![allow(dead_code)]
 
-use std::{cmp::*, rc::Rc};
 use ratatui::{prelude::*, widgets::*};
+use std::{cmp::*, rc::Rc};
 
-use crate::types::app_trait::*;
 use super::{app_handler::AppHandler, config, util::*};
+use crate::types::app_trait::*;
 
 pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
     let chunks = create_chucks(f);
@@ -28,7 +28,7 @@ pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
     f.render_stateful_widget(
         processes,
         chunks[5],
-        &mut app_handler.get_ui_ref().get_process_table_state()
+        &mut app_handler.get_ui_ref().get_process_table_state(),
     );
 }
 
@@ -44,6 +44,13 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
             Constraint::Max(get_terminal_height() as u16),
         ])
         .split(f.size())
+}
+
+fn create_main_horizontal_chunks(size: Rect) -> Rc<[Rect]> {
+    Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([Constraint::Percentage(70), Constraint::Percentage(30)])
+        .split(size)
 }
 
 fn get_pc_info(app: &dyn IApp) -> Paragraph<'_> {
@@ -140,6 +147,37 @@ fn get_process_header() -> Row<'static> {
     ]
     .iter()
     .map(|h| Cell::from(*h));
+
+    Row::new(header_cells).style(normal_style).height(1)
+}
+
+fn get_temperature_table(app_handler: &AppHandler) -> Table<'static> {
+    get_temperature_table_from_vec(app_handler.get_ui_ref().get_temperature_table())
+}
+
+fn get_temperature_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
+    let rows = get_temperature_rows(&data);
+    let header = get_temperatures_header();
+    let selected_style = Style::default().add_modifier(Modifier::REVERSED);
+
+    Table::new(rows)
+        .header(header)
+        .highlight_style(selected_style)
+        .widths(&[Constraint::Percentage(70), Constraint::Percentage(30)])
+}
+
+fn get_temperature_rows(data: &[Vec<String>]) -> impl Iterator<Item = Row<'static>> + '_ {
+    data.iter().map(|item| {
+        let cells = item.iter().map(|c| Cell::from(c.clone()));
+        Row::new(cells)
+    })
+}
+
+fn get_temperatures_header() -> Row<'static> {
+    let normal_style = Style::default().bg(Color::LightGreen);
+    let header_cells = ["Network", "Transmitted", "Received"]
+        .iter()
+        .map(|h| Cell::from(*h));
 
     Row::new(header_cells).style(normal_style).height(1)
 }

@@ -55,3 +55,18 @@ impl Networking {
         );
     }
 }
+
+pub fn get_temperatures_vec_strings(sys: &System) -> Vec<Vec<String>> {
+    sys.networks()
+        .iter()
+        .map(create_connections_vec_strings)
+        .collect()
+}
+
+fn create_connections_vec_strings(connection: (&String, &NetworkData)) -> Vec<String> {
+    vec![
+        format!("{}", connection.0),
+        format!("{}", connection.1.transmitted()),
+        format!("{}", connection.1.received()),
+    ]
+}

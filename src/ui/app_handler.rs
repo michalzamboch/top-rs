@@ -1,10 +1,13 @@
 use super::ui_handler::UiHandler;
 
-use crate::{backend::app::App, types::{app_trait::IApp, ui_handler_trait::IUiHandler, sort_by::SortBy}};
+use crate::{
+    backend::app::App,
+    types::{app_trait::IApp, sort_by::SortBy, ui_handler_trait::IUiHandler},
+};
 
 #[derive(Debug)]
 pub struct AppHandler {
-    ui: Box<dyn IUiHandler>,
+    ui: Box<UiHandler>,
     app: Box<dyn IApp>,
     pause: bool,
 }
@@ -24,6 +27,7 @@ impl AppHandler {
         }
 
         self.app.on_tick();
+
         let processes = self.app.get_filtered_processes_vec_strings();
         self.ui.set_process_table(processes);
     }
