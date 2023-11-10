@@ -56,7 +56,7 @@ impl Networking {
     }
 }
 
-pub fn get_temperatures_vec_strings(sys: &System) -> Vec<Vec<String>> {
+pub fn get_network_vec_strings(sys: &System) -> Vec<Vec<String>> {
     sys.networks()
         .iter()
         .map(create_connections_vec_strings)

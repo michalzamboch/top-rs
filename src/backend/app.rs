@@ -78,7 +78,7 @@ impl IApp for App {
     }
 
     fn get_networks_list(&self) -> Vec<Vec<String>> {
-        network::get_temperatures_vec_strings(&self.sys)
+        network::get_network_vec_strings(&self.sys)
     }
 
     fn sort_processes_by(&mut self, sort_by: SortBy) {
