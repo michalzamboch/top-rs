@@ -1,6 +1,6 @@
 use std::{fmt::Debug, rc::Rc, cell::RefCell};
 
-pub trait ICreatable: Send + Debug + Default {
+pub trait ICreatable: Debug + Default {
     fn new() -> Self;
 
     fn new_boxed() -> Box<Self> {

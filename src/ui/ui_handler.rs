@@ -3,19 +3,19 @@
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 
 use super::ui_controls::table_handler::TableHandler;
-use crate::types::traits::{table_handler::ITableHandler, ui_handler::IUiHandler};
+use crate::types::traits::{table_handler::ITableHandler, ui_handler::IUiHandler, creatable::ICreatable};
 
 type TableHandlerMapElement = Rc<RefCell<TableHandler>>;
 
 type TableHandlerMap = HashMap<String, TableHandlerMapElement>;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct UiHandler {
     table_handler_map: TableHandlerMap,
 }
 
-impl UiHandler {
-    pub fn new() -> UiHandler {
+impl ICreatable for UiHandler {
+    fn new() -> UiHandler {
         let mut table_map = HashMap::new();
         table_map.insert("processes".to_owned(), Rc::new(RefCell::new(TableHandler::default())));
 

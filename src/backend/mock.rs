@@ -17,7 +17,7 @@ impl IApp for MockApp {
     }
 
     fn get_memory_details(&self) -> String {
-        format!("Total: 32GB | Used: 8 GB | Free 24 GB")
+        "Total: 32GB | Used: 8 GB | Free 24 GB".to_owned()
     }
 
     fn get_total_cpu_usage(&self) -> u64 {
@@ -25,11 +25,11 @@ impl IApp for MockApp {
     }
 
     fn get_cpu_details(&self) -> String {
-        format!("AMD Ryzen | 16 Core")
+        "AMD Ryzen | 16 Core".to_owned()
     }
 
     fn get_sys_info(&self) -> String {
-        format!("OS: Windows | Kernel: 69420")
+        "OS: Windows | Kernel: 69420".to_owned()
     }
 
     fn get_filtered_processes_vec_strings(&self) -> Vec<Vec<String>> {
