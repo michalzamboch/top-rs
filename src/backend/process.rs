@@ -3,8 +3,7 @@ use rayon::prelude::*;
 use std::cmp::Reverse;
 use sysinfo::*;
 
-use crate::types::process_trait::IProcessStringView;
-use crate::types::sort_by::SortBy;
+use crate::types::{enums::sort_by::SortBy, traits::process::IProcessStringView};
 
 #[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone)]
 pub struct ProcessItem {

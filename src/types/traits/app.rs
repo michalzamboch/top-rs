@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 
-use super::sort_by::*;
+use crate::types::enums::sort_by::SortBy;
 
 pub trait IApp: Send + Debug {
     fn on_tick(&mut self);

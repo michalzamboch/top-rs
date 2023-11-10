@@ -1,4 +1,4 @@
-use crate::types::{app_trait::IApp, sort_by::SortBy};
+use crate::types::{enums::sort_by::SortBy, traits::app::IApp};
 
 #[derive(Debug, Default)]
 pub struct MockApp;

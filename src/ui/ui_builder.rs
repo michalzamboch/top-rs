@@ -3,8 +3,9 @@
 use ratatui::{prelude::*, widgets::*};
 use std::{cmp::*, rc::Rc};
 
+use crate::types::traits::app::IApp;
+
 use super::{app_handler::AppHandler, config, util::*};
-use crate::types::app_trait::*;
 
 pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
     let chunks = create_chucks(f);

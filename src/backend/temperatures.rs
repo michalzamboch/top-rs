@@ -4,7 +4,7 @@ use rayon::prelude::*;
 use std::collections::HashMap;
 use sysinfo::*;
 
-use crate::types::temperature_traits::ITemperature;
+use crate::types::traits::temperature::ITemperature;
 
 #[derive(Debug, Clone, Default)]
 pub struct Temperature {

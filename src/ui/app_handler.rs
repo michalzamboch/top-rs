@@ -3,7 +3,10 @@ use super::ui_handler::UiHandler;
 use crate::{
     backend::app::App,
     backend::mock::MockApp,
-    types::{app_trait::IApp, sort_by::SortBy, ui_handler_trait::IUiHandler},
+    types::{
+        enums::sort_by::SortBy,
+        traits::{app::IApp, ui_handler::IUiHandler},
+    },
 };
 
 #[derive(Debug)]

@@ -11,7 +11,7 @@ use crossterm::{
 };
 use ratatui::prelude::*;
 
-use crate::types::sort_by::SortBy;
+use crate::types::enums::sort_by::SortBy;
 
 use super::{app_handler::AppHandler, config, ui_builder::*};
 

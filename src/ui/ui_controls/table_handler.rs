@@ -1,9 +1,9 @@
 #![allow(dead_code)]
 
-use std::cell::{RefCell, RefMut};
 use ratatui::widgets::*;
+use std::cell::{RefCell, RefMut};
 
-use crate::types::table_handler_trait::ITableHandler;
+use crate::types::traits::table_handler::ITableHandler;
 
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct TableHandler {
@@ -23,7 +23,7 @@ impl TableHandler {
     }
 }
 
-impl ITableHandler for TableHandler{
+impl ITableHandler for TableHandler {
     fn first(&mut self) {
         if self.data.is_empty() {
             return;

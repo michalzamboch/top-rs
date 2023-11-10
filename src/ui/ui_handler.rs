@@ -4,7 +4,7 @@ use ratatui::widgets::TableState;
 use std::cell::RefMut;
 
 use super::ui_controls::table_handler::TableHandler;
-use crate::types::{table_handler_trait::ITableHandler, ui_handler_trait::IUiHandler};
+use crate::types::traits::{table_handler::ITableHandler, ui_handler::IUiHandler};
 
 #[derive(Debug)]
 pub struct UiHandler {

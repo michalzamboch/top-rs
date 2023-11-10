@@ -2,7 +2,7 @@
 
 use sysinfo::*;
 
-use crate::types::{app_trait::IApp, sort_by::SortBy};
+use crate::types::{enums::sort_by::SortBy, traits::app::IApp};
 
 use super::{
     config, cpu, memory,
