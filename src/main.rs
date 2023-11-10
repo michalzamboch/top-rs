@@ -7,8 +7,12 @@ mod ui;
 
 use std::error::Error;
 
+const MAX_THREAD_PRIORITY: bool = false;
+
 fn main() -> Result<(), Box<dyn Error>> {
-    _ = set_current_thread_priority(ThreadPriority::Max);
+    if MAX_THREAD_PRIORITY {
+        _ = set_current_thread_priority(ThreadPriority::Max);
+    }
 
     runner::start()
 }

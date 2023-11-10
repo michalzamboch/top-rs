@@ -11,7 +11,7 @@ use crate::{
 
 #[derive(Debug)]
 pub struct AppHandler {
-    ui: Box<UiHandler>,
+    ui: Box<dyn IUiHandler>,
     app: Box<dyn IApp>,
     pause: bool,
 }
@@ -24,7 +24,7 @@ impl AppHandler {
         };
 
         AppHandler {
-            ui: Box::new(UiHandler::new()),
+            ui: UiHandler::new_boxed(),
             app,
             pause: false,
         }
