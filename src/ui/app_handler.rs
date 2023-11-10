@@ -38,31 +38,36 @@ impl AppHandler {
         self.app.on_tick();
 
         let processes = self.app.get_filtered_processes_vec_strings();
-        self.ui.set_process_table(processes);
+        let process_table = self.ui.get_table_handler("processes");
+        process_table.borrow_mut().set_data(processes);
     }
 
-    pub fn get_app_ref(&self) -> &dyn IApp {
+    pub fn get_app(&self) -> &dyn IApp {
         self.app.as_ref()
     }
 
-    pub fn get_ui_ref(&self) -> &dyn IUiHandler {
+    pub fn get_ui(&self) -> &dyn IUiHandler {
         self.ui.as_ref()
     }
 
     pub fn process_down(&mut self) {
-        self.ui.next_process();
+        let process_table = self.ui.get_table_handler("processes");
+        process_table.borrow_mut().next();
     }
 
     pub fn process_up(&mut self) {
-        self.ui.previous_process();
+        let process_table = self.ui.get_table_handler("processes");
+        process_table.borrow_mut().previous();
     }
 
     pub fn first_process(&mut self) {
-        self.ui.first_process();
+        let process_table = self.ui.get_table_handler("processes");
+        process_table.borrow_mut().first();
     }
 
     pub fn last_process(&mut self) {
-        self.ui.last_process();
+        let process_table = self.ui.get_table_handler("processes");
+        process_table.borrow_mut().last();
     }
 
     pub fn sort_processes_by(&mut self, sort_by: SortBy) {

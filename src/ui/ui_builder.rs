@@ -10,26 +10,28 @@ use super::{app_handler::AppHandler, config, util::*};
 pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
     let chunks = create_chucks(f);
 
-    let info_paragraph = get_pc_info(app_handler.get_app_ref());
+    let info_paragraph = get_pc_info(app_handler.get_app());
     f.render_widget(info_paragraph, chunks[0]);
 
-    let cpu_detail = get_cpu_detail(app_handler.get_app_ref());
+    let cpu_detail = get_cpu_detail(app_handler.get_app());
     f.render_widget(cpu_detail, chunks[1]);
 
-    let cpu_gauge = get_cpu_gauge(app_handler.get_app_ref());
+    let cpu_gauge = get_cpu_gauge(app_handler.get_app());
     f.render_widget(cpu_gauge, chunks[2]);
 
-    let memory_datails = get_memory_detail(app_handler.get_app_ref());
+    let memory_datails = get_memory_detail(app_handler.get_app());
     f.render_widget(memory_datails, chunks[3]);
 
-    let memory_gauge = get_memory_gauge(app_handler.get_app_ref());
+    let memory_gauge = get_memory_gauge(app_handler.get_app());
     f.render_widget(memory_gauge, chunks[4]);
 
     let processes = get_process_table(app_handler);
+    let process_table = app_handler.get_ui().get_table_handler("processes");
+
     f.render_stateful_widget(
         processes,
         chunks[5],
-        &mut app_handler.get_ui_ref().get_process_table_state(),
+        &mut process_table.borrow().get_state(),
     );
 }
 
@@ -106,8 +108,10 @@ fn get_cpu_detail(app: &dyn IApp) -> Paragraph<'_> {
         .style(Style::default().fg(config::CPU_COLOR))
 }
 
-fn get_process_table(app_handler: &AppHandler) -> Table<'static> {
-    get_process_table_from_vec(app_handler.get_ui_ref().get_process_table())
+fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
+    let table = app_handler.get_ui().get_table_handler("processes");
+    let borrowed_table = table.borrow();
+    get_process_table_from_vec(borrowed_table.get_data())
 }
 
 fn get_process_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
@@ -152,8 +156,9 @@ fn get_process_header() -> Row<'static> {
     Row::new(header_cells).style(normal_style).height(1)
 }
 
+/*
 fn get_temperature_table(app_handler: &AppHandler) -> Table<'static> {
-    get_temperature_table_from_vec(app_handler.get_ui_ref().get_temperature_table())
+    get_temperature_table_from_vec(app_handler.get_ui().get_temperature_table())
 }
 
 fn get_temperature_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
@@ -182,3 +187,4 @@ fn get_temperatures_header() -> Row<'static> {
 
     Row::new(header_cells).style(normal_style).height(1)
 }
+*/
