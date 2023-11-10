@@ -39,7 +39,7 @@ impl AppHandler {
 
         let processes = self.app.get_filtered_processes_vec_strings();
         let process_table = self.ui.get_table_handler("processes");
-        process_table.borrow_mut().set_data(processes);
+        process_table.set_data(processes);
     }
 
     pub fn get_app(&self) -> &dyn IApp {
@@ -52,22 +52,22 @@ impl AppHandler {
 
     pub fn process_down(&mut self) {
         let process_table = self.ui.get_table_handler("processes");
-        process_table.borrow_mut().next();
+        process_table.next();
     }
 
     pub fn process_up(&mut self) {
         let process_table = self.ui.get_table_handler("processes");
-        process_table.borrow_mut().previous();
+        process_table.previous();
     }
 
     pub fn first_process(&mut self) {
         let process_table = self.ui.get_table_handler("processes");
-        process_table.borrow_mut().first();
+        process_table.first();
     }
 
     pub fn last_process(&mut self) {
         let process_table = self.ui.get_table_handler("processes");
-        process_table.borrow_mut().last();
+        process_table.last();
     }
 
     pub fn sort_processes_by(&mut self, sort_by: SortBy) {

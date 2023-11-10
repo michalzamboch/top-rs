@@ -31,7 +31,7 @@ pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
     f.render_stateful_widget(
         processes,
         chunks[5],
-        &mut process_table.borrow().get_state(),
+        &mut process_table.get_state(),
     );
 }
 
@@ -110,8 +110,7 @@ fn get_cpu_detail(app: &dyn IApp) -> Paragraph<'_> {
 
 fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
     let table = app_handler.get_ui().get_table_handler("processes");
-    let borrowed_table = table.borrow();
-    get_process_table_from_vec(borrowed_table.get_data())
+    get_process_table_from_vec(table.get_data())
 }
 
 fn get_process_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {

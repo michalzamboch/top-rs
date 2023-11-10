@@ -8,7 +8,7 @@ use crate::types::traits::table_handler::ITableHandler;
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct TableHandler {
     state: RefCell<TableState>,
-    data: Vec<Vec<String>>,
+    data: RefCell<Vec<Vec<String>>>,
 }
 
 impl TableHandler {
@@ -18,35 +18,35 @@ impl TableHandler {
 
         TableHandler {
             state: RefCell::new(tmp_state),
-            data: vec![],
+            data: RefCell::new(vec![]),
         }
     }
 }
 
 impl ITableHandler for TableHandler {
-    fn first(&mut self) {
-        if self.data.is_empty() {
+    fn first(&self) {
+        if self.data.borrow().is_empty() {
             return;
         }
         self.state.borrow_mut().select(Some(0));
     }
 
-    fn last(&mut self) {
-        if self.data.is_empty() {
+    fn last(&self) {
+        if self.data.borrow().is_empty() {
             return;
         }
-        let last_pos = self.data.len() - 1;
+        let last_pos = self.data.borrow().len() - 1;
         self.state.borrow_mut().select(Some(last_pos));
     }
 
-    fn next(&mut self) {
-        if self.data.is_empty() {
+    fn next(&self) {
+        if self.data.borrow().is_empty() {
             return;
         }
 
         let i = match self.state.borrow().selected() {
             Some(i) => {
-                if i >= self.data.len() - 1 {
+                if i >= self.data.borrow().len() - 1 {
                     0
                 } else {
                     i + 1
@@ -57,15 +57,15 @@ impl ITableHandler for TableHandler {
         self.state.borrow_mut().select(Some(i));
     }
 
-    fn previous(&mut self) {
-        if self.data.is_empty() {
+    fn previous(&self) {
+        if self.data.borrow().is_empty() {
             return;
         }
 
         let i = match self.state.borrow().selected() {
             Some(i) => {
                 if i == 0 {
-                    self.data.len() - 1
+                    self.data.borrow().len() - 1
                 } else {
                     i - 1
                 }
@@ -75,12 +75,12 @@ impl ITableHandler for TableHandler {
         self.state.borrow_mut().select(Some(i));
     }
 
-    fn set_data(&mut self, data: Vec<Vec<String>>) {
-        self.data = data
+    fn set_data(&self, data: Vec<Vec<String>>) {
+        *self.data.borrow_mut() = data;
     }
 
     fn get_data(&self) -> Vec<Vec<String>> {
-        self.data.clone()
+        self.data.borrow().clone()
     }
 
     fn get_state(&self) -> RefMut<'_, TableState> {
