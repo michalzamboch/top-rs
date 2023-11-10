@@ -5,7 +5,7 @@ use crate::{
     backend::mock::MockApp,
     types::{
         enums::sort_by::SortBy,
-        traits::{app::IApp, ui_handler::IUiHandler},
+        traits::{app::IApp, ui_handler::IUiHandler, creatable::ICreatable},
     },
 };
 
@@ -19,8 +19,8 @@ pub struct AppHandler {
 impl AppHandler {
     pub fn new(use_mock: bool) -> AppHandler {
         let app: Box<dyn IApp> = match use_mock {
-            true => Box::new(MockApp::new()),
-            false => Box::new(App::new()),
+            true => MockApp::new_boxed(),
+            false => App::new_boxed(),
         };
 
         AppHandler {

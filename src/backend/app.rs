@@ -2,7 +2,7 @@
 
 use sysinfo::*;
 
-use crate::types::{enums::sort_by::SortBy, traits::app::IApp};
+use crate::types::{enums::sort_by::SortBy, traits::{app::IApp, creatable::ICreatable}};
 
 use super::{
     config, cpu, memory,
@@ -18,7 +18,15 @@ pub struct App {
 }
 
 impl App {
-    pub fn new() -> App {
+    fn initial_sys_refresh(sys: &mut System) {
+        for _ in 0..config::INITIAL_REFRESH_COUNT {
+            sys.refresh_all();
+        }
+    }
+}
+
+impl ICreatable for App {
+    fn new() -> App {
         let mut sys = System::new();
         App::initial_sys_refresh(&mut sys);
 
@@ -28,12 +36,6 @@ impl App {
             sys,
             network,
             processes_sorted_by: SortBy::default(),
-        }
-    }
-
-    fn initial_sys_refresh(sys: &mut System) {
-        for _ in 0..config::INITIAL_REFRESH_COUNT {
-            sys.refresh_all();
         }
     }
 }

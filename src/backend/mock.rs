@@ -1,10 +1,10 @@
-use crate::types::{enums::sort_by::SortBy, traits::app::IApp};
+use crate::types::{enums::sort_by::SortBy, traits::{app::IApp, creatable::ICreatable}};
 
 #[derive(Debug, Default)]
 pub struct MockApp;
 
-impl MockApp {
-    pub fn new() -> MockApp {
+impl ICreatable for MockApp {
+    fn new() -> MockApp {
         MockApp {}
     }
 }
