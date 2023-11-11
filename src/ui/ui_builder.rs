@@ -5,7 +5,7 @@ use std::{cmp::*, rc::Rc};
 
 use crate::types::traits::app::IApp;
 
-use super::{app_handler::AppHandler, config, util::*, paths::*};
+use super::{app_handler::AppHandler, config, paths::*, util::*};
 
 pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
     let chunks = create_chucks(f);
@@ -28,11 +28,7 @@ pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
     let processes = get_process_table(app_handler);
     let process_table = app_handler.get_ui().get_table_handler(PROCESSES_TABLE_ID);
 
-    f.render_stateful_widget(
-        processes,
-        chunks[5],
-        &mut process_table.get_state(),
-    );
+    f.render_stateful_widget(processes, chunks[5], &mut process_table.get_state());
 }
 
 fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
@@ -155,35 +151,39 @@ fn get_process_header() -> Row<'static> {
     Row::new(header_cells).style(normal_style).height(1)
 }
 
-/*
-fn get_temperature_table(app_handler: &AppHandler) -> Table<'static> {
-    get_temperature_table_from_vec(app_handler.get_ui().get_temperature_table())
+fn get_disk_table(app_handler: &AppHandler) -> Table<'_> {
+    let disks = app_handler.get_ui().get_table_handler(DISKS_TABLE_ID);
+    get_disk_table_from_vec(disks.get_data())
 }
 
-fn get_temperature_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
-    let rows = get_temperature_rows(&data);
-    let header = get_temperatures_header();
+fn get_disk_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
+    let rows = get_disk_rows(&data);
+    let header = get_disks_header();
     let selected_style = Style::default().add_modifier(Modifier::REVERSED);
 
     Table::new(rows)
         .header(header)
         .highlight_style(selected_style)
-        .widths(&[Constraint::Percentage(70), Constraint::Percentage(30)])
+        .widths(&[
+            Constraint::Max(config::NAME_COL_MAX_LEN),
+            Constraint::Min(config::PRETTY_BYTES_COL_LEN),
+            Constraint::Min(config::PRETTY_BYTES_COL_LEN),
+            Constraint::Min(config::PRETTY_BYTES_COL_LEN),
+        ])
 }
 
-fn get_temperature_rows(data: &[Vec<String>]) -> impl Iterator<Item = Row<'static>> + '_ {
+fn get_disk_rows(data: &[Vec<String>]) -> impl Iterator<Item = Row<'static>> + '_ {
     data.iter().map(|item| {
         let cells = item.iter().map(|c| Cell::from(c.clone()));
         Row::new(cells)
     })
 }
 
-fn get_temperatures_header() -> Row<'static> {
-    let normal_style = Style::default().bg(Color::LightGreen);
-    let header_cells = ["Network", "Transmitted", "Received"]
+fn get_disks_header() -> Row<'static> {
+    let normal_style = Style::default().bg(Color::LightRed);
+    let header_cells = ["Label", "Free", "Used", "Total"]
         .iter()
         .map(|h| Cell::from(*h));
 
     Row::new(header_cells).style(normal_style).height(1)
 }
-*/
