@@ -26,7 +26,13 @@ pub fn os_string_to_regular(os_string: &OsStr) -> String {
     let result = os_string.to_os_string().into_string();
 
     match result {
-        Ok(result_str) => result_str,
-        Err(_) => "Unknown directory.".to_owned()
+        Ok(result_str) => {
+            if result_str.is_empty() {
+                result_str
+            } else {
+                "Unknown".to_owned()
+            }
+        }
+        Err(_) => "Unknown".to_owned(),
     }
 }

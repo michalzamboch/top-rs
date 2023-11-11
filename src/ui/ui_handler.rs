@@ -2,7 +2,7 @@
 
 use std::{collections::HashMap, rc::Rc};
 
-use super::ui_controls::table_handler::TableHandler;
+use super::{ui_controls::table_handler::TableHandler, paths::*};
 use crate::types::traits::{table_handler::ITableHandler, ui_handler::IUiHandler, creatable::ICreatable};
 
 type TableHandlerMapElement = Rc<TableHandler>;
@@ -16,7 +16,7 @@ pub struct UiHandler {
 impl ICreatable for UiHandler {
     fn new() -> UiHandler {
         let mut table_map = HashMap::new();
-        table_map.insert("processes".to_owned(), Rc::new(TableHandler::default()));
+        table_map.insert(PROCESSES_TABLE_ID.to_owned(), Rc::new(TableHandler::default()));
 
         UiHandler {
             table_handler_map: table_map,

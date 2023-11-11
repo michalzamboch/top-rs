@@ -5,7 +5,7 @@ use std::{cmp::*, rc::Rc};
 
 use crate::types::traits::app::IApp;
 
-use super::{app_handler::AppHandler, config, util::*};
+use super::{app_handler::AppHandler, config, util::*, paths::*};
 
 pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
     let chunks = create_chucks(f);
@@ -26,7 +26,7 @@ pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
     f.render_widget(memory_gauge, chunks[4]);
 
     let processes = get_process_table(app_handler);
-    let process_table = app_handler.get_ui().get_table_handler("processes");
+    let process_table = app_handler.get_ui().get_table_handler(PROCESSES_TABLE_ID);
 
     f.render_stateful_widget(
         processes,
@@ -109,7 +109,7 @@ fn get_cpu_detail(app: &dyn IApp) -> Paragraph<'_> {
 }
 
 fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
-    let table = app_handler.get_ui().get_table_handler("processes");
+    let table = app_handler.get_ui().get_table_handler(PROCESSES_TABLE_ID);
     get_process_table_from_vec(table.get_data())
 }
 

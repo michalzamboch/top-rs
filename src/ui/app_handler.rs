@@ -1,5 +1,5 @@
 
-use super::ui_handler::UiHandler;
+use super::{ui_handler::UiHandler, paths::*};
 
 use crate::{
     backend::app::App,
@@ -44,7 +44,7 @@ impl AppHandler {
 
     fn update_processes(&self) {
         let processes = self.app.get_filtered_processes_vec_strings();
-        let process_table = self.ui.get_table_handler("processes");
+        let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
         process_table.set_data(processes);
     }
 
@@ -57,22 +57,22 @@ impl AppHandler {
     }
 
     pub fn process_down(&self) {
-        let process_table = self.ui.get_table_handler("processes");
+        let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
         process_table.next();
     }
 
     pub fn process_up(&self) {
-        let process_table = self.ui.get_table_handler("processes");
+        let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
         process_table.previous();
     }
 
     pub fn first_process(&self) {
-        let process_table = self.ui.get_table_handler("processes");
+        let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
         process_table.first();
     }
 
     pub fn last_process(&self) {
-        let process_table = self.ui.get_table_handler("processes");
+        let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
         process_table.last();
     }
 
