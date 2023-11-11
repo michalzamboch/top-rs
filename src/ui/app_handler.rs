@@ -1,3 +1,4 @@
+
 use super::ui_handler::UiHandler;
 
 use crate::{
@@ -5,7 +6,9 @@ use crate::{
     backend::mock::MockApp,
     types::{
         enums::sort_by::SortBy,
-        traits::{app::IApp, ui_handler::IUiHandler, creatable::ICreatable},
+        traits::{
+            app::IApp, creatable::ICreatable,  ui_handler::IUiHandler,
+        },
     },
 };
 
@@ -36,7 +39,10 @@ impl AppHandler {
         }
 
         self.app.on_tick();
+        self.update_processes();
+    }
 
+    fn update_processes(&self) {
         let processes = self.app.get_filtered_processes_vec_strings();
         let process_table = self.ui.get_table_handler("processes");
         process_table.set_data(processes);
@@ -50,22 +56,22 @@ impl AppHandler {
         self.ui.as_ref()
     }
 
-    pub fn process_down(&mut self) {
+    pub fn process_down(&self) {
         let process_table = self.ui.get_table_handler("processes");
         process_table.next();
     }
 
-    pub fn process_up(&mut self) {
+    pub fn process_up(&self) {
         let process_table = self.ui.get_table_handler("processes");
         process_table.previous();
     }
 
-    pub fn first_process(&mut self) {
+    pub fn first_process(&self) {
         let process_table = self.ui.get_table_handler("processes");
         process_table.first();
     }
 
-    pub fn last_process(&mut self) {
+    pub fn last_process(&self) {
         let process_table = self.ui.get_table_handler("processes");
         process_table.last();
     }

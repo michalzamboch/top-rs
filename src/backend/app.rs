@@ -2,12 +2,15 @@
 
 use sysinfo::*;
 
-use crate::types::{enums::sort_by::SortBy, traits::{app::IApp, creatable::ICreatable}};
+use crate::types::{
+    enums::sort_by::SortBy,
+    traits::{app::IApp, creatable::ICreatable},
+};
 
 use super::{
     config, cpu, memory,
     network::{self, *},
-    pc_info, process, temperatures,
+    pc_info, process, temperatures, disk::get_disks_vec_string,
 };
 
 #[derive(Debug, Default)]
@@ -46,7 +49,8 @@ impl IApp for App {
         self.sys.refresh_cpu();
         self.sys.refresh_networks();
         self.sys.refresh_processes();
-        self.sys.refresh_components();
+        self.sys.refresh_disks();
+        self.sys.refresh_disks_list();
     }
 
     fn get_memory_usage(&self) -> u64 {
@@ -79,6 +83,10 @@ impl IApp for App {
 
     fn get_networks_list(&self) -> Vec<Vec<String>> {
         network::get_network_vec_strings(&self.sys)
+    }
+
+    fn get_disks_vec_string(&self) -> Vec<Vec<String>> {
+        get_disks_vec_string(&self.sys)
     }
 
     fn sort_processes_by(&mut self, sort_by: SortBy) {

@@ -1,4 +1,7 @@
-use crate::types::{enums::sort_by::SortBy, traits::{app::IApp, creatable::ICreatable}};
+use crate::types::{
+    enums::sort_by::SortBy,
+    traits::{app::IApp, creatable::ICreatable},
+};
 
 #[derive(Debug, Default)]
 pub struct MockApp;
@@ -142,6 +145,15 @@ impl IApp for MockApp {
                 "100.00 MB".to_owned(),
             ],
         ]
+    }
+
+    fn get_disks_vec_string(&self) -> Vec<Vec<String>> {
+        vec![vec![
+            "C:".to_owned(),
+            "100.00 GB".to_owned(),
+            "100.00 GB".to_owned(),
+            "200.00 GB".to_owned(),
+        ]]
     }
 
     fn sort_processes_by(&mut self, sort_by: SortBy) {

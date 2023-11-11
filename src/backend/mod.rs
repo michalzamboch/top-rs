@@ -8,3 +8,4 @@ mod pc_info;
 mod process;
 mod temperatures;
 mod utils;
+mod disk;

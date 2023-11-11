@@ -6,7 +6,7 @@ use sysinfo::*;
 use crate::types::{enums::sort_by::SortBy, traits::process::IProcessStringView};
 
 #[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone)]
-pub struct ProcessItem {
+struct ProcessItem {
     pub pid: Pid,
     pub name: String,
     pub cpu_usage: u64,
