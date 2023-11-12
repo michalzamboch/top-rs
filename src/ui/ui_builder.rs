@@ -3,11 +3,11 @@
 use ratatui::{prelude::*, widgets::*};
 use std::{cmp::*, rc::Rc};
 
-use crate::types::traits::app::IApp;
+use crate::types::traits::{app::IApp, app_accessor::IAppAccessor};
 
 use super::{app_handler::AppHandler, config, paths::*, util::*};
 
-pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
+pub fn handle_ui(f: &mut Frame, app_handler: &dyn IAppAccessor) {
     let chunks = create_chucks(f);
 
     let info_paragraph = get_pc_info(app_handler.get_app());
@@ -140,7 +140,7 @@ fn get_cpu_detail(app: &dyn IApp) -> Paragraph<'_> {
         .style(Style::default().fg(config::CPU_COLOR))
 }
 
-fn get_process_table(app_handler: &AppHandler) -> Table<'_> {
+fn get_process_table(app_handler: &dyn IAppAccessor) -> Table<'_> {
     let table = app_handler.get_ui().get_table_handler(PROCESSES_TABLE_ID);
     get_process_table_from_vec(table.get_data())
 }

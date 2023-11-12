@@ -1,4 +1,5 @@
 pub mod app;
+pub mod app_accessor;
 pub mod creatable;
 pub mod disk;
 pub mod process;

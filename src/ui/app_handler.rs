@@ -5,7 +5,9 @@ use crate::{
     backend::mock::MockApp,
     types::{
         enums::sort_by::SortBy,
-        traits::{app::IApp, creatable::ICreatable, ui_handler::IUiHandler},
+        traits::{
+            app::IApp, app_accessor::IAppAccessor, creatable::ICreatable, ui_handler::IUiHandler,
+        },
     },
 };
 
@@ -14,6 +16,16 @@ pub struct AppHandler {
     ui: Box<dyn IUiHandler>,
     app: Box<dyn IApp>,
     pause: bool,
+}
+
+impl IAppAccessor for AppHandler {
+    fn get_app(&self) -> &dyn IApp {
+        self.app.as_ref()
+    }
+
+    fn get_ui(&self) -> &dyn IUiHandler {
+        self.ui.as_ref()
+    }
 }
 
 impl AppHandler {
@@ -44,15 +56,6 @@ impl AppHandler {
         let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
         process_table.set_data(processes);
     }
-
-    pub fn get_app(&self) -> &dyn IApp {
-        self.app.as_ref()
-    }
-
-    pub fn get_ui(&self) -> &dyn IUiHandler {
-        self.ui.as_ref()
-    }
-
     pub fn process_down(&self) {
         let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
         process_table.next();
