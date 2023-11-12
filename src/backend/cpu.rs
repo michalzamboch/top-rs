@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
-use sysinfo::*;
 use rayon::prelude::*;
+use sysinfo::*;
 
 pub fn get_core_usage(sys: &System) -> Vec<u64> {
     sys.cpus()

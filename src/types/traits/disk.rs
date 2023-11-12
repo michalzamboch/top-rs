@@ -1,4 +1,3 @@
-
 pub trait IDiskStringView {
     fn get_name(&self) -> String;
     fn get_free_space(&self) -> String;

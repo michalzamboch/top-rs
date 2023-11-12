@@ -1,4 +1,3 @@
-
 use pretty_bytes::converter;
 use rayon::prelude::*;
 use sysinfo::*;

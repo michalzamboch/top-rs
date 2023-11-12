@@ -1,4 +1,4 @@
-use std::{fmt::Debug, rc::Rc, cell::RefCell};
+use std::{cell::RefCell, fmt::Debug, rc::Rc};
 
 pub trait ICreatable: Debug + Default {
     fn new() -> Self;

@@ -8,9 +8,11 @@ use crate::types::{
 };
 
 use super::{
-    config, cpu, memory,
+    config, cpu,
+    disk::get_disks_vec_string,
+    memory,
     network::{self, *},
-    pc_info, process, temperatures, disk::get_disks_vec_string,
+    pc_info, process, temperatures,
 };
 
 #[derive(Debug, Default)]

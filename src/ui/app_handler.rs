@@ -1,14 +1,11 @@
-
-use super::{ui_handler::UiHandler, paths::*};
+use super::{paths::*, ui_handler::UiHandler};
 
 use crate::{
     backend::app::App,
     backend::mock::MockApp,
     types::{
         enums::sort_by::SortBy,
-        traits::{
-            app::IApp, creatable::ICreatable,  ui_handler::IUiHandler,
-        },
+        traits::{app::IApp, creatable::ICreatable, ui_handler::IUiHandler},
     },
 };
 
