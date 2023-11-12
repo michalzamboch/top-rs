@@ -13,16 +13,28 @@ pub struct UiHandler {
     table_handler_map: TableHandlerMap,
 }
 
-impl ICreatable for UiHandler {
-    fn new() -> UiHandler {
+impl UiHandler {
+    fn create_table_map() -> TableHandlerMap {
         let mut table_map = HashMap::new();
+        
         table_map.insert(
             PROCESSES_TABLE_ID.to_owned(),
             Rc::new(TableHandler::default()),
         );
+        
+        table_map.insert(
+            DISKS_TABLE_ID.to_owned(),
+            Rc::new(TableHandler::default()),
+        );
 
+        table_map
+    }
+}
+
+impl ICreatable for UiHandler {
+    fn new() -> UiHandler {
         UiHandler {
-            table_handler_map: table_map,
+            table_handler_map: Self::create_table_map(),
         }
     }
 }

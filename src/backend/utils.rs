@@ -27,7 +27,7 @@ pub fn os_string_to_regular(os_string: &OsStr) -> String {
 
     match result {
         Ok(result_str) => {
-            if result_str.is_empty() {
+            if !result_str.is_empty() {
                 result_str
             } else {
                 "Unknown".to_owned()

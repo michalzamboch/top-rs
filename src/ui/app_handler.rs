@@ -49,6 +49,7 @@ impl AppHandler {
 
         self.app.on_tick();
         self.update_processes();
+        self.update_disks();
     }
 
     fn update_processes(&self) {
@@ -56,6 +57,13 @@ impl AppHandler {
         let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
         process_table.set_data(processes);
     }
+
+    fn update_disks(&self) {
+        let disks = self.app.get_disks_vec_string();
+        let disk_table = self.ui.get_table_handler(DISKS_TABLE_ID);
+        disk_table.set_data(disks);
+    }
+
     pub fn process_down(&self) {
         let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
         process_table.next();
