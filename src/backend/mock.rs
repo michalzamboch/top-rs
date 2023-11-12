@@ -18,7 +18,7 @@ impl IApp for MockApp {
     fn get_memory_usage(&self) -> u64 {
         100
     }
-    
+
     fn get_swap_usage(&self) -> u64 {
         100
     }
@@ -26,7 +26,7 @@ impl IApp for MockApp {
     fn get_memory_details(&self) -> String {
         "Free: 24GB | Used: 8 GB | Total 24 GB".to_owned()
     }
-    
+
     fn get_swap_details(&self) -> String {
         "Free: 8 GB | Used: 0 GB | Total 8 GB".to_owned()
     }
@@ -44,96 +44,16 @@ impl IApp for MockApp {
     }
 
     fn get_filtered_processes_vec_strings(&self) -> Vec<Vec<String>> {
-        vec![
-            vec![
-                "123456".to_owned(),
-                "Process".to_owned(),
-                "100 %".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 KB".to_owned(),
-                "100.00 KB".to_owned(),
-            ],
-            vec![
-                "123456".to_owned(),
-                "Process".to_owned(),
-                "100 %".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 KB".to_owned(),
-                "100.00 KB".to_owned(),
-            ],
-            vec![
-                "123456".to_owned(),
-                "Process".to_owned(),
-                "100 %".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 KB".to_owned(),
-                "100.00 KB".to_owned(),
-            ],
-            vec![
-                "123456".to_owned(),
-                "Process".to_owned(),
-                "100 %".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 KB".to_owned(),
-                "100.00 KB".to_owned(),
-            ],
-            vec![
-                "123456".to_owned(),
-                "Process".to_owned(),
-                "100 %".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 KB".to_owned(),
-                "100.00 KB".to_owned(),
-            ],
-            vec![
-                "123456".to_owned(),
-                "Process".to_owned(),
-                "100 %".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 KB".to_owned(),
-                "100.00 KB".to_owned(),
-            ],
-            vec![
-                "123456".to_owned(),
-                "Process".to_owned(),
-                "100 %".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 KB".to_owned(),
-                "100.00 KB".to_owned(),
-            ],
-            vec![
-                "123456".to_owned(),
-                "Process".to_owned(),
-                "100 %".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 KB".to_owned(),
-                "100.00 KB".to_owned(),
-            ],
-            vec![
-                "123456".to_owned(),
-                "Process".to_owned(),
-                "100 %".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 KB".to_owned(),
-                "100.00 KB".to_owned(),
-            ],
-            vec![
-                "123456".to_owned(),
-                "Process".to_owned(),
-                "100 %".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 KB".to_owned(),
-                "100.00 KB".to_owned(),
-            ],
-            vec![
-                "123456".to_owned(),
-                "Process".to_owned(),
-                "100 %".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 KB".to_owned(),
-                "100.00 KB".to_owned(),
-            ],
-        ]
+        let item = vec![
+            "123456".to_owned(),
+            "Process".to_owned(),
+            "100 %".to_owned(),
+            "100.00 MB".to_owned(),
+            "100.00 KB".to_owned(),
+            "100.00 KB".to_owned(),
+        ];
+
+        vec![item; 100]
     }
 
     fn get_temperatures(&self) -> Vec<Vec<String>> {
@@ -148,7 +68,7 @@ impl IApp for MockApp {
                 "100.00 MB".to_owned(),
             ],
             vec![
-                "Ethernet".to_owned(),
+                "Wi-Fi".to_owned(),
                 "100.00 MB".to_owned(),
                 "100.00 MB".to_owned(),
             ],
@@ -156,12 +76,13 @@ impl IApp for MockApp {
     }
 
     fn get_disks_vec_string(&self) -> Vec<Vec<String>> {
-        vec![vec![
-            "C:".to_owned(),
+        let disk = vec![
+            "X:".to_owned(),
             "100.00 GB".to_owned(),
             "100.00 GB".to_owned(),
             "200.00 GB".to_owned(),
-        ]]
+        ];
+        vec![disk; 10]
     }
 
     fn sort_processes_by(&mut self, sort_by: SortBy) {

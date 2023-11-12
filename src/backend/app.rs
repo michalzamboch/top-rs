@@ -66,7 +66,7 @@ impl IApp for App {
     fn get_memory_details(&self) -> String {
         memory::get_memory_details(&self.sys)
     }
-    
+
     fn get_swap_details(&self) -> String {
         memory::get_swap_details(&self.sys)
     }
