@@ -164,8 +164,8 @@ fn get_process_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
 }
 
 fn get_process_rows(data: &[Vec<String>]) -> impl Iterator<Item = Row<'static>> + '_ {
-    data.iter().map(|item| {
-        let cells = item.iter().map(|c| Cell::from(c.clone()));
+    data.into_iter().map(|item| {
+        let cells = item.into_iter().map(|c| Cell::from(c.clone()));
         Row::new(cells)
     })
 }
@@ -181,8 +181,8 @@ fn get_process_header() -> Row<'static> {
         "Read [R]",
         "Write [W]",
     ]
-    .iter()
-    .map(|h| Cell::from(*h));
+    .into_iter()
+    .map(|h| Cell::from(h));
 
     Row::new(header_cells).style(normal_style).height(1)
 }
@@ -209,8 +209,8 @@ fn get_disk_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
 }
 
 fn get_disk_rows(data: &[Vec<String>]) -> impl Iterator<Item = Row<'static>> + '_ {
-    data.iter().map(|item| {
-        let cells = item.iter().map(|c| Cell::from(c.clone()));
+    data.into_iter().map(|item| {
+        let cells = item.into_iter().map(|c| Cell::from(c.clone()));
         Row::new(cells)
     })
 }
@@ -218,8 +218,8 @@ fn get_disk_rows(data: &[Vec<String>]) -> impl Iterator<Item = Row<'static>> + '
 fn get_disks_header() -> Row<'static> {
     let normal_style = Style::default().bg(Color::LightRed);
     let header_cells = ["Label", "Free", "Used", "Total"]
-        .iter()
-        .map(|h| Cell::from(*h));
+        .into_iter()
+        .map(|h| Cell::from(h));
 
     Row::new(header_cells).style(normal_style).height(1)
 }

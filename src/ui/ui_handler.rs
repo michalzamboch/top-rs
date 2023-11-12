@@ -1,6 +1,6 @@
 use std::{collections::HashMap, rc::Rc};
 
-use super::{paths::*, ui_controls::table_handler::TableHandler};
+use super::{paths::*, controls::table_handler::TableHandler};
 use crate::types::traits::{
     creatable::ICreatable, table_handler::ITableHandler, ui_handler::IUiHandler,
 };

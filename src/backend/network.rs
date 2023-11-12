@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use std::cmp;
+use std::*;
 use sysinfo::*;
 
 #[derive(Debug, Clone, Hash, Default, PartialEq, Eq)]
@@ -24,7 +24,7 @@ impl Networking {
         sys.refresh_networks_list();
 
         let net = sys.networks();
-        net.iter().count()
+        net.into_iter().count()
     }
 
     pub fn network(&mut self, sys: &System) {
@@ -58,7 +58,7 @@ impl Networking {
 
 pub fn get_network_vec_strings(sys: &System) -> Vec<Vec<String>> {
     sys.networks()
-        .iter()
+        .into_iter()
         .map(create_connections_vec_strings)
         .collect()
 }
