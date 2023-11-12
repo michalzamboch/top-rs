@@ -47,7 +47,13 @@ impl AppHandler {
             return;
         }
 
-        self.app.on_tick();
+        self.app.update();
+        self.update_processes();
+        self.update_disks();
+    }
+
+    pub fn hard_update(&mut self) {
+        self.app.hard_update();
         self.update_processes();
         self.update_disks();
     }

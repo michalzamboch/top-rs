@@ -93,7 +93,8 @@ fn handle_input(key: KeyEvent, app_handler: &mut AppHandler) -> bool {
         KeyCode::Esc => return true,
 
         KeyCode::F(5) => app_handler.update(),
-        KeyCode::F(6) => app_handler.pause_unpause(),
+        KeyCode::F(6) => app_handler.hard_update(),
+        KeyCode::F(7) => app_handler.pause_unpause(),
 
         KeyCode::Char('c') => app_handler.sort_processes_by(SortBy::Cpu),
         KeyCode::Char('C') => app_handler.sort_processes_by(SortBy::CpuReverse),

@@ -13,7 +13,8 @@ impl ICreatable for MockApp {
 }
 
 impl IApp for MockApp {
-    fn on_tick(&mut self) {}
+    fn update(&mut self) {}
+    fn hard_update(&mut self) {}
 
     fn get_memory_usage(&self) -> u64 {
         100

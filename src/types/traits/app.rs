@@ -3,7 +3,8 @@ use std::fmt::Debug;
 use crate::types::enums::sort_by::SortBy;
 
 pub trait IApp: Send + Debug {
-    fn on_tick(&mut self);
+    fn update(&mut self);
+    fn hard_update(&mut self);
     fn get_memory_usage(&self) -> u64;
     fn get_swap_usage(&self) -> u64;
     fn get_memory_details(&self) -> String;

@@ -46,13 +46,17 @@ impl ICreatable for App {
 }
 
 impl IApp for App {
-    fn on_tick(&mut self) {
+    fn update(&mut self) {
         self.sys.refresh_memory();
         self.sys.refresh_cpu();
         self.sys.refresh_networks();
         self.sys.refresh_processes();
         self.sys.refresh_disks();
         self.sys.refresh_disks_list();
+    }
+
+    fn hard_update(&mut self) {
+        self.sys.refresh_all();
     }
 
     fn get_memory_usage(&self) -> u64 {
