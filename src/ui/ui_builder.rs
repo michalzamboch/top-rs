@@ -19,11 +19,17 @@ pub fn handle_ui(f: &mut Frame, app_handler: &AppHandler) {
     let cpu_gauge = get_cpu_gauge(app_handler.get_app());
     f.render_widget(cpu_gauge, chunks[2]);
 
-    let memory_datails = get_memory_detail(app_handler.get_app());
-    f.render_widget(memory_datails, chunks[3]);
+    let memory_details = get_memory_detail(app_handler.get_app());
+    let swap_details = get_swap_detail(app_handler.get_app());
+    f.render_widget(memory_details, chunks[3]);
+    f.render_widget(swap_details, chunks[3]);
 
     let memory_gauge = get_memory_gauge(app_handler.get_app());
-    f.render_widget(memory_gauge, chunks[4]);
+    let swap_gauge = get_swap_gauge(app_handler.get_app());
+    let memory_chunks = create_chucks_memory(chunks[4]);
+
+    f.render_widget(memory_gauge, memory_chunks[0]);
+    f.render_widget(swap_gauge, memory_chunks[1]);
 
     let processes = get_process_table(app_handler);
     let process_table = app_handler.get_ui().get_table_handler(PROCESSES_TABLE_ID);
@@ -45,6 +51,13 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
         .split(f.size())
 }
 
+fn create_chucks_memory(size: Rect) -> Rc<[Rect]> {
+    Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
+        .split(size)
+}
+
 fn create_main_horizontal_chunks(size: Rect) -> Rc<[Rect]> {
     Layout::default()
         .direction(Direction::Horizontal)
@@ -63,6 +76,15 @@ fn get_memory_detail(app: &dyn IApp) -> Paragraph<'_> {
 
     Paragraph::new(text)
         .wrap(Wrap { trim: true })
+        .alignment(Alignment::Left)
+        .style(Style::default().fg(config::MEMORY_COLOR))
+}
+
+fn get_swap_detail(app: &dyn IApp) -> Paragraph<'_> {
+    let text = app.get_swap_details();
+
+    Paragraph::new(text)
+        .wrap(Wrap { trim: true })
         .alignment(Alignment::Right)
         .style(Style::default().fg(config::MEMORY_COLOR))
 }
@@ -75,6 +97,20 @@ fn get_memory_gauge(app: &dyn IApp) -> Gauge<'_> {
         .block(
             Block::default()
                 .title(config::MEM_USAGE_TITLE)
+                .borders(Borders::ALL),
+        )
+        .gauge_style(Style::default().fg(color))
+        .percent(usage)
+}
+
+fn get_swap_gauge(app: &dyn IApp) -> Gauge<'_> {
+    let usage = min(app.get_swap_usage(), config::HUNDERED_PERCENT) as u16;
+    let color = get_usage_color(usage, config::MEMORY_COLOR);
+
+    Gauge::default()
+        .block(
+            Block::default()
+                .title(config::SWAP_USAGE_TITLE)
                 .borders(Borders::ALL),
         )
         .gauge_style(Style::default().fg(color))

@@ -8,6 +8,7 @@ pub const OVERLOAD_COLOR: Color = Color::Red;
 
 pub const CPU_USAGE_TITLE: &str = " CPU usage ";
 pub const MEM_USAGE_TITLE: &str = " Memory usage ";
+pub const SWAP_USAGE_TITLE: &str = " Swap usage ";
 
 pub const HUNDERED_PERCENT: u64 = 100;
 

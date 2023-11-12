@@ -59,8 +59,16 @@ impl IApp for App {
         memory::get_memory_usage(&self.sys)
     }
 
+    fn get_swap_usage(&self) -> u64 {
+        memory::get_swap_usage(&self.sys)
+    }
+
     fn get_memory_details(&self) -> String {
         memory::get_memory_details(&self.sys)
+    }
+    
+    fn get_swap_details(&self) -> String {
+        memory::get_swap_details(&self.sys)
     }
 
     fn get_total_cpu_usage(&self) -> u64 {

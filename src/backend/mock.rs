@@ -16,15 +16,23 @@ impl IApp for MockApp {
     fn on_tick(&mut self) {}
 
     fn get_memory_usage(&self) -> u64 {
-        50
+        100
+    }
+    
+    fn get_swap_usage(&self) -> u64 {
+        100
     }
 
     fn get_memory_details(&self) -> String {
-        "Total: 32GB | Used: 8 GB | Free 24 GB".to_owned()
+        "Free: 24GB | Used: 8 GB | Total 24 GB".to_owned()
+    }
+    
+    fn get_swap_details(&self) -> String {
+        "Free: 8 GB | Used: 0 GB | Total 8 GB".to_owned()
     }
 
     fn get_total_cpu_usage(&self) -> u64 {
-        25
+        100
     }
 
     fn get_cpu_details(&self) -> String {
