@@ -1,4 +1,6 @@
-use super::{paths::*, ui_handler::UiHandler};
+#![allow(dead_code)]
+
+use super::{arguments::*, paths::*, ui_handler::UiHandler};
 
 use crate::{
     backend::app::App,
@@ -15,6 +17,7 @@ use crate::{
 pub struct AppHandler {
     ui: Box<dyn IUiHandler>,
     app: Box<dyn IApp>,
+    cli_args: Box<Arguments>,
     pause: bool,
 }
 
@@ -29,8 +32,10 @@ impl IAppAccessor for AppHandler {
 }
 
 impl AppHandler {
-    pub fn new(use_mock: bool) -> AppHandler {
-        let app: Box<dyn IApp> = match use_mock {
+    pub fn new() -> AppHandler {
+        let arguments = Arguments::new_boxed();
+
+        let app: Box<dyn IApp> = match arguments.debug {
             true => MockApp::new_boxed(),
             false => App::new_boxed(),
         };
@@ -38,6 +43,7 @@ impl AppHandler {
         AppHandler {
             ui: UiHandler::new_boxed(),
             app,
+            cli_args: arguments,
             pause: false,
         }
     }

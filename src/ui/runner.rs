@@ -34,7 +34,7 @@ pub fn start() -> Result<(), Box<dyn Error>> {
 
 fn create_app(terminal: &mut Terminal<CrosstermBackend<Stdout>>) -> Result<(), Box<dyn Error>> {
     let tick_rate = Duration::from_millis(config::REFRESH_MILIS);
-    let app_handler = AppHandler::new(config::USE_MOCK);
+    let app_handler = AppHandler::new();
     run_app(terminal, app_handler, tick_rate)?;
 
     Ok(())
