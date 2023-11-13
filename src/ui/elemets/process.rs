@@ -36,7 +36,7 @@ fn get_process_rows(data: &[Vec<String>]) -> impl Iterator<Item = Row<'static>> 
 }
 
 fn get_process_header() -> Row<'static> {
-    let normal_style = Style::default().bg(Color::Blue);
+    let normal_style = Style::default().bg(config::PROCESS_COLOR);
 
     let header_cells = [
         "Pid [P]",

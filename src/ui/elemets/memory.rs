@@ -21,7 +21,7 @@ pub fn get_swap_detail(app: &dyn IApp) -> Paragraph<'_> {
     Paragraph::new(text)
         .wrap(Wrap { trim: true })
         .alignment(Alignment::Right)
-        .style(Style::default().fg(config::MEMORY_COLOR))
+        .style(Style::default().fg(config::SWAP_COLOR))
 }
 
 pub fn get_memory_gauge(app: &dyn IApp) -> Gauge<'_> {
@@ -40,7 +40,7 @@ pub fn get_memory_gauge(app: &dyn IApp) -> Gauge<'_> {
 
 pub fn get_swap_gauge(app: &dyn IApp) -> Gauge<'_> {
     let usage = min(app.get_swap_usage(), config::HUNDERED_PERCENT) as u16;
-    let color = get_usage_color(usage, config::MEMORY_COLOR);
+    let color = get_usage_color(usage, config::SWAP_COLOR);
 
     Gauge::default()
         .block(

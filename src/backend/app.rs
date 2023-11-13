@@ -53,6 +53,7 @@ impl IApp for App {
         self.sys.refresh_processes();
         self.sys.refresh_disks();
         self.sys.refresh_disks_list();
+        self.sys.refresh_system();
     }
 
     fn hard_update(&mut self) {
