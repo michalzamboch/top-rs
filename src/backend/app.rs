@@ -52,7 +52,6 @@ impl IApp for App {
         self.sys.refresh_networks();
         self.sys.refresh_processes();
         self.sys.refresh_disks();
-        self.sys.refresh_disks_list();
         self.sys.refresh_system();
     }
 

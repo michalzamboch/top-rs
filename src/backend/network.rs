@@ -1,7 +1,10 @@
 #![allow(dead_code)]
 
-use std::*;
+use pretty_bytes::*;
+use std::{collections::HashMap, *};
 use sysinfo::*;
+
+use super::config;
 
 #[derive(Debug, Clone, Hash, Default, PartialEq, Eq)]
 pub struct Networking {
@@ -56,6 +59,14 @@ impl Networking {
     }
 }
 
+pub fn get_current_network_vec_strings(sys: &System) -> Vec<Vec<String>> {
+    sys.networks()
+        .into_iter()
+        .filter(|item| item.0 == "Wi-Fi" || item.0 == "Ethernet")
+        .map(create_connections_vec_strings)
+        .collect()
+}
+
 pub fn get_network_vec_strings(sys: &System) -> Vec<Vec<String>> {
     sys.networks()
         .into_iter()
@@ -66,7 +77,22 @@ pub fn get_network_vec_strings(sys: &System) -> Vec<Vec<String>> {
 fn create_connections_vec_strings(connection: (&String, &NetworkData)) -> Vec<String> {
     vec![
         format!("{}", connection.0),
-        format!("{}", connection.1.transmitted()),
-        format!("{}", connection.1.received()),
+        converter::convert(connection.1.transmitted() as f64),
+        converter::convert(connection.1.received() as f64),
     ]
+}
+
+pub fn get_current_network_map(sys: &System) -> HashMap<String, Vec<u64>> {
+    sys.networks()
+        .into_iter()
+        .filter(|item| item.0 == config::WIFI_ID || item.0 == config::ETHERNET_ID)
+        .map(create_connection_tuple)
+        .collect()
+}
+
+fn create_connection_tuple(connection: (&String, &NetworkData)) -> (String, Vec<u64>) {
+    (
+        connection.0.to_owned(),
+        vec![connection.1.transmitted(), connection.1.received()],
+    )
 }
