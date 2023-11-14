@@ -7,6 +7,10 @@ pub trait ICreatable: Debug + Default {
         Box::new(Self::new())
     }
 
+    fn new_rc() -> Rc<Self> {
+        Rc::new(Self::new())
+    }
+
     fn new_ref() -> Rc<RefCell<Self>> {
         Rc::new(RefCell::new(Self::new()))
     }

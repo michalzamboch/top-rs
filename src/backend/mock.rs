@@ -1,3 +1,5 @@
+use std::collections::*;
+
 use crate::types::{
     enums::sort_by::SortBy,
     traits::{app::IApp, creatable::ICreatable},
@@ -74,6 +76,15 @@ impl IApp for MockApp {
                 "100.00 MB".to_owned(),
             ],
         ]
+    }
+
+    fn get_network_info(&self) -> HashMap<String, (u64, u64)> {
+        let mut map = HashMap::new();
+
+        map.insert("Wi-Fi".to_owned(), (50, 100));
+        map.insert("Ethernet".to_owned(), (25, 100));
+
+        map
     }
 
     fn get_disks_vec_string(&self) -> Vec<Vec<String>> {

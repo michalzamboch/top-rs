@@ -1,9 +1,7 @@
-#![allow(dead_code)]
-
 use ratatui::widgets::*;
 use std::cell::{RefCell, RefMut};
 
-use crate::types::traits::table_handler::ITableHandler;
+use crate::types::traits::{creatable::ICreatable, table_handler::ITableHandler};
 
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct TableHandler {
@@ -11,10 +9,10 @@ pub struct TableHandler {
     data: RefCell<Vec<Vec<String>>>,
 }
 
-impl TableHandler {
-    pub fn new() -> TableHandler {
+impl ICreatable for TableHandler {
+    fn new() -> TableHandler {
         let mut tmp_state = TableState::default();
-        tmp_state.select(Some(0));
+        tmp_state.select(None);
 
         TableHandler {
             state: RefCell::new(tmp_state),

@@ -1,4 +1,4 @@
-use std::fmt::Debug;
+use std::{collections::*, fmt::Debug};
 
 use crate::types::enums::sort_by::SortBy;
 
@@ -15,6 +15,7 @@ pub trait IApp: Send + Debug {
     fn get_filtered_processes_vec_strings(&self) -> Vec<Vec<String>>;
     fn get_temperatures(&self) -> Vec<Vec<String>>;
     fn get_networks_list(&self) -> Vec<Vec<String>>;
+    fn get_network_info(&self) -> HashMap<String, (u64, u64)>;
     fn get_disks_vec_string(&self) -> Vec<Vec<String>>;
     fn sort_processes_by(&mut self, sort_by: SortBy);
 }

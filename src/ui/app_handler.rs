@@ -54,14 +54,19 @@ impl AppHandler {
         }
 
         self.app.update();
-        self.update_processes();
-        self.update_disks();
+        self.ui_update();
     }
 
     pub fn hard_update(&mut self) {
         self.app.hard_update();
+        self.ui_update();
+    }
+
+    fn ui_update(&self) {
         self.update_processes();
         self.update_disks();
+        self.update_transmitted_network();
+        self.update_received_network();
     }
 
     fn update_processes(&self) {
@@ -74,6 +79,18 @@ impl AppHandler {
         let disks = self.app.get_disks_vec_string();
         let disk_table = self.ui.get_table_handler(DISKS_TABLE_ID);
         disk_table.set_data(disks);
+    }
+
+    fn update_transmitted_network(&self) {
+        let net = self.app.get_network_info();
+        let spark_line = self.ui.get_spar_line(TRASMITTED_SPARK_LINE_ID);
+        spark_line.add(net["Ethernet"].0);
+    }
+
+    fn update_received_network(&self) {
+        let net = self.app.get_network_info();
+        let spark_line = self.ui.get_spar_line(RECEIVED_SPARK_LINE_ID);
+        spark_line.add(net["Ethernet"].1);
     }
 
     pub fn process_down(&self) {

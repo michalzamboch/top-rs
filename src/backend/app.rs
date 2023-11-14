@@ -1,5 +1,7 @@
 #![allow(dead_code)]
 
+use std::collections::HashMap;
+
 use sysinfo::*;
 
 use crate::types::{
@@ -7,18 +9,11 @@ use crate::types::{
     traits::{app::IApp, creatable::ICreatable},
 };
 
-use super::{
-    config, cpu,
-    disk::get_disks_vec_string,
-    memory,
-    network::{self, *},
-    pc_info, process, temperatures,
-};
+use super::*;
 
 #[derive(Debug, Default)]
 pub struct App {
     sys: System,
-    network: Networking,
     processes_sorted_by: SortBy,
 }
 
@@ -35,11 +30,8 @@ impl ICreatable for App {
         let mut sys = System::new();
         App::initial_sys_refresh(&mut sys);
 
-        let network = Networking::new(&mut sys);
-
         App {
             sys,
-            network,
             processes_sorted_by: SortBy::default(),
         }
     }
@@ -50,6 +42,7 @@ impl IApp for App {
         self.sys.refresh_memory();
         self.sys.refresh_cpu();
         self.sys.refresh_networks();
+        self.sys.refresh_networks_list();
         self.sys.refresh_processes();
         self.sys.refresh_disks();
         self.sys.refresh_system();
@@ -99,8 +92,12 @@ impl IApp for App {
         network::get_network_vec_strings(&self.sys)
     }
 
+    fn get_network_info(&self) -> HashMap<String, (u64, u64)> {
+        network::get_network_map(&self.sys)
+    }
+
     fn get_disks_vec_string(&self) -> Vec<Vec<String>> {
-        get_disks_vec_string(&self.sys)
+        disk::get_disks_vec_string(&self.sys)
     }
 
     fn sort_processes_by(&mut self, sort_by: SortBy) {

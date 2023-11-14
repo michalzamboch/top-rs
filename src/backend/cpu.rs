@@ -18,10 +18,10 @@ pub fn get_total_cpu_usage(sys: &System) -> u64 {
 
 pub fn get_cpu_details(sys: &System) -> String {
     let core_count = sys.physical_core_count();
-    let cpu_brand = sys.global_cpu_info().brand().trim_end();
+    let cpu_brand = sys.global_cpu_info().brand().trim();
 
     match core_count {
         Some(count) => format!("{} | {} Core", cpu_brand, count),
-        None => format!("{}", cpu_brand),
+        None => cpu_brand.to_string(),
     }
 }

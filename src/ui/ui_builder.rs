@@ -20,6 +20,8 @@ pub fn handle_ui(f: &mut Frame, app_handler: &dyn IAppAccessor) {
     build_memory_gauges(f, chunks[4], app_handler);
 
     build_process_table(f, chunks[5], app_handler);
+
+    //build_network_spark_lines(f, chunks[6], app_handler);
 }
 
 fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
@@ -32,21 +34,15 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
             Constraint::Length(1),
             Constraint::Length(3),
             Constraint::Max(get_terminal_height() as u16),
+            //Constraint::Length(3),
         ])
         .split(f.size())
 }
 
-fn create_chucks_memory(size: Rect) -> Rc<[Rect]> {
+fn create_half_chucks(size: Rect) -> Rc<[Rect]> {
     Layout::default()
         .direction(Direction::Horizontal)
         .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
-        .split(size)
-}
-
-fn create_main_horizontal_chunks(size: Rect) -> Rc<[Rect]> {
-    Layout::default()
-        .direction(Direction::Horizontal)
-        .constraints([Constraint::Percentage(70), Constraint::Percentage(30)])
         .split(size)
 }
 
@@ -68,7 +64,7 @@ fn build_cpu_paragraph(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppAccesso
 fn build_memory_details(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppAccessor) {
     let memory_details = memory::get_memory_detail(app_handler.get_app());
     let swap_details = memory::get_swap_detail(app_handler.get_app());
-    let memory_chunks = create_chucks_memory(chunk);
+    let memory_chunks = create_half_chucks(chunk);
 
     f.render_widget(memory_details, memory_chunks[0]);
     f.render_widget(swap_details, memory_chunks[1]);
@@ -77,7 +73,7 @@ fn build_memory_details(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppAccess
 fn build_memory_gauges(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppAccessor) {
     let memory_gauge = memory::get_memory_gauge(app_handler.get_app());
     let swap_gauge = memory::get_swap_gauge(app_handler.get_app());
-    let memory_chunks = create_chucks_memory(chunk);
+    let memory_chunks = create_half_chucks(chunk);
 
     f.render_widget(memory_gauge, memory_chunks[0]);
     f.render_widget(swap_gauge, memory_chunks[1]);
@@ -88,4 +84,19 @@ fn build_process_table(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppAccesso
     let process_table = app_handler.get_ui().get_table_handler(PROCESSES_TABLE_ID);
 
     f.render_stateful_widget(processes, chunk, &mut process_table.get_state());
+}
+
+fn build_network_spark_lines(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppAccessor) {
+    let chunks = create_half_chucks(chunk);
+    let received = app_handler.get_ui().get_spar_line(RECEIVED_SPARK_LINE_ID);
+    let transmitted = app_handler.get_ui().get_spar_line(TRASMITTED_SPARK_LINE_ID);
+
+    let binding = received.get_vec();
+    let received_spark_line = network::get_receive_sparkline(&binding);
+
+    let binding = transmitted.get_vec();
+    let transmitted_spark_line = network::get_transmited_sparkline(&binding);
+
+    f.render_widget(received_spark_line, chunks[0]);
+    f.render_widget(transmitted_spark_line, chunks[1]);
 }
