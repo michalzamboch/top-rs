@@ -96,6 +96,10 @@ impl IApp for App {
         network::get_network_map(&self.sys)
     }
 
+    fn get_current_network_info(&self) -> (u64, u64) {
+        network::get_current_network(&self.sys)
+    }
+
     fn get_disks_vec_string(&self) -> Vec<Vec<String>> {
         disk::get_disks_vec_string(&self.sys)
     }

@@ -5,6 +5,8 @@ use crate::types::{
     traits::{app::IApp, creatable::ICreatable},
 };
 
+use super::config;
+
 #[derive(Debug, Default)]
 pub struct MockApp;
 
@@ -81,10 +83,14 @@ impl IApp for MockApp {
     fn get_network_info(&self) -> HashMap<String, (u64, u64)> {
         let mut map = HashMap::new();
 
-        map.insert("Wi-Fi".to_owned(), (50, 100));
-        map.insert("Ethernet".to_owned(), (25, 100));
+        map.insert(config::WIFI_ID.to_owned(), (50, 100));
+        map.insert(config::ETHERNET_ID.to_owned(), (25, 100));
 
         map
+    }
+
+    fn get_current_network_info(&self) -> (u64, u64) {
+        (100, 100)
     }
 
     fn get_disks_vec_string(&self) -> Vec<Vec<String>> {

@@ -12,7 +12,12 @@ pub fn get_transmited_sparkline(data: &Vec<u64>) -> Sparkline<'_> {
 
 fn create_spark_line(data: &[u64], title: String) -> Sparkline<'_> {
     Sparkline::default()
-        .block(Block::default().title(title).borders(Borders::ALL))
+        .block(
+            Block::default()
+                .title(title)
+                .borders(Borders::ALL)
+                .title_alignment(Alignment::Center),
+        )
         .data(data)
         .style(Style::default().fg(Color::Green))
 }

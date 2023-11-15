@@ -16,6 +16,7 @@ pub trait IApp: Send + Debug {
     fn get_temperatures(&self) -> Vec<Vec<String>>;
     fn get_networks_list(&self) -> Vec<Vec<String>>;
     fn get_network_info(&self) -> HashMap<String, (u64, u64)>;
+    fn get_current_network_info(&self) -> (u64, u64);
     fn get_disks_vec_string(&self) -> Vec<Vec<String>>;
     fn sort_processes_by(&mut self, sort_by: SortBy);
 }

@@ -3,6 +3,7 @@ use std::{collections::HashMap, rc::Rc};
 use super::{
     controls::{spark_line_handler::SparkLineHandler, table_handler::TableHandler},
     paths::*,
+    util::get_terminal_width,
 };
 use crate::types::traits::{
     creatable::ICreatable, spark_line_handler::ISparkLineHandler, table_handler::ITableHandler,
@@ -34,14 +35,13 @@ impl UiHandler {
     fn create_spark_line_map() -> SparkLineMap {
         let mut spark_line_map = HashMap::new();
 
-        spark_line_map.insert(
-            RECEIVED_SPARK_LINE_ID.to_owned(),
-            SparkLineHandler::new_rc(),
-        );
-        spark_line_map.insert(
-            TRASMITTED_SPARK_LINE_ID.to_owned(),
-            SparkLineHandler::new_rc(),
-        );
+        let spark_line_received = SparkLineHandler::new_rc();
+        spark_line_received.init(get_terminal_width() as u64);
+        spark_line_map.insert(RECEIVED_SPARK_LINE_ID.to_owned(), spark_line_received);
+
+        let spark_line_transmitted = SparkLineHandler::new_rc();
+        spark_line_transmitted.init(get_terminal_width() as u64);
+        spark_line_map.insert(TRASMITTED_SPARK_LINE_ID.to_owned(), spark_line_transmitted);
 
         spark_line_map
     }

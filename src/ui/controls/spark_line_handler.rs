@@ -11,20 +11,25 @@ pub struct SparkLineHandler {
 impl ICreatable for SparkLineHandler {
     fn new() -> Self {
         Self {
-            data: RefCell::new(VecDeque::from([
-                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 100,
-            ])),
+            data: RefCell::new(VecDeque::new()),
         }
     }
 }
 
 impl ISparkLineHandler for SparkLineHandler {
     fn add(&self, value: u64) {
-        self.data.borrow_mut().push_back(value);
-        self.data.borrow_mut().pop_front();
+        self.data.borrow_mut().push_front(value);
+        self.data.borrow_mut().pop_back();
     }
 
     fn get_vec(&self) -> Vec<u64> {
         self.data.borrow().par_iter().cloned().collect()
+    }
+
+    fn init(&self, size: u64) {
+        self.data.borrow_mut().clear();
+        for _ in 0..size {
+            self.data.borrow_mut().push_back(0);
+        }
     }
 }

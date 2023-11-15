@@ -21,7 +21,7 @@ pub fn handle_ui(f: &mut Frame, app_handler: &dyn IAppAccessor) {
 
     build_process_table(f, chunks[5], app_handler);
 
-    //build_network_spark_lines(f, chunks[6], app_handler);
+    build_network_spark_lines(f, chunks[6], app_handler);
 }
 
 fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
@@ -34,7 +34,7 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
             Constraint::Length(1),
             Constraint::Length(3),
             Constraint::Max(get_terminal_height() as u16),
-            //Constraint::Length(3),
+            Constraint::Length(3),
         ])
         .split(f.size())
 }

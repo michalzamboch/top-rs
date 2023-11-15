@@ -82,15 +82,15 @@ impl AppHandler {
     }
 
     fn update_transmitted_network(&self) {
-        let net = self.app.get_network_info();
+        let net = self.app.get_current_network_info();
         let spark_line = self.ui.get_spar_line(TRASMITTED_SPARK_LINE_ID);
-        spark_line.add(net["Ethernet"].0);
+        spark_line.add(net.0);
     }
 
     fn update_received_network(&self) {
-        let net = self.app.get_network_info();
+        let net = self.app.get_current_network_info();
         let spark_line = self.ui.get_spar_line(RECEIVED_SPARK_LINE_ID);
-        spark_line.add(net["Ethernet"].1);
+        spark_line.add(net.1);
     }
 
     pub fn process_down(&self) {
