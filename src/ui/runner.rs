@@ -15,7 +15,7 @@ use ratatui::prelude::*;
 
 use crate::types::{enums::sort_by::SortBy, traits::app_accessor::IAppAccessor};
 
-use super::{app_handler::AppHandler, config, ui_builder::*, paths::*};
+use super::{app_handler::AppHandler, config, paths::*, ui_builder::*};
 
 pub fn start() -> Result<(), Box<dyn Error>> {
     enable_raw_mode()?;

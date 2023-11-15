@@ -2,7 +2,8 @@ use std::{collections::HashMap, rc::Rc};
 
 use super::{
     controls::{spark_line_handler::SparkLineHandler, table_handler::TableHandler},
-    paths::*, util::*,
+    paths::*,
+    util::*,
 };
 use crate::types::traits::{
     creatable::ICreatable, spark_line_handler::ISparkLineHandler, table_handler::ITableHandler,

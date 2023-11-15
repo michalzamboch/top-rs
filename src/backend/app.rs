@@ -97,7 +97,7 @@ impl IApp for App {
     }
 
     fn get_current_network_info(&self) -> (u64, u64) {
-        network::get_current_network(&self.sys)
+        network::get_connection_sum(&self.sys)
     }
 
     fn get_disks_vec_string(&self) -> Vec<Vec<String>> {
