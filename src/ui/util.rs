@@ -30,3 +30,7 @@ pub const fn get_usage_color(usage: u16, regular_color: Color) -> Color {
         regular_color
     }
 }
+
+pub fn get_spark_line_len() -> u16 {
+    get_terminal_width() as u16 / 2 - config::PRETTY_BYTES_COL_LEN as u16
+}

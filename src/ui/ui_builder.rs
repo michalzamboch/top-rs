@@ -48,7 +48,7 @@ fn create_half_chucks(size: Rect) -> Rc<[Rect]> {
 
 fn create_network_chucks(size: Rect) -> Rc<[Rect]> {
     let byte_len = config::PRETTY_BYTES_COL_LEN;
-    let spark_line_len = get_terminal_width() as u16 / 2 - byte_len as u16;
+    let spark_line_len = get_spark_line_len();
 
     Layout::default()
         .direction(Direction::Horizontal)
