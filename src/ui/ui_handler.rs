@@ -36,11 +36,11 @@ impl UiHandler {
         let mut spark_line_map = HashMap::new();
 
         let spark_line_received = SparkLineHandler::new_rc();
-        spark_line_received.init(get_terminal_width() as u64);
+        spark_line_received.init(get_terminal_width() as u64 * 2);
         spark_line_map.insert(RECEIVED_SPARK_LINE_ID.to_owned(), spark_line_received);
 
         let spark_line_transmitted = SparkLineHandler::new_rc();
-        spark_line_transmitted.init(get_terminal_width() as u64);
+        spark_line_transmitted.init(get_terminal_width() as u64 * 2);
         spark_line_map.insert(TRASMITTED_SPARK_LINE_ID.to_owned(), spark_line_transmitted);
 
         spark_line_map

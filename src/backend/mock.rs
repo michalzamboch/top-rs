@@ -65,19 +65,8 @@ impl IApp for MockApp {
         vec![vec!["CPU".to_owned(), "100 °C".to_owned()]]
     }
 
-    fn get_networks_list(&self) -> Vec<Vec<String>> {
-        vec![
-            vec![
-                "Ethernet".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 MB".to_owned(),
-            ],
-            vec![
-                "Wi-Fi".to_owned(),
-                "100.00 MB".to_owned(),
-                "100.00 MB".to_owned(),
-            ],
-        ]
+    fn get_current_connection_total_strings(&self) -> (String, String) {
+        ("100.00 MB".to_owned(), "200.00 MB".to_owned())
     }
 
     fn get_network_info(&self) -> HashMap<String, (u64, u64)> {

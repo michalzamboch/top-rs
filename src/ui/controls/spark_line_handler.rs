@@ -1,4 +1,3 @@
-use rayon::iter::*;
 use std::{cell::RefCell, collections::VecDeque};
 
 use crate::types::traits::{creatable::ICreatable, spark_line_handler::ISparkLineHandler};
@@ -23,7 +22,7 @@ impl ISparkLineHandler for SparkLineHandler {
     }
 
     fn get_vec(&self) -> Vec<u64> {
-        self.data.borrow().par_iter().cloned().collect()
+        self.data.borrow().iter().cloned().collect()
     }
 
     fn init(&self, size: u64) {

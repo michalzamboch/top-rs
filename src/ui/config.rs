@@ -1,12 +1,13 @@
 use ratatui::prelude::*;
 
-pub const REFRESH_MILIS: u64 = 750;
+pub const REFRESH_MILIS: u64 = 600;
 
 pub const MEMORY_COLOR: Color = Color::Green;
 pub const SWAP_COLOR: Color = Color::Yellow;
 pub const CPU_COLOR: Color = Color::Blue;
 pub const PROCESS_COLOR: Color = CPU_COLOR;
 pub const OVERLOAD_COLOR: Color = Color::Red;
+pub const NETWORK_COLOR: Color = Color::Green;
 
 pub const CPU_USAGE_TITLE: &str = " CPU usage ";
 pub const MEM_USAGE_TITLE: &str = " Memory usage ";

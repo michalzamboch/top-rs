@@ -88,8 +88,8 @@ impl IApp for App {
         temperatures::get_temperatures_vec_strings(&self.sys)
     }
 
-    fn get_networks_list(&self) -> Vec<Vec<String>> {
-        network::get_network_vec_strings(&self.sys)
+    fn get_current_connection_total_strings(&self) -> (String, String) {
+        network::get_current_total_connection_strings(&self.sys)
     }
 
     fn get_network_info(&self) -> HashMap<String, (u64, u64)> {
