@@ -106,7 +106,7 @@ fn build_network_spark_lines(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppA
     let received = app_handler.get_ui().get_spar_line(RECEIVED_SPARK_LINE_ID);
     let transmitted = app_handler.get_ui().get_spar_line(TRASMITTED_SPARK_LINE_ID);
 
-    let connection_info = app_handler.get_app().get_current_connection_total_strings();
+    let connection_info = app_handler.get_app().get_network_total_sum();
 
     let binding = received.get_vec();
     let received_spark_line = network::get_receive_sparkline(&binding);

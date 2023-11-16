@@ -88,15 +88,15 @@ impl IApp for App {
         temperatures::get_temperatures_vec_strings(&self.sys)
     }
 
-    fn get_current_connection_total_strings(&self) -> (String, String) {
-        network::get_current_total_connection_strings(&self.sys)
+    fn get_network_total_sum(&self) -> (String, String) {
+        network::get_total_connection_strings(&self.sys)
     }
 
-    fn get_network_info(&self) -> HashMap<String, (u64, u64)> {
+    fn get_network_map(&self) -> HashMap<String, (u64, u64)> {
         network::get_network_map(&self.sys)
     }
 
-    fn get_current_network_info(&self) -> (u64, u64) {
+    fn get_network_sum(&self) -> (u64, u64) {
         network::get_connection_sum(&self.sys)
     }
 

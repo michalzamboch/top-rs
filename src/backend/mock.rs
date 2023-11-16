@@ -65,11 +65,11 @@ impl IApp for MockApp {
         vec![vec!["CPU".to_owned(), "100 °C".to_owned()]]
     }
 
-    fn get_current_connection_total_strings(&self) -> (String, String) {
+    fn get_network_total_sum(&self) -> (String, String) {
         ("100.00 MB".to_owned(), "200.00 MB".to_owned())
     }
 
-    fn get_network_info(&self) -> HashMap<String, (u64, u64)> {
+    fn get_network_map(&self) -> HashMap<String, (u64, u64)> {
         let mut map = HashMap::new();
 
         map.insert(config::WIFI_ID.to_owned(), (50, 100));
@@ -78,7 +78,7 @@ impl IApp for MockApp {
         map
     }
 
-    fn get_current_network_info(&self) -> (u64, u64) {
+    fn get_network_sum(&self) -> (u64, u64) {
         (100, 100)
     }
 
