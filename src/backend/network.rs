@@ -49,15 +49,13 @@ fn get_connection_from_map(network_map: &HashMap<String, (u64, u64)>) -> (u64, u
     let empty_connection = (0, 0);
 
     if network_map.contains_key(config::ETHERNET_ID) {
-        network_map
+        *network_map
             .get(config::ETHERNET_ID)
             .unwrap_or(&empty_connection)
-            .clone()
     } else if network_map.contains_key(config::WIFI_ID) {
-        network_map
+        *network_map
             .get(config::WIFI_ID)
             .unwrap_or(&empty_connection)
-            .clone()
     } else {
         empty_connection
     }
