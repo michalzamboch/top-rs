@@ -2,6 +2,8 @@
 
 use sysinfo::*;
 
+static UNKNOWN: & str = "Unknown";
+
 pub fn get_sys_info(sys: &System) -> String {
     format!(
         "System name: {}, Kernel version: {}, OS version: {}, Host name: {}",
@@ -13,28 +15,21 @@ pub fn get_sys_info(sys: &System) -> String {
 }
 
 fn get_sys_name(sys: &System) -> String {
-    get_info_or_unknown(sys.name())
+    sys.name().unwrap_or(UNKNOWN.to_owned())
 }
 
 fn get_kernel_version(sys: &System) -> String {
-    get_info_or_unknown(sys.kernel_version())
+    sys.kernel_version().unwrap_or(UNKNOWN.to_owned())
 }
 
 fn get_os_version(sys: &System) -> String {
-    get_info_or_unknown(sys.os_version())
+    sys.os_version().unwrap_or(UNKNOWN.to_owned())
 }
 
 fn get_host_name(sys: &System) -> String {
-    get_info_or_unknown(sys.host_name())
+    sys.host_name().unwrap_or(UNKNOWN.to_owned())
 }
 
 fn get_boot_time(sys: &System) -> String {
     format!("{} ms", sys.boot_time())
-}
-
-fn get_info_or_unknown(info: Option<String>) -> String {
-    match info {
-        Some(info_str) => info_str,
-        None => "Unknown".to_owned(),
-    }
 }

@@ -21,15 +21,12 @@ pub fn start() -> Result<(), Box<dyn Error>> {
     enable_raw_mode()?;
     let mut stdout = io::stdout();
     execute!(stdout, EnterAlternateScreen, EnableMouseCapture)?;
+
     let backend = CrosstermBackend::new(stdout);
     let mut terminal = Terminal::new(backend)?;
 
-    let res = create_app(&mut terminal);
+    create_app(&mut terminal)?;
     restore_terminal(&mut terminal)?;
-
-    if let Err(err) = res {
-        println!("{err:?}");
-    }
 
     Ok(())
 }
