@@ -101,7 +101,7 @@ impl AppHandler {
     }
 
     pub fn move_to_table(&self, move_to: TableSelectionMove) {
-        self.ui.move_to_table(move_to);
+        self.ui.get_table_selection().move_to(move_to);
     }
 
     pub fn sort_processes_by(&mut self, sort_by: SortBy) {

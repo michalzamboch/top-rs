@@ -9,13 +9,9 @@ use super::{
     },
     paths::*,
 };
-use crate::types::{
-    enums::selected_table::TableSelectionMove,
-    traits::{
-        creatable::ICreatable, selected_table::ISelectedTable,
-        spark_line_handler::ISparkLineHandler, table_handler::ITableHandler,
-        ui_handler::IUiHandler,
-    },
+use crate::types::traits::{
+    creatable::ICreatable, selected_table::ISelectedTable, spark_line_handler::ISparkLineHandler,
+    table_handler::ITableHandler, ui_handler::IUiHandler,
 };
 
 type TableHandlerMapElement = Rc<TableHandler>;
@@ -89,8 +85,8 @@ impl IUiHandler for UiHandler {
         }
     }
 
-    fn move_to_table(&self, move_to: TableSelectionMove) {
-        self.table_selection.move_to(move_to);
+    fn get_table_selection(&self) -> &dyn ISelectedTable {
+        &self.table_selection
     }
 
     fn get_selected_table(&self) -> Rc<dyn ITableHandler> {
