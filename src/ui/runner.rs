@@ -13,7 +13,10 @@ use crossterm::{
 };
 use ratatui::prelude::*;
 
-use crate::types::{enums::sort_by::SortBy, traits::app_accessor::IAppAccessor};
+use crate::types::{
+    enums::{sort_by::SortBy, table_position::TablePosition},
+    traits::app_accessor::IAppAccessor,
+};
 
 use super::{app_handler::AppHandler, config, paths::*, ui_builder::*};
 
@@ -115,10 +118,10 @@ fn handle_input(key: KeyEvent, app_handler: &mut AppHandler) -> bool {
         KeyCode::Char('w') => app_handler.sort_processes_by(SortBy::DiskWrite),
         KeyCode::Char('W') => app_handler.sort_processes_by(SortBy::DiskWriteReverse),
 
-        KeyCode::Down => app_handler.process_down(),
-        KeyCode::Up => app_handler.process_up(),
-        KeyCode::Home => app_handler.first_process(),
-        KeyCode::End => app_handler.last_process(),
+        KeyCode::Down => app_handler.process_jump_to(TablePosition::Down),
+        KeyCode::Up => app_handler.process_jump_to(TablePosition::Up),
+        KeyCode::Home => app_handler.process_jump_to(TablePosition::First),
+        KeyCode::End => app_handler.process_jump_to(TablePosition::Last),
         _ => (),
     }
 

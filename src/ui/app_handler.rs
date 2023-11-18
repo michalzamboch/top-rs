@@ -6,7 +6,7 @@ use crate::{
     backend::app::App,
     backend::mock::MockApp,
     types::{
-        enums::sort_by::SortBy,
+        enums::{sort_by::SortBy, table_position::TablePosition},
         traits::{
             app::IApp, app_accessor::IAppAccessor, creatable::ICreatable, ui_handler::IUiHandler,
         },
@@ -93,24 +93,9 @@ impl AppHandler {
         spark_line.add(net.0);
     }
 
-    pub fn process_down(&self) {
+    pub fn process_jump_to(&self, position: TablePosition) {
         let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
-        process_table.next();
-    }
-
-    pub fn process_up(&self) {
-        let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
-        process_table.previous();
-    }
-
-    pub fn first_process(&self) {
-        let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
-        process_table.first();
-    }
-
-    pub fn last_process(&self) {
-        let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
-        process_table.last();
+        process_table.jump_to(position);
     }
 
     pub fn sort_processes_by(&mut self, sort_by: SortBy) {

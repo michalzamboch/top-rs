@@ -1,7 +1,10 @@
 use ratatui::widgets::*;
 use std::cell::{RefCell, RefMut};
 
-use crate::types::traits::{creatable::ICreatable, table_handler::ITableHandler};
+use crate::types::{
+    enums::table_position::TablePosition,
+    traits::{creatable::ICreatable, table_handler::ITableHandler},
+};
 
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct TableHandler {
@@ -22,6 +25,17 @@ impl ICreatable for TableHandler {
 }
 
 impl ITableHandler for TableHandler {
+    fn jump_to(&self, position: TablePosition) {
+        match position {
+            TablePosition::Down => self.next(),
+            TablePosition::Up => self.previous(),
+            TablePosition::First => self.first(),
+            TablePosition::Last => self.last(),
+            TablePosition::PageDown => todo!(),
+            TablePosition::PageUp => todo!(),
+        }
+    }
+
     fn first(&self) {
         if self.data.borrow().is_empty() {
             return;
