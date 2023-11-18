@@ -1,12 +1,17 @@
+#![allow(dead_code)]
+
 use std::{collections::HashMap, rc::Rc};
 
 use super::{
-    controls::{spark_line_handler::SparkLineHandler, table_handler::TableHandler},
+    controls::{
+        selected_table::SelectedTable, spark_line_handler::SparkLineHandler,
+        table_handler::TableHandler,
+    },
     paths::*,
 };
 use crate::types::traits::{
-    creatable::ICreatable, spark_line_handler::ISparkLineHandler, table_handler::ITableHandler,
-    ui_handler::IUiHandler,
+    creatable::ICreatable, selected_table::ISelectedTable, spark_line_handler::ISparkLineHandler,
+    table_handler::ITableHandler, ui_handler::IUiHandler,
 };
 
 type TableHandlerMapElement = Rc<TableHandler>;
@@ -19,6 +24,7 @@ type SparkLineMap = HashMap<String, SparkLineMapElement>;
 pub struct UiHandler {
     table_handler_map: TableHandlerMap,
     spark_line_map: SparkLineMap,
+    table_selection: SelectedTable,
 }
 
 impl UiHandler {
@@ -42,6 +48,12 @@ impl UiHandler {
 
         spark_line_map
     }
+
+    fn create_table_selection() -> SelectedTable {
+        let selected_table = SelectedTable::new();
+        selected_table.register_vec(vec![PROCESSES_TABLE_ID]);
+        selected_table
+    }
 }
 
 impl ICreatable for UiHandler {
@@ -49,6 +61,7 @@ impl ICreatable for UiHandler {
         UiHandler {
             table_handler_map: Self::create_table_map(),
             spark_line_map: Self::create_spark_line_map(),
+            table_selection: Self::create_table_selection(),
         }
     }
 }

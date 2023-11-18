@@ -3,6 +3,7 @@ pub mod app_accessor;
 pub mod creatable;
 pub mod disk;
 pub mod process;
+pub mod selected_table;
 pub mod spark_line_handler;
 pub mod table_handler;
 pub mod temperature;
