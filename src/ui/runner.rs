@@ -14,7 +14,7 @@ use crossterm::{
 use ratatui::prelude::*;
 
 use crate::types::{
-    enums::{sort_by::SortBy, table_position::TablePosition},
+    enums::{selected_table::TableSelectionMove, sort_by::SortBy, table_position::TablePosition},
     traits::app_accessor::IAppAccessor,
 };
 
@@ -122,6 +122,9 @@ fn handle_input(key: KeyEvent, app_handler: &mut AppHandler) -> bool {
         KeyCode::Up => app_handler.process_jump_to(TablePosition::Up),
         KeyCode::Home => app_handler.process_jump_to(TablePosition::First),
         KeyCode::End => app_handler.process_jump_to(TablePosition::Last),
+
+        KeyCode::Right => app_handler.move_to_table(TableSelectionMove::Next),
+        KeyCode::Left => app_handler.move_to_table(TableSelectionMove::Previous),
         _ => (),
     }
 

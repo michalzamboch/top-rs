@@ -6,7 +6,9 @@ use crate::{
     backend::app::App,
     backend::mock::MockApp,
     types::{
-        enums::{sort_by::SortBy, table_position::TablePosition},
+        enums::{
+            selected_table::TableSelectionMove, sort_by::SortBy, table_position::TablePosition,
+        },
         traits::{
             app::IApp, app_accessor::IAppAccessor, creatable::ICreatable, ui_handler::IUiHandler,
         },
@@ -94,8 +96,12 @@ impl AppHandler {
     }
 
     pub fn process_jump_to(&self, position: TablePosition) {
-        let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
+        let process_table = self.ui.get_selected_table();
         process_table.jump_to(position);
+    }
+
+    pub fn move_to_table(&self, move_to: TableSelectionMove) {
+        self.ui.move_to_table(move_to);
     }
 
     pub fn sort_processes_by(&mut self, sort_by: SortBy) {

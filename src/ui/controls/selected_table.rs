@@ -1,6 +1,9 @@
 use std::cell::RefCell;
 
-use crate::types::traits::{creatable::ICreatable, selected_table::ISelectedTable};
+use crate::types::{
+    enums::selected_table::TableSelectionMove,
+    traits::{creatable::ICreatable, selected_table::ISelectedTable},
+};
 
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct SelectedTable {
@@ -31,6 +34,13 @@ impl ISelectedTable for SelectedTable {
 
     fn register(&self, name: &str) {
         self.ids.borrow_mut().push(name.to_owned());
+    }
+
+    fn move_to(&self, move_to: TableSelectionMove) {
+        match move_to {
+            TableSelectionMove::Next => self.next(),
+            TableSelectionMove::Previous => self.previous(),
+        }
     }
 
     fn next(&self) {

@@ -9,9 +9,13 @@ use super::{
     },
     paths::*,
 };
-use crate::types::traits::{
-    creatable::ICreatable, selected_table::ISelectedTable, spark_line_handler::ISparkLineHandler,
-    table_handler::ITableHandler, ui_handler::IUiHandler,
+use crate::types::{
+    enums::selected_table::TableSelectionMove,
+    traits::{
+        creatable::ICreatable, selected_table::ISelectedTable,
+        spark_line_handler::ISparkLineHandler, table_handler::ITableHandler,
+        ui_handler::IUiHandler,
+    },
 };
 
 type TableHandlerMapElement = Rc<TableHandler>;
@@ -83,5 +87,14 @@ impl IUiHandler for UiHandler {
             Some(element_ref) => element_ref.clone(),
             None => panic!("\"{}\": Unknown spark line handler.", id),
         }
+    }
+
+    fn move_to_table(&self, move_to: TableSelectionMove) {
+        self.table_selection.move_to(move_to);
+    }
+
+    fn get_selected_table(&self) -> Rc<dyn ITableHandler> {
+        let id = self.table_selection.get();
+        self.get_table_handler(id.as_str())
     }
 }
