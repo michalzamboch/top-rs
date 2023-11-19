@@ -1,10 +1,12 @@
-use pretty_bytes::converter;
+#![allow(dead_code)]
+
+use pretty_bytes::*;
 use rayon::prelude::*;
 use sysinfo::*;
 
 use crate::types::traits::disk::IDiskStringView;
 
-use super::utils::os_string_to_regular;
+use super::utils::*;
 
 #[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone)]
 struct DiskInfo {
@@ -59,4 +61,11 @@ fn new_string_disk(disk: &Disk) -> DiskInfo {
         used: disk.total_space() - disk.available_space(),
         total: disk.total_space(),
     }
+}
+
+fn get_new_name(disk: &Disk) -> String {
+    let mount_point = disk.mount_point().to_str().unwrap_or("");
+    let name = os_string_to_regular(disk.name());
+
+    format!("({}) {}", mount_point, name)
 }
