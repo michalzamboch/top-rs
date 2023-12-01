@@ -64,20 +64,20 @@ fn process_into_string_vec(item: &ProcessItem) -> Vec<String> {
 }
 
 pub fn all_processes_strings_vec_sorted_by(sys: &System, sort_by: SortBy) -> Vec<Vec<String>> {
-    processes_sorted_by(sys, sort_by)
+    boxed_processes_sorted_by(sys, sort_by)
         .par_iter()
         .map(process_into_string_vec)
         .collect()
 }
 
-fn processes_sorted_by(sys: &System, sort_by: SortBy) -> Vec<ProcessItem> {
-    let mut processes = processes_into_items(sys);
+fn boxed_processes_sorted_by(sys: &System, sort_by: SortBy) -> Box<[ProcessItem]> {
+    let mut processes = processes_into_boxed_items(sys);
     sort_processes_by(&mut processes, sort_by);
 
     processes
 }
 
-fn processes_into_items(sys: &System) -> Vec<ProcessItem> {
+fn processes_into_boxed_items(sys: &System) -> Box<[ProcessItem]> {
     sys.processes()
         .par_iter()
         .map(|(pid, proc)| new_process_item(*pid, proc))

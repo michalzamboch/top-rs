@@ -3,7 +3,7 @@
 use rayon::prelude::*;
 use sysinfo::*;
 
-pub fn get_cores_usage(sys: &System) -> Vec<u64> {
+pub fn get_cores_usage(sys: &System) -> Box<[u64]> {
     sys.cpus()
         .par_iter()
         .map(|cpu| cpu.cpu_usage() as u64)

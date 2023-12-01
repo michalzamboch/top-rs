@@ -50,7 +50,7 @@ fn get_disk_info_vec_string(disk_info: &DiskInfo) -> Vec<String> {
     ]
 }
 
-fn get_disk_info_vec(sys: &System) -> Vec<DiskInfo> {
+fn get_disk_info_vec(sys: &System) -> Box<[DiskInfo]> {
     sys.disks().par_iter().map(new_string_disk).collect()
 }
 
