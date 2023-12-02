@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use rayon::prelude::*;
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::Arc};
 use sysinfo::*;
 
 use crate::types::traits::temperature::ITemperature;
@@ -30,7 +30,7 @@ impl ITemperature for Temperature {
     }
 }
 
-pub fn get_temperatures_vec_strings(sys: &System) -> Vec<Vec<String>> {
+pub fn get_temperatures_vec_strings(sys: &System) -> Arc<[Vec<String>]> {
     sys.components()
         .par_iter()
         .map(create_temperature_vec_strings)

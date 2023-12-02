@@ -66,7 +66,6 @@ impl AppHandler {
 
     fn ui_update(&self) {
         self.update_processes();
-        self.update_disks();
         self.update_transmitted_network();
         self.update_received_network();
     }

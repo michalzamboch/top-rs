@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 
+use std::rc::Rc;
 use sysinfo::*;
 
 static UNKNOWN: &str = "Unknown";
@@ -14,7 +15,7 @@ pub fn get_sys_info(sys: &System) -> String {
     )
 }
 
-pub fn get_sys_info_vec(sys: &System) -> Vec<Vec<String>> {
+pub fn get_sys_info_vec(sys: &System) -> Rc<[Vec<String>]> {
     vec![
         vec!["System name".to_owned(), get_sys_name(sys)],
         vec!["Kernel version".to_owned(), get_kernel_version(sys)],
@@ -22,6 +23,7 @@ pub fn get_sys_info_vec(sys: &System) -> Vec<Vec<String>> {
         vec!["Host name".to_owned(), get_host_name(sys)],
         vec!["Boot time".to_owned(), get_boot_time(sys)],
     ]
+    .into()
 }
 
 fn get_sys_name(sys: &System) -> String {

@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::Arc};
 
 use sysinfo::*;
 
@@ -84,8 +84,8 @@ impl IApp for App {
         process::all_processes_strings_vec_sorted_by(&self.sys, self.processes_sorted_by)
     }
 
-    fn get_temperatures(&self) -> Vec<Vec<String>> {
-        temperatures::get_temperatures_vec_strings(&self.sys)
+    fn get_temperatures(&self) -> Arc<[Vec<String>]> {
+        temperatures::get_temperatures_vec_strings(&self.sys).clone()
     }
 
     fn get_network_total_sum(&self) -> (String, String) {

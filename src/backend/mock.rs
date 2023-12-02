@@ -1,4 +1,4 @@
-use std::collections::*;
+use std::{collections::*, sync::Arc};
 
 use crate::types::{
     enums::sort_by::SortBy,
@@ -61,8 +61,8 @@ impl IApp for MockApp {
         vec![item; 100]
     }
 
-    fn get_temperatures(&self) -> Vec<Vec<String>> {
-        vec![vec!["CPU".to_owned(), "100 °C".to_owned()]]
+    fn get_temperatures(&self) -> Arc<[Vec<String>]> {
+        vec![vec!["CPU".to_owned(), "100 °C".to_owned()]].into()
     }
 
     fn get_network_total_sum(&self) -> (String, String) {
