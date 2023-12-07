@@ -2,7 +2,7 @@
 
 use pretty_bytes::converter;
 use rayon::prelude::*;
-use std::{cmp::Reverse, sync::Arc};
+use std::{cmp::Reverse, rc::Rc, sync::Arc};
 use sysinfo::*;
 
 use crate::types::{
@@ -134,7 +134,7 @@ fn arc_processes_sorted_by(sys: &System, sort_by: SortBy) -> Arc<[ProcessItem]> 
     processes.into()
 }
 
-fn processes_into_boxed_str_lines(sys: &System) -> Box<[Box<dyn IStringsLine>]> {
+fn processes_into_boxed_str_lines(sys: &System) -> Rc<[Box<dyn IStringsLine>]> {
     sys.processes()
         .par_iter()
         .map(|(pid, proc)| new_process_box(*pid, proc))

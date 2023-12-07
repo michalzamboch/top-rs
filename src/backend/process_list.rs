@@ -26,38 +26,10 @@ impl Iterator for ProcessIterator {
         let result = if self.index < self.processes.len() {
             self.processes[self.index].clone()
         } else {
-            return None
+            return None;
         };
 
         self.index += 1;
         Some(Box::new(result))
     }
 }
-
-fn test_return(sys: &System, sort_by: SortBy) -> impl Iterator<Item = Box<dyn IStringsLine>> {
-    ProcessIterator::new(sys, sort_by)
-}
-
-fn test(sys: &System, sort_by: SortBy) {
-    let proc_iter = ProcessIterator::new(sys, sort_by);
-
-    for i in proc_iter {
-        i.get_line();
-    }
-}
-
-/* 
-impl Iterator for ProcessIterator {
-    type Item = ProcessItem;
-    fn next(&mut self) -> Option<ProcessItem> {
-        let result = if self.index < self.processes.len() {
-            self.processes[self.index].clone()
-        } else {
-            return None
-        };
-
-        self.index += 1;
-        Some(result)
-    }
-}
-*/
