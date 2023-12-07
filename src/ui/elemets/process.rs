@@ -7,11 +7,11 @@ use crate::{
 
 pub fn get_process_table(app_handler: &dyn IAppAccessor) -> Table<'_> {
     let table = app_handler.get_ui().get_table_handler(PROCESSES_TABLE_ID);
-    get_process_table_from_vec(table.get_data())
+    get_process_table_from_vec(&table.get_data())
 }
 
-fn get_process_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
-    let rows = get_process_rows(&data);
+fn get_process_table_from_vec(data: &[Vec<String>]) -> Table<'static> {
+    let rows = get_process_rows(data);
     let header = get_process_header();
     let selected_style = Style::default().add_modifier(Modifier::REVERSED);
 

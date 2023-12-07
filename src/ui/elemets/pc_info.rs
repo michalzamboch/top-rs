@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use ratatui::widgets::*;
 
 use crate::types::traits::app::IApp;
