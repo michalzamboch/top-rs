@@ -1,19 +1,16 @@
-#![allow(dead_code)]
-
-use pretty_bytes::*;
 use ratatui::{prelude::*, widgets::*};
 
 use crate::ui::config;
 
-pub fn get_receive_sparkline(data: &Vec<u64>) -> Sparkline<'_> {
-    create_spark_line(data.as_slice(), " Received ".to_string())
+pub fn get_receive_sparkline(data: &[u64]) -> Sparkline<'_> {
+    create_spark_line(data, " Received ")
 }
 
-pub fn get_transmited_sparkline(data: &Vec<u64>) -> Sparkline<'_> {
-    create_spark_line(data.as_slice(), " Transmitted ".to_string())
+pub fn get_transmited_sparkline(data: &[u64]) -> Sparkline<'_> {
+    create_spark_line(data, " Transmitted ")
 }
 
-fn create_spark_line(data: &[u64], title: String) -> Sparkline<'_> {
+fn create_spark_line<'a>(data: &'a [u64], title: &'a str) -> Sparkline<'a> {
     Sparkline::default()
         .block(
             Block::default()
@@ -23,11 +20,6 @@ fn create_spark_line(data: &[u64], title: String) -> Sparkline<'_> {
         )
         .data(data)
         .style(Style::default().fg(config::NETWORK_COLOR))
-}
-
-pub fn get_connection_detail_num(num: u64) -> Paragraph<'static> {
-    let data = converter::convert(num as f64);
-    get_connection_total(data)
 }
 
 pub fn get_connection_total(data: String) -> Paragraph<'static> {

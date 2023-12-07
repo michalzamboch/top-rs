@@ -2,19 +2,22 @@
 
 use pretty_bytes::converter;
 use rayon::prelude::*;
-use std::cmp::Reverse;
+use std::{cmp::Reverse, sync::Arc};
 use sysinfo::*;
 
-use crate::types::{enums::sort_by::SortBy, traits::process::IProcessStringView};
+use crate::types::{
+    enums::sort_by::SortBy,
+    traits::{process::IProcessStringView, strings_line::IStringsLine},
+};
 
 #[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone)]
-struct ProcessItem {
-    pub pid: Pid,
-    pub name: String,
-    pub cpu_usage: u64,
-    pub memory_usage: u64,
-    pub disk_read_usage: u64,
-    pub disk_write_usage: u64,
+pub struct ProcessItem {
+    pid: Pid,
+    name: String,
+    cpu_usage: u64,
+    memory_usage: u64,
+    disk_read_usage: u64,
+    disk_write_usage: u64,
 }
 
 impl IProcessStringView for ProcessItem {
@@ -41,6 +44,30 @@ impl IProcessStringView for ProcessItem {
     fn get_disk_write_usage(&self) -> String {
         converter::convert(self.disk_write_usage as f64)
     }
+}
+
+impl IStringsLine for ProcessItem {
+    fn get_line(&self) -> Box<[String]> {
+        Box::new([
+            self.get_pid(),
+            self.get_name(),
+            self.get_cpu_usage(),
+            self.get_memory_usage(),
+            self.get_disk_read_usage(),
+            self.get_disk_write_usage(),
+        ])
+    }
+}
+
+fn new_process_box(pid: Pid, proc: &Process) -> Box<dyn IStringsLine> {
+    Box::new(ProcessItem {
+        pid,
+        name: proc.name().to_owned(),
+        cpu_usage: proc.cpu_usage() as u64,
+        memory_usage: proc.memory(),
+        disk_read_usage: proc.disk_usage().read_bytes,
+        disk_write_usage: proc.disk_usage().written_bytes,
+    })
 }
 
 fn new_process_item(pid: Pid, proc: &Process) -> ProcessItem {
@@ -100,18 +127,21 @@ fn process_into_string_box_arr(item: &ProcessItem) -> Box<[String]> {
     .into()
 }
 
-// TEST -----------------------------------------------------
+pub fn arc_processes_sorted_by(sys: &System, sort_by: SortBy) -> Arc<[ProcessItem]> {
+    let mut processes = processes_into_boxed_items(sys);
+    sort_processes_by(&mut processes, sort_by);
 
-fn process_into_string_vec(item: &ProcessItem) -> Vec<String> {
-    vec![
-        item.get_pid(),
-        item.get_name(),
-        item.get_cpu_usage(),
-        item.get_memory_usage(),
-        item.get_disk_read_usage(),
-        item.get_disk_write_usage(),
-    ]
+    processes.into()
 }
+
+fn processes_into_boxed_str_lines(sys: &System) -> Box<[Box<dyn IStringsLine>]> {
+    sys.processes()
+        .par_iter()
+        .map(|(pid, proc)| new_process_box(*pid, proc))
+        .collect()
+}
+
+// TEST -----------------------------------------------------
 
 pub fn all_processes_strings_vec_sorted_by(sys: &System, sort_by: SortBy) -> Vec<Vec<String>> {
     boxed_processes_sorted_by(sys, sort_by)
@@ -120,7 +150,7 @@ pub fn all_processes_strings_vec_sorted_by(sys: &System, sort_by: SortBy) -> Vec
         .collect()
 }
 
-fn boxed_processes_sorted_by(sys: &System, sort_by: SortBy) -> Box<[ProcessItem]> {
+pub fn boxed_processes_sorted_by(sys: &System, sort_by: SortBy) -> Box<[ProcessItem]> {
     let mut processes = processes_into_boxed_items(sys);
     sort_processes_by(&mut processes, sort_by);
 
@@ -150,4 +180,15 @@ fn sort_processes_by(processes: &mut [ProcessItem], sort_by: SortBy) {
         SortBy::DiskReadReverse => processes.par_sort_by_key(|p| Reverse(p.disk_read_usage)),
         SortBy::DiskWriteReverse => processes.par_sort_by_key(|p| Reverse(p.disk_write_usage)),
     }
+}
+
+fn process_into_string_vec(item: &ProcessItem) -> Vec<String> {
+    vec![
+        item.get_pid(),
+        item.get_name(),
+        item.get_cpu_usage(),
+        item.get_memory_usage(),
+        item.get_disk_read_usage(),
+        item.get_disk_write_usage(),
+    ]
 }

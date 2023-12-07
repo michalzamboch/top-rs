@@ -9,11 +9,11 @@ use crate::{
 
 pub fn get_disk_table(app_handler: &dyn IAppAccessor) -> Table<'_> {
     let disks = app_handler.get_ui().get_table_handler(DISKS_TABLE_ID);
-    get_disk_table_from_vec(disks.get_data())
+    get_disk_table_from_vec(&disks.get_data())
 }
 
-fn get_disk_table_from_vec(data: Vec<Vec<String>>) -> Table<'static> {
-    let rows = get_disk_rows(&data);
+fn get_disk_table_from_vec(data: &[Vec<String>]) -> Table<'static> {
+    let rows = get_disk_rows(data);
     let header = get_disks_header();
     let selected_style = Style::default().add_modifier(Modifier::REVERSED);
 
