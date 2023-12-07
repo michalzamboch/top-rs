@@ -127,7 +127,7 @@ fn process_into_string_box_arr(item: &ProcessItem) -> Box<[String]> {
     .into()
 }
 
-pub fn arc_processes_sorted_by(sys: &System, sort_by: SortBy) -> Arc<[ProcessItem]> {
+fn arc_processes_sorted_by(sys: &System, sort_by: SortBy) -> Arc<[ProcessItem]> {
     let mut processes = processes_into_boxed_items(sys);
     sort_processes_by(&mut processes, sort_by);
 

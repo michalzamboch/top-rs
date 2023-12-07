@@ -7,5 +7,6 @@ pub mod mock;
 mod network;
 mod pc_info;
 mod process;
+mod process_list;
 mod temperatures;
 mod utils;
