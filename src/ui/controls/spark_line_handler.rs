@@ -1,4 +1,6 @@
-use std::{cell::RefCell, collections::VecDeque};
+use std::cell::RefCell;
+
+use slice_deque::SliceDeque;
 
 use crate::{
     types::traits::{creatable::ICreatable, spark_line_handler::ISparkLineHandler},
@@ -7,13 +9,13 @@ use crate::{
 
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct SparkLineHandler {
-    data: RefCell<VecDeque<u64>>,
+    data: RefCell<SliceDeque<u64>>,
 }
 
 impl ICreatable for SparkLineHandler {
     fn new() -> Self {
         Self {
-            data: RefCell::new(VecDeque::new()),
+            data: RefCell::new(SliceDeque::new()),
         }
     }
 }
