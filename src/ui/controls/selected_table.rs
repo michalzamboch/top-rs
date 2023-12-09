@@ -5,7 +5,7 @@ use crate::types::{
     traits::{creatable::ICreatable, selected_table::ISelectedTable},
 };
 
-#[derive(Debug, PartialEq, Eq, Default)]
+#[derive(Debug, Default)]
 pub struct SelectedTable {
     selected: RefCell<usize>,
     ids: RefCell<Vec<String>>,

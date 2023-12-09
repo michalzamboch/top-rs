@@ -46,14 +46,15 @@ pub fn get_temperatures_arc_slice(sys: &System) -> Arc<[Box<[String]>]> {
 
 fn create_temperature_box_slice(component: &Component) -> Box<[String]> {
     [
-        format!("{}", component.label()),
+        component.label().to_string(),
         format!("{}", component.temperature()),
-    ].into()
+    ]
+    .into()
 }
 
 fn create_temperature_vec_strings(component: &Component) -> Vec<String> {
     vec![
-        format!("{}", component.label()),
+        component.label().to_string(),
         format!("{}", component.temperature()),
     ]
 }
