@@ -97,6 +97,6 @@ impl IApp for MockApp {
     }
 
     fn get_process_data_holder(&self) -> Box<dyn ITableDataHolder> {
-        Box::new(ProcessDataHolder::default())
+        Box::<ProcessDataHolder>::default()
     }
 }

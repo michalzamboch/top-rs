@@ -8,7 +8,5 @@ mod network;
 mod pc_info;
 mod process;
 pub mod process_data_holder;
-mod process_iterator;
-mod process_list;
 mod temperatures;
 mod utils;
