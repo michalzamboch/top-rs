@@ -9,3 +9,4 @@ pub mod strings_line;
 pub mod table_handler;
 pub mod temperature;
 pub mod ui_handler;
+pub mod table_data_holder;

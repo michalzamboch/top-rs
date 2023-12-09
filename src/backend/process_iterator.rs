@@ -5,12 +5,12 @@ use crate::types::{enums::sort_by::SortBy, traits::strings_line::IStringsLine};
 use sysinfo::*;
 
 #[derive(Debug, Default)]
-pub struct ProcessList {
+pub struct ProcessIterator {
     processes: Box<[ProcessItem]>,
     index: usize,
 }
 
-impl ProcessList {
+impl ProcessIterator {
     pub fn new(sys: &System, sort_by: SortBy) -> Self {
         Self {
             processes: process::boxed_processes_sorted_by(sys, sort_by),
@@ -19,7 +19,7 @@ impl ProcessList {
     }
 }
 
-impl Iterator for ProcessList {
+impl Iterator for ProcessIterator {
     type Item = Box<dyn IStringsLine>;
 
     fn next(&mut self) -> Option<Box<(dyn IStringsLine)>> {

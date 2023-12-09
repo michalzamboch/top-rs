@@ -37,6 +37,20 @@ pub fn get_temperatures_vec_strings(sys: &System) -> Arc<[Vec<String>]> {
         .collect()
 }
 
+pub fn get_temperatures_arc_slice(sys: &System) -> Arc<[Box<[String]>]> {
+    sys.components()
+        .par_iter()
+        .map(create_temperature_box_slice)
+        .collect()
+}
+
+fn create_temperature_box_slice(component: &Component) -> Box<[String]> {
+    [
+        format!("{}", component.label()),
+        format!("{}", component.temperature()),
+    ].into()
+}
+
 fn create_temperature_vec_strings(component: &Component) -> Vec<String> {
     vec![
         format!("{}", component.label()),
@@ -44,7 +58,7 @@ fn create_temperature_vec_strings(component: &Component) -> Vec<String> {
     ]
 }
 
-pub fn get_temperatures_boxed(sys: &System) -> HashMap<String, Box<dyn ITemperature>> {
+fn get_temperatures_boxed(sys: &System) -> HashMap<String, Box<dyn ITemperature>> {
     sys.components()
         .par_iter()
         .map(component_temperature_box_to_tuple)
