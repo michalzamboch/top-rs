@@ -12,6 +12,16 @@ pub struct TableHandler {
     data: RefCell<Vec<Vec<String>>>,
 }
 
+impl TableHandler {
+    fn len(&self) -> usize {
+        self.data.borrow().len()
+    }
+
+    fn is_empty(&self) -> bool {
+        self.data.borrow().is_empty()
+    }
+}
+
 impl ICreatable for TableHandler {
     fn new() -> TableHandler {
         let mut tmp_state = TableState::default();
@@ -37,28 +47,28 @@ impl ITableHandler for TableHandler {
     }
 
     fn first(&self) {
-        if self.data.borrow().is_empty() {
+        if self.is_empty() {
             return;
         }
         self.state.borrow_mut().select(Some(0));
     }
 
     fn last(&self) {
-        if self.data.borrow().is_empty() {
+        if self.is_empty() {
             return;
         }
-        let last_pos = self.data.borrow().len() - 1;
+        let last_pos = self.len() - 1;
         self.state.borrow_mut().select(Some(last_pos));
     }
 
     fn next(&self) {
-        if self.data.borrow().is_empty() {
+        if self.is_empty() {
             return;
         }
 
         let i = match self.state.borrow().selected() {
             Some(i) => {
-                if i >= self.data.borrow().len() - 1 {
+                if i >= self.len() - 1 {
                     0
                 } else {
                     i + 1
@@ -70,14 +80,14 @@ impl ITableHandler for TableHandler {
     }
 
     fn previous(&self) {
-        if self.data.borrow().is_empty() {
+        if self.is_empty() {
             return;
         }
 
         let i = match self.state.borrow().selected() {
             Some(i) => {
                 if i == 0 {
-                    self.data.borrow().len() - 1
+                    self.len() - 1
                 } else {
                     i - 1
                 }

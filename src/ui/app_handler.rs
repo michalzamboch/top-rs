@@ -71,7 +71,7 @@ impl AppHandler {
     }
 
     fn update_processes(&self) {
-        let processes = self.app.get_filtered_processes_vec_strings();
+        let processes = self.app.get_processes_vec_strings();
         let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
         process_table.set_data(processes);
     }

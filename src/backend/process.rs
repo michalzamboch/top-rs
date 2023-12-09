@@ -182,7 +182,7 @@ fn sort_processes_by(processes: &mut [ProcessItem], sort_by: SortBy) {
     }
 }
 
-fn process_into_string_vec(item: &ProcessItem) -> Vec<String> {
+pub fn process_into_string_vec(item: &ProcessItem) -> Vec<String> {
     vec![
         item.get_pid(),
         item.get_name(),

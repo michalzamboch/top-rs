@@ -2,10 +2,10 @@ use std::{collections::*, sync::Arc};
 
 use crate::types::{
     enums::sort_by::SortBy,
-    traits::{app::IApp, creatable::ICreatable},
+    traits::{app::IApp, creatable::ICreatable, table_data_holder::ITableDataHolder},
 };
 
-use super::config;
+use super::{config, process_data_holder::ProcessDataHolder};
 
 #[derive(Debug, Default)]
 pub struct MockApp;
@@ -48,7 +48,7 @@ impl IApp for MockApp {
         "OS: Windows | Kernel: 69420".to_owned()
     }
 
-    fn get_filtered_processes_vec_strings(&self) -> Vec<Vec<String>> {
+    fn get_processes_vec_strings(&self) -> Vec<Vec<String>> {
         let item = vec![
             "123456".to_owned(),
             "Process".to_owned(),
@@ -94,5 +94,9 @@ impl IApp for MockApp {
 
     fn sort_processes_by(&mut self, sort_by: SortBy) {
         _ = sort_by;
+    }
+
+    fn get_process_data_holder(&self) -> Box<dyn ITableDataHolder> {
+        Box::new(ProcessDataHolder::default())
     }
 }
