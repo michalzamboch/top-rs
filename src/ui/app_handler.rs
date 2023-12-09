@@ -71,15 +71,17 @@ impl AppHandler {
     }
 
     fn update_processes(&self) {
-        let processes = self.app.get_processes_vec_strings();
+        let processes = self.app.get_process_data_holder();
         let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
         process_table.set_data(processes);
     }
 
     fn update_disks(&self) {
+        /*
         let disks = self.app.get_disks_vec_string();
         let disk_table = self.ui.get_table_handler(DISKS_TABLE_ID);
         disk_table.set_data(disks);
+        */
     }
 
     fn update_transmitted_network(&self) {

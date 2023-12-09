@@ -48,7 +48,7 @@ impl TableHandlerFast {
         }
     }
 
-    fn new_rc() -> Rc<TableHandlerFast> {
+    pub fn new_rc() -> Rc<TableHandlerFast> {
         Rc::new(TableHandlerFast::new())
     }
 }
@@ -127,6 +127,15 @@ impl ITableHandlerFast for TableHandlerFast {
             .as_ref()
             .unwrap_or(&ProcessDataHolder::new_empty_dyn_box())
             .get_data()
+    }
+
+    fn get_box(&self) -> Box<[Vec<String>]> {
+        self.data
+            .borrow()
+            .deref()
+            .as_ref()
+            .unwrap_or(&ProcessDataHolder::new_empty_dyn_box())
+            .get_box()
     }
 
     fn get_state(&self) -> RefMut<'_, TableState> {

@@ -3,16 +3,16 @@ use std::{collections::HashMap, rc::Rc};
 use super::{
     controls::{
         selected_table::SelectedTable, spark_line_handler::SparkLineHandler,
-        table_handler::TableHandler,
+        table_handler_fast::TableHandlerFast,
     },
     paths::*,
 };
 use crate::types::traits::{
     creatable::ICreatable, selected_table::ISelectedTable, spark_line_handler::ISparkLineHandler,
-    table_handler::ITableHandler, ui_handler::IUiHandler,
+    table_handler_fast::ITableHandlerFast, ui_handler::IUiHandler,
 };
 
-type TableHandlerMapElement = Rc<TableHandler>;
+type TableHandlerMapElement = Rc<TableHandlerFast>;
 type TableHandlerMap = HashMap<String, TableHandlerMapElement>;
 
 type SparkLineMapElement = Rc<SparkLineHandler>;
@@ -29,8 +29,8 @@ impl UiHandler {
     fn create_table_map() -> TableHandlerMap {
         let mut table_map = HashMap::new();
 
-        table_map.insert(PROCESSES_TABLE_ID.to_owned(), TableHandler::new_rc());
-        table_map.insert(DISKS_TABLE_ID.to_owned(), TableHandler::new_rc());
+        table_map.insert(PROCESSES_TABLE_ID.to_owned(), TableHandlerFast::new_rc());
+        table_map.insert(DISKS_TABLE_ID.to_owned(), TableHandlerFast::new_rc());
 
         table_map
     }
@@ -65,7 +65,7 @@ impl ICreatable for UiHandler {
 }
 
 impl IUiHandler for UiHandler {
-    fn get_table_handler(&self, id: &str) -> Rc<dyn ITableHandler> {
+    fn get_table_handler(&self, id: &str) -> Rc<dyn ITableHandlerFast> {
         let element = self.table_handler_map.get(id);
 
         match element {
@@ -87,7 +87,7 @@ impl IUiHandler for UiHandler {
         &self.table_selection
     }
 
-    fn get_selected_table(&self) -> Rc<dyn ITableHandler> {
+    fn get_selected_table(&self) -> Rc<dyn ITableHandlerFast> {
         let id = self.table_selection.get();
         self.get_table_handler(id.as_str())
     }

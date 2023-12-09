@@ -7,7 +7,7 @@ use crate::{
 
 pub fn get_process_table(app_handler: &dyn IAppAccessor) -> Table<'_> {
     let table = app_handler.get_ui().get_table_handler(PROCESSES_TABLE_ID);
-    get_process_table_from_vec(&table.get_data())
+    get_process_table_from_vec(&table.get_box())
 }
 
 fn get_process_table_from_vec(data: &[Vec<String>]) -> Table<'static> {
