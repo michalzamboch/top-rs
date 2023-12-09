@@ -14,3 +14,4 @@ clap = { version = "4.4.8", features = ["derive"] }
 
 rayon = "1.8.0"
 slice-deque = "0.3.0"
+fast-str = { version = "1.0.0", features = ["serde"] }
