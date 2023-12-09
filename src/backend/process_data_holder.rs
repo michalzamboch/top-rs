@@ -22,6 +22,14 @@ impl ProcessDataHolder {
     pub fn new_box(sys: &System, sort_by: SortBy) -> Box<Self> {
         Box::new(Self::new(sys, sort_by))
     }
+
+    pub fn new_empty_box() -> Box<Self> {
+        Box::new(Self { data: Box::new([]) })
+    }
+
+    pub fn new_empty_dyn_box() -> Box<dyn ITableDataHolder> {
+        Self::new_empty_box()
+    }
 }
 
 impl ITableDataHolder for ProcessDataHolder {
@@ -37,5 +45,13 @@ impl ITableDataHolder for ProcessDataHolder {
             .par_iter()
             .map(process::process_into_string_vec)
             .collect()
+    }
+
+    fn len(&self) -> usize {
+        self.data.len()
+    }
+
+    fn is_empty(&self) -> bool {
+        self.data.is_empty()
     }
 }
