@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use ratatui::widgets::*;
 use std::{
     cell::{RefCell, RefMut},
@@ -16,12 +14,12 @@ use crate::{
 };
 
 #[derive(Debug)]
-pub struct TableHandlerFast {
+pub struct TableHandler {
     state: RefCell<TableState>,
     data: RefCell<Option<Box<dyn ITableDataHolder>>>,
 }
 
-impl TableHandlerFast {
+impl TableHandler {
     fn len(&self) -> usize {
         self.data
             .borrow()
@@ -38,22 +36,22 @@ impl TableHandlerFast {
             .is_empty()
     }
 
-    fn new() -> TableHandlerFast {
+    fn new() -> TableHandler {
         let mut tmp_state = TableState::default();
         tmp_state.select(None);
 
-        TableHandlerFast {
+        TableHandler {
             state: RefCell::new(tmp_state),
             data: RefCell::new(None),
         }
     }
 
-    pub fn new_rc() -> Rc<TableHandlerFast> {
-        Rc::new(TableHandlerFast::new())
+    pub fn new_rc() -> Rc<TableHandler> {
+        Rc::new(TableHandler::new())
     }
 }
 
-impl ITableHandler for TableHandlerFast {
+impl ITableHandler for TableHandler {
     fn jump_to(&self, position: TablePosition) {
         match position {
             TablePosition::Down => self.next(),

@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use std::{
     error::Error,
     io::{self, Stdout},
@@ -13,12 +11,11 @@ use crossterm::{
 };
 use ratatui::prelude::*;
 
-use crate::types::{
-    enums::{selected_table::TableSelectionMove, sort_by::SortBy, table_position::TablePosition},
-    traits::app_accessor::IAppAccessor,
+use crate::types::enums::{
+    selected_table::TableSelectionMove, sort_by::SortBy, table_position::TablePosition,
 };
 
-use super::{app_handler::AppHandler, config, paths::*, ui_builder::*};
+use super::{app_handler::AppHandler, config, ui_builder::*};
 
 pub fn start() -> Result<(), Box<dyn Error>> {
     enable_raw_mode()?;
@@ -84,13 +81,6 @@ fn run_app<B: Backend>(
             last_tick = Instant::now();
         }
     }
-}
-
-fn resize_network_spark_lines(app_handler: &AppHandler) {
-    let receive_line = app_handler.get_ui().get_spar_line(RECEIVED_SPARK_LINE_ID);
-    receive_line.resize();
-    let trasmitted_line = app_handler.get_ui().get_spar_line(TRASMITTED_SPARK_LINE_ID);
-    trasmitted_line.resize();
 }
 
 fn handle_input(key: KeyEvent, app_handler: &mut AppHandler) -> bool {

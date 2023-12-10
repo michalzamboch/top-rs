@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 use super::{arguments::*, paths::*, ui_handler::UiHandler};
+use thread_priority::*;
 
 use crate::{
     backend::app::App,
@@ -36,6 +37,9 @@ impl IAppAccessor for AppHandler {
 impl AppHandler {
     pub fn new() -> AppHandler {
         let arguments = Arguments::new_boxed();
+        if arguments.max_thread_priority {
+            _ = set_current_thread_priority(ThreadPriority::Max);
+        }
 
         let app: Box<dyn IApp> = match arguments.debug {
             true => MockApp::new_boxed(),

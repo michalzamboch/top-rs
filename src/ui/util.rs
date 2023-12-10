@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use crossterm::terminal::*;
 use ratatui::style::Color;
 

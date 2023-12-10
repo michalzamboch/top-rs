@@ -3,7 +3,7 @@ use std::{collections::HashMap, rc::Rc};
 use super::{
     controls::{
         selected_table::SelectedTable, spark_line_handler::SparkLineHandler,
-        table_handler_fast::TableHandlerFast,
+        table_handler::TableHandler,
     },
     paths::*,
 };
@@ -12,7 +12,7 @@ use crate::types::traits::{
     table_handler::ITableHandler, ui_handler::IUiHandler,
 };
 
-type TableHandlerMapElement = Rc<TableHandlerFast>;
+type TableHandlerMapElement = Rc<TableHandler>;
 type TableHandlerMap = HashMap<String, TableHandlerMapElement>;
 
 type SparkLineMapElement = Rc<SparkLineHandler>;
@@ -29,8 +29,8 @@ impl UiHandler {
     fn create_table_map() -> TableHandlerMap {
         let mut table_map = HashMap::new();
 
-        table_map.insert(PROCESSES_TABLE_ID.to_owned(), TableHandlerFast::new_rc());
-        table_map.insert(DISKS_TABLE_ID.to_owned(), TableHandlerFast::new_rc());
+        table_map.insert(PROCESSES_TABLE_ID.to_owned(), TableHandler::new_rc());
+        table_map.insert(DISKS_TABLE_ID.to_owned(), TableHandler::new_rc());
 
         table_map
     }

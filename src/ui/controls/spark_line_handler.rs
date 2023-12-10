@@ -1,6 +1,5 @@
-use std::cell::RefCell;
-
 use slice_deque::SliceDeque;
+use std::cell::RefCell;
 
 use crate::{
     types::traits::{creatable::ICreatable, spark_line_handler::ISparkLineHandler},
