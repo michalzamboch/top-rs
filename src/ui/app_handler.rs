@@ -100,7 +100,7 @@ impl AppHandler {
         spark_line.add(net.0);
     }
 
-    pub fn process_jump_to(&self, position: TablePosition) {
+    pub fn selected_table_jump_to(&self, position: TablePosition) {
         let process_table = self.ui.get_selected_table();
         process_table.jump_to(position);
     }

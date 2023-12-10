@@ -108,10 +108,10 @@ fn handle_input(key: KeyEvent, app_handler: &mut AppHandler) -> bool {
         KeyCode::Char('w') => app_handler.sort_processes_by(SortBy::DiskWrite),
         KeyCode::Char('W') => app_handler.sort_processes_by(SortBy::DiskWriteReverse),
 
-        KeyCode::Down => app_handler.process_jump_to(TablePosition::Down),
-        KeyCode::Up => app_handler.process_jump_to(TablePosition::Up),
-        KeyCode::Home => app_handler.process_jump_to(TablePosition::First),
-        KeyCode::End => app_handler.process_jump_to(TablePosition::Last),
+        KeyCode::Down => app_handler.selected_table_jump_to(TablePosition::Down),
+        KeyCode::Up => app_handler.selected_table_jump_to(TablePosition::Up),
+        KeyCode::Home => app_handler.selected_table_jump_to(TablePosition::First),
+        KeyCode::End => app_handler.selected_table_jump_to(TablePosition::Last),
 
         KeyCode::Right => app_handler.move_to_table(TableSelectionMove::Next),
         KeyCode::Left => app_handler.move_to_table(TableSelectionMove::Previous),
