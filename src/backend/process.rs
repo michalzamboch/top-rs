@@ -2,13 +2,10 @@
 
 use pretty_bytes::converter;
 use rayon::prelude::*;
-use std::{cmp::Reverse, rc::Rc, sync::Arc};
+use std::{cmp::Reverse, sync::Arc};
 use sysinfo::*;
 
-use crate::types::{
-    enums::sort_by::SortBy,
-    traits::{process::IProcessStringView, strings_line::IStringsLine},
-};
+use crate::types::{enums::sort_by::SortBy, traits::process::IProcessStringView};
 
 #[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone)]
 pub struct ProcessItem {
@@ -44,30 +41,6 @@ impl IProcessStringView for ProcessItem {
     fn get_disk_write_usage(&self) -> String {
         converter::convert(self.disk_write_usage as f64)
     }
-}
-
-impl IStringsLine for ProcessItem {
-    fn get_line(&self) -> Box<[String]> {
-        Box::new([
-            self.get_pid(),
-            self.get_name(),
-            self.get_cpu_usage(),
-            self.get_memory_usage(),
-            self.get_disk_read_usage(),
-            self.get_disk_write_usage(),
-        ])
-    }
-}
-
-fn new_process_box(pid: Pid, proc: &Process) -> Box<dyn IStringsLine> {
-    Box::new(ProcessItem {
-        pid,
-        name: proc.name().to_owned(),
-        cpu_usage: proc.cpu_usage() as u64,
-        memory_usage: proc.memory(),
-        disk_read_usage: proc.disk_usage().read_bytes,
-        disk_write_usage: proc.disk_usage().written_bytes,
-    })
 }
 
 fn new_process_item(pid: Pid, proc: &Process) -> ProcessItem {
@@ -132,13 +105,6 @@ fn arc_processes_sorted_by(sys: &System, sort_by: SortBy) -> Arc<[ProcessItem]> 
     sort_processes_by(&mut processes, sort_by);
 
     processes.into()
-}
-
-fn processes_into_boxed_str_lines(sys: &System) -> Rc<[Box<dyn IStringsLine>]> {
-    sys.processes()
-        .par_iter()
-        .map(|(pid, proc)| new_process_box(*pid, proc))
-        .collect()
 }
 
 // TEST -----------------------------------------------------
