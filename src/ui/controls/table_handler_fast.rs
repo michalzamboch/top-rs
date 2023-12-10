@@ -11,7 +11,7 @@ use crate::{
     backend::process_data_holder::ProcessDataHolder,
     types::{
         enums::table_position::TablePosition,
-        traits::{table_data_holder::ITableDataHolder, table_handler_fast::ITableHandlerFast},
+        traits::{table_data_holder::ITableDataHolder, table_handler::ITableHandler},
     },
 };
 
@@ -53,7 +53,7 @@ impl TableHandlerFast {
     }
 }
 
-impl ITableHandlerFast for TableHandlerFast {
+impl ITableHandler for TableHandlerFast {
     fn jump_to(&self, position: TablePosition) {
         match position {
             TablePosition::Down => self.next(),

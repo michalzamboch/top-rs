@@ -9,7 +9,7 @@ use super::{
 };
 use crate::types::traits::{
     creatable::ICreatable, selected_table::ISelectedTable, spark_line_handler::ISparkLineHandler,
-    table_handler_fast::ITableHandlerFast, ui_handler::IUiHandler,
+    table_handler::ITableHandler, ui_handler::IUiHandler,
 };
 
 type TableHandlerMapElement = Rc<TableHandlerFast>;
@@ -65,7 +65,7 @@ impl ICreatable for UiHandler {
 }
 
 impl IUiHandler for UiHandler {
-    fn get_table_handler(&self, id: &str) -> Rc<dyn ITableHandlerFast> {
+    fn get_table_handler(&self, id: &str) -> Rc<dyn ITableHandler> {
         let element = self.table_handler_map.get(id);
 
         match element {
@@ -87,7 +87,7 @@ impl IUiHandler for UiHandler {
         &self.table_selection
     }
 
-    fn get_selected_table(&self) -> Rc<dyn ITableHandlerFast> {
+    fn get_selected_table(&self) -> Rc<dyn ITableHandler> {
         let id = self.table_selection.get();
         self.get_table_handler(id.as_str())
     }

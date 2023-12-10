@@ -48,19 +48,6 @@ impl IApp for MockApp {
         "OS: Windows | Kernel: 69420".to_owned()
     }
 
-    fn get_processes_vec_strings(&self) -> Vec<Vec<String>> {
-        let item = vec![
-            "123456".to_owned(),
-            "Process".to_owned(),
-            "100 %".to_owned(),
-            "100.00 MB".to_owned(),
-            "100.00 KB".to_owned(),
-            "100.00 KB".to_owned(),
-        ];
-
-        vec![item; 100]
-    }
-
     fn get_temperatures(&self) -> Arc<[Vec<String>]> {
         vec![vec!["CPU".to_owned(), "100 °C".to_owned()]].into()
     }

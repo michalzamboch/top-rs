@@ -80,10 +80,6 @@ impl IApp for App {
         pc_info::get_sys_info(&self.sys)
     }
 
-    fn get_processes_vec_strings(&self) -> Vec<Vec<String>> {
-        process::all_processes_strings_vec_sorted_by(&self.sys, self.processes_sorted_by)
-    }
-
     fn get_process_data_holder(&self) -> Box<dyn ITableDataHolder> {
         process_data_holder::ProcessDataHolder::new_box(&self.sys, self.processes_sorted_by)
     }
