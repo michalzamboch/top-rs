@@ -120,15 +120,6 @@ impl ITableHandlerFast for TableHandlerFast {
         *self.data.borrow_mut() = Some(data);
     }
 
-    fn get_data(&self) -> Vec<Vec<String>> {
-        self.data
-            .borrow()
-            .deref()
-            .as_ref()
-            .unwrap_or(&ProcessDataHolder::new_empty_dyn_box())
-            .get_data()
-    }
-
     fn get_box(&self) -> Box<[Vec<String>]> {
         self.data
             .borrow()

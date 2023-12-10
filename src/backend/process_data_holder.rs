@@ -33,13 +33,6 @@ impl ProcessDataHolder {
 }
 
 impl ITableDataHolder for ProcessDataHolder {
-    fn get_data(&self) -> Vec<Vec<String>> {
-        self.data
-            .par_iter()
-            .map(process::process_into_string_vec)
-            .collect()
-    }
-
     fn get_box(&self) -> Box<[Vec<String>]> {
         self.data
             .par_iter()

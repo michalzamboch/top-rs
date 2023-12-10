@@ -10,8 +10,7 @@ pub trait ITableHandlerFast: Send + Debug {
     fn next(&self);
     fn previous(&self);
     fn jump_to(&self, position: TablePosition);
-    fn set_data(&self, data: Box<dyn ITableDataHolder>);
-    fn get_data(&self) -> Vec<Vec<String>>;
-    fn get_box(&self) -> Box<[Vec<String>]>;
     fn get_state(&self) -> RefMut<'_, TableState>;
+    fn set_data(&self, data: Box<dyn ITableDataHolder>);
+    fn get_box(&self) -> Box<[Vec<String>]>;
 }
