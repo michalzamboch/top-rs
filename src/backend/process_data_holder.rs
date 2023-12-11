@@ -1,7 +1,11 @@
+use fast_str::FastStr;
 use rayon::prelude::*;
 use sysinfo::*;
 
-use crate::types::{enums::sort_by::SortBy, traits::table_data_holder::ITableDataHolder};
+use crate::types::{
+    enums::sort_by::SortBy,
+    traits::{process::IProcessStringView, table_data_holder::ITableDataHolder},
+};
 
 use super::process::{self, ProcessItem};
 
@@ -34,7 +38,14 @@ impl ITableDataHolder for ProcessDataHolder {
     fn get_box(&self) -> Box<[Vec<String>]> {
         self.data
             .par_iter()
-            .map(process::process_into_string_vec)
+            .map(|item| item.into_string_vec())
+            .collect()
+    }
+
+    fn get_fbox(&self) -> Box<[Vec<FastStr>]> {
+        self.data
+            .par_iter()
+            .map(|item| item.into_fstring_vec())
             .collect()
     }
 

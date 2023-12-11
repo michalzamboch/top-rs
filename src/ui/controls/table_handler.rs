@@ -1,3 +1,4 @@
+use fast_str::FastStr;
 use ratatui::widgets::*;
 use std::{
     cell::{RefCell, RefMut},
@@ -125,6 +126,15 @@ impl ITableHandler for TableHandler {
             .as_ref()
             .unwrap_or(&ProcessDataHolder::new_empty_dyn_box())
             .get_box()
+    }
+
+    fn get_fbox(&self) -> Box<[Vec<FastStr>]> {
+        self.data
+            .borrow()
+            .deref()
+            .as_ref()
+            .unwrap_or(&ProcessDataHolder::new_empty_dyn_box())
+            .get_fbox()
     }
 
     fn get_state(&self) -> RefMut<'_, TableState> {

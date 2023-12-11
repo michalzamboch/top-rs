@@ -33,11 +33,4 @@ impl ISparkLineHandler for SparkLineHandler {
     fn get_vec(&self) -> Vec<u64> {
         self.data.borrow().iter().cloned().collect()
     }
-
-    fn init(&self, size: u64) {
-        self.data.borrow_mut().clear();
-        for _ in 0..size {
-            self.data.borrow_mut().push_back(0);
-        }
-    }
 }

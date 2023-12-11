@@ -70,7 +70,7 @@ fn all_processes_strings_arr_sorted_by(sys: &System, sort_by: SortBy) -> Vec<[St
         .collect()
 }
 
-fn process_into_string_arr(item: &ProcessItem) -> [String; 6] {
+pub fn process_into_string_arr(item: &ProcessItem) -> [String; 6] {
     [
         item.get_pid(),
         item.get_name(),
@@ -139,15 +139,4 @@ fn sort_processes_by(processes: &mut [ProcessItem], sort_by: SortBy) {
         SortBy::DiskReadReverse => processes.par_sort_by_key(|p| Reverse(p.disk_read_usage)),
         SortBy::DiskWriteReverse => processes.par_sort_by_key(|p| Reverse(p.disk_write_usage)),
     }
-}
-
-pub fn process_into_string_vec(item: &ProcessItem) -> Vec<String> {
-    vec![
-        item.get_pid(),
-        item.get_name(),
-        item.get_cpu_usage(),
-        item.get_memory_usage(),
-        item.get_disk_read_usage(),
-        item.get_disk_write_usage(),
-    ]
 }
