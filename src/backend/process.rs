@@ -56,6 +56,17 @@ fn new_process_item(pid: Pid, proc: &Process) -> ProcessItem {
 
 // TEST -----------------------------------------------------
 
+fn processes_boxed_strings_sorted_by(sys: &System, sort_by: SortBy) -> Box<[Box<[String]>]> {
+    boxed_processes_sorted_by(sys, sort_by)
+        .par_iter()
+        .map(process_into_string_box_arr)
+        .collect()
+}
+
+fn processes_boxed_slices_sorted_by() -> Box<[Box<[&'static str]>]> {
+    Box::new([])
+}
+
 fn all_processes_boxed_slices_sorted_by(sys: &System, sort_by: SortBy) -> Box<[[String; 6]]> {
     boxed_processes_sorted_by(sys, sort_by)
         .par_iter()
