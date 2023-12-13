@@ -92,13 +92,6 @@ pub fn process_into_string_arr(item: &ProcessItem) -> [String; 6] {
     ]
 }
 
-fn all_processes_vec_boxed_sorted_by(sys: &System, sort_by: SortBy) -> Vec<Box<[String]>> {
-    boxed_processes_sorted_by(sys, sort_by)
-        .par_iter()
-        .map(process_into_string_box_arr)
-        .collect()
-}
-
 fn process_into_string_box_arr(item: &ProcessItem) -> Box<[String]> {
     [
         item.get_pid(),

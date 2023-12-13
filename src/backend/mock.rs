@@ -1,11 +1,9 @@
-use std::{collections::*, sync::Arc};
-
 use crate::types::{
     enums::sort_by::SortBy,
     traits::{app::IApp, creatable::ICreatable, table_data_holder::ITableDataHolder},
 };
 
-use super::{config, process_data_holder::ProcessDataHolder};
+use super::process_data_holder::ProcessDataHolder;
 
 #[derive(Debug, Default)]
 pub struct MockApp;
@@ -48,21 +46,8 @@ impl IApp for MockApp {
         "OS: Windows | Kernel: 69420".to_owned()
     }
 
-    fn get_temperatures(&self) -> Arc<[Vec<String>]> {
-        vec![vec!["CPU".to_owned(), "100 °C".to_owned()]].into()
-    }
-
     fn get_network_total_sum(&self) -> (String, String) {
         ("100.00 MB".to_owned(), "200.00 MB".to_owned())
-    }
-
-    fn get_network_map(&self) -> HashMap<String, (u64, u64)> {
-        let mut map = HashMap::new();
-
-        map.insert(config::WIFI_ID.to_owned(), (50, 100));
-        map.insert(config::ETHERNET_ID.to_owned(), (25, 100));
-
-        map
     }
 
     fn get_network_sum(&self) -> (u64, u64) {

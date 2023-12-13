@@ -1,4 +1,5 @@
 pub mod app;
+pub mod app_data_holder;
 mod config;
 mod cpu;
 mod disk;

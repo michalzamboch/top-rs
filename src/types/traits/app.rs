@@ -1,4 +1,4 @@
-use std::{collections::*, fmt::Debug, sync::Arc};
+use std::fmt::Debug;
 
 use crate::types::enums::sort_by::SortBy;
 
@@ -15,10 +15,8 @@ pub trait IApp: Send + Debug {
     fn get_cpu_details(&self) -> String;
     fn get_sys_info(&self) -> String;
     fn get_process_data_holder(&self) -> Box<dyn ITableDataHolder>;
-    fn get_temperatures(&self) -> Arc<[Vec<String>]>;
 
     fn get_network_total_sum(&self) -> (String, String);
-    fn get_network_map(&self) -> HashMap<String, (u64, u64)>;
     fn get_network_sum(&self) -> (u64, u64);
 
     fn get_disks_vec_string(&self) -> Vec<Vec<String>>;

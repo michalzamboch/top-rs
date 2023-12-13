@@ -1,5 +1,3 @@
-use std::{collections::HashMap, sync::Arc};
-
 use sysinfo::*;
 
 use crate::types::{
@@ -82,16 +80,8 @@ impl IApp for App {
         process_data_holder::ProcessDataHolder::new_box(&self.sys, self.processes_sorted_by)
     }
 
-    fn get_temperatures(&self) -> Arc<[Vec<String>]> {
-        temperatures::get_temperatures_vec_strings(&self.sys).clone()
-    }
-
     fn get_network_total_sum(&self) -> (String, String) {
         network::get_total_connection_strings(&self.sys)
-    }
-
-    fn get_network_map(&self) -> HashMap<String, (u64, u64)> {
-        network::get_network_map(&self.sys)
     }
 
     fn get_network_sum(&self) -> (u64, u64) {
