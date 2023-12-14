@@ -26,6 +26,6 @@ impl SystemItem {
             return true;
         }
 
-        return false;
+        false
     }
 }

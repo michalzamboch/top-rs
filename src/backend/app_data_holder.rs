@@ -2,7 +2,7 @@
 
 use crate::types::{
     enums::sort_by::SortBy,
-    traits::{app::IApp, table_data_holder::ITableDataHolder, creatable::ICreatable},
+    traits::{app::IApp, creatable::ICreatable, table_data_holder::ITableDataHolder},
 };
 
 use super::process_data_holder::ProcessDataHolder;
@@ -24,7 +24,7 @@ pub struct AppDataHolder {
     disks_vec: Vec<Vec<String>>,
 }
 
-impl ICreatable for  AppDataHolder {
+impl ICreatable for AppDataHolder {
     fn new() -> AppDataHolder {
         AppDataHolder {
             ..Default::default()
