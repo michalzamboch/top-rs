@@ -37,7 +37,7 @@ impl IApp for App {
     fn update(&mut self) {
         self.sys.refresh_memory();
         self.sys.refresh_cpu();
-        self.sys.refresh_networks();
+        //self.sys.refresh_networks();
         self.sys.refresh_networks_list();
         self.sys.refresh_processes();
         self.sys.refresh_disks();
