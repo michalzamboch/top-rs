@@ -119,22 +119,13 @@ impl ITableHandler for TableHandler {
         *self.data.borrow_mut() = Some(data);
     }
 
-    fn get_box(&self) -> Box<[Vec<String>]> {
+    fn get_data(&self) -> Box<[Vec<FastStr>]> {
         self.data
             .borrow()
             .deref()
             .as_ref()
             .unwrap_or(&ProcessDataHolder::new_empty_dyn_box())
-            .get_box()
-    }
-
-    fn get_fbox(&self) -> Box<[Vec<FastStr>]> {
-        self.data
-            .borrow()
-            .deref()
-            .as_ref()
-            .unwrap_or(&ProcessDataHolder::new_empty_dyn_box())
-            .get_fbox()
+            .get_data()
     }
 
     fn get_state(&self) -> RefMut<'_, TableState> {
