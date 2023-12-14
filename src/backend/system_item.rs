@@ -2,26 +2,30 @@
 
 use std::{
     cell::RefCell,
-    rc::Rc,
     time::{Duration, Instant},
 };
 
 #[derive(Debug)]
-pub struct SystemItem<T> {
+pub struct SystemItem {
     duration: Duration,
     last_tick: RefCell<Instant>,
-    value: RefCell<Rc<T>>,
 }
 
-impl<T> SystemItem<T> {
-    pub fn update(&self, new_value: T) {
-        if self.last_tick.borrow().elapsed() >= self.duration {
-            *self.last_tick.borrow_mut() = Instant::now();
-            *self.value.borrow_mut() = Rc::new(new_value);
+impl SystemItem {
+    pub fn new(millis: u64) -> Self {
+        Self {
+            duration: Duration::from_secs(millis),
+            last_tick: RefCell::new(Instant::now()),
         }
     }
 
-    pub fn get_value(&self) -> Rc<T> {
-        self.value.borrow().clone()
+    pub fn update(&self) -> bool {
+        if self.last_tick.borrow().elapsed() >= self.duration {
+            *self.last_tick.borrow_mut() = Instant::now();
+
+            return true;
+        }
+
+        return false;
     }
 }
