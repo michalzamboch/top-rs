@@ -126,8 +126,8 @@ impl AppHandler {
 
         let status = self.ui.get_status();
         match result {
-            Ok(_) => status.set("Process sucessfully killed."),
-            Err(_) => status.set("Process could not be kille."),
+            Ok(_) => status.set("Process successfully killed."),
+            Err(_) => status.set("Process could not be killed."),
         }
     }
 }
