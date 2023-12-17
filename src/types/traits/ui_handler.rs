@@ -8,7 +8,7 @@ use super::{
 pub trait IUiHandler: Debug {
     fn get_table_handler(&self, id: &str) -> Rc<dyn ITableHandler>;
     fn get_spar_line(&self, id: &str) -> Rc<dyn ISparkLineHandler>;
-    fn get_table_selection(&self) -> &dyn ISelectedTable;
+    fn get_table_selection(&self) -> Rc<dyn ISelectedTable>;
     fn get_selected_table(&self) -> Rc<dyn ITableHandler>;
     fn get_status(&self) -> Rc<dyn IStatusHandler>;
 }

@@ -19,13 +19,15 @@ type TableHandlerMap = HashMap<String, TableHandlerMapElement>;
 type SparkLineMapElement = Rc<SparkLineHandler>;
 type SparkLineMap = HashMap<String, SparkLineMapElement>;
 
+type TableSelection = Rc<SelectedTable>;
+
 type Status = Rc<StatusHandler>;
 
 #[derive(Debug, Default)]
 pub struct UiHandler {
     table_handler_map: TableHandlerMap,
     spark_line_map: SparkLineMap,
-    table_selection: SelectedTable,
+    table_selection: TableSelection,
     status: Status,
 }
 
@@ -51,10 +53,10 @@ impl UiHandler {
         spark_line_map
     }
 
-    fn create_table_selection() -> SelectedTable {
+    fn create_table_selection() -> Rc<SelectedTable> {
         let selected_table = SelectedTable::new();
         selected_table.register_vec(vec![PROCESSES_TABLE_ID]);
-        selected_table
+        Rc::new(selected_table)
     }
 
     fn create_status() -> Status {
@@ -94,8 +96,8 @@ impl IUiHandler for UiHandler {
         }
     }
 
-    fn get_table_selection(&self) -> &dyn ISelectedTable {
-        &self.table_selection
+    fn get_table_selection(&self) -> Rc<dyn ISelectedTable> {
+        self.table_selection.clone()
     }
 
     fn get_selected_table(&self) -> Rc<dyn ITableHandler> {
