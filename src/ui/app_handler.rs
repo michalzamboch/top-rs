@@ -122,8 +122,12 @@ impl AppHandler {
 
     pub fn kill_process(&self) {
         let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
-        process_table
-            .execute(TableCommand::Process(ProcessCommand::KillProcess))
-            .expect("Failed to kill process.");
+        let result = process_table.execute(TableCommand::Process(ProcessCommand::KillProcess));
+
+        let status = self.ui.get_status();
+        match result {
+            Ok(_) => status.set("Process sucessfully killed."),
+            Err(_) => status.set("Process could not be kille."),
+        }
     }
 }
