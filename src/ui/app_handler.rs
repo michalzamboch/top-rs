@@ -8,7 +8,10 @@ use crate::{
     backend::mock::MockApp,
     types::{
         enums::{
-            selected_table::TableSelectionMove, sort_by::SortBy, table_position::TablePosition,
+            selected_table::TableSelectionMove,
+            sort_by::SortBy,
+            table_commands::{ProcessCommand, TableCommand},
+            table_position::TablePosition,
         },
         traits::{
             app::IApp, app_accessor::IAppAccessor, creatable::ICreatable, ui_handler::IUiHandler,
@@ -115,5 +118,12 @@ impl AppHandler {
 
     pub fn pause_unpause(&mut self) {
         self.pause = !self.pause;
+    }
+
+    pub fn kill_process(&self) {
+        let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
+        process_table
+            .execute(TableCommand::Process(ProcessCommand::KillProcess))
+            .expect("Failed to kill process.");
     }
 }

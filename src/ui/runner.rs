@@ -107,6 +107,8 @@ fn handle_input(key: KeyEvent, app_handler: &mut AppHandler) -> bool {
         KeyCode::Char('R') => app_handler.sort_processes_by(SortBy::DiskReadReverse),
         KeyCode::Char('w') => app_handler.sort_processes_by(SortBy::DiskWrite),
         KeyCode::Char('W') => app_handler.sort_processes_by(SortBy::DiskWriteReverse),
+        
+        KeyCode::Char('k') => app_handler.kill_process(),
 
         KeyCode::Down => app_handler.selected_table_jump_to(TablePosition::Down),
         KeyCode::Up => app_handler.selected_table_jump_to(TablePosition::Up),

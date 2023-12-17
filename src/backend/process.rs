@@ -3,7 +3,7 @@
 use pretty_bytes::converter;
 use rayon::prelude::*;
 use std::{cmp::Reverse, sync::Arc};
-use sysinfo::*;
+use sysinfo::{ProcessExt, *};
 
 use crate::types::{enums::sort_by::SortBy, traits::process::IProcessStringView};
 
@@ -15,6 +15,30 @@ pub struct ProcessItem {
     memory_usage: u64,
     disk_read_usage: u64,
     disk_write_usage: u64,
+}
+
+impl ProcessItem {
+    fn new(pid: Pid, proc: &Process) -> ProcessItem {
+        ProcessItem {
+            pid,
+            name: proc.name().to_owned(),
+            cpu_usage: proc.cpu_usage() as u64,
+            memory_usage: proc.memory(),
+            disk_read_usage: proc.disk_usage().read_bytes,
+            disk_write_usage: proc.disk_usage().written_bytes,
+        }
+    }
+
+    pub fn kill(&self) -> bool {
+        let mut sys = System::new();
+        sys.refresh_process_specifics(self.pid, ProcessRefreshKind::everything());
+
+        if let Some(process) = sys.process(self.pid) {
+            return process.kill();
+        }
+
+        false
+    }
 }
 
 impl IProcessStringView for ProcessItem {
@@ -60,19 +84,8 @@ pub fn boxed_processes_sorted_by(sys: &System, sort_by: SortBy) -> Box<[ProcessI
 fn processes_into_boxed_items(sys: &System) -> Box<[ProcessItem]> {
     sys.processes()
         .par_iter()
-        .map(|(pid, proc)| new_process_item(*pid, proc))
+        .map(|(pid, proc)| ProcessItem::new(*pid, proc))
         .collect()
-}
-
-fn new_process_item(pid: Pid, proc: &Process) -> ProcessItem {
-    ProcessItem {
-        pid,
-        name: proc.name().to_owned(),
-        cpu_usage: proc.cpu_usage() as u64,
-        memory_usage: proc.memory(),
-        disk_read_usage: proc.disk_usage().read_bytes,
-        disk_write_usage: proc.disk_usage().written_bytes,
-    }
 }
 
 fn sort_processes_by(processes: &mut [ProcessItem], sort_by: SortBy) {

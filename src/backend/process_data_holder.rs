@@ -1,9 +1,13 @@
 use fast_str::FastStr;
 use rayon::prelude::*;
+use std::error::Error;
 use sysinfo::*;
 
 use crate::types::{
-    enums::sort_by::SortBy,
+    enums::{
+        sort_by::SortBy,
+        table_commands::{ProcessCommand::KillProcess, TableCommand},
+    },
     traits::{process::IProcessStringView, table_data_holder::ITableDataHolder},
 };
 
@@ -40,6 +44,21 @@ impl ITableDataHolder for ProcessDataHolder {
             .par_iter()
             .map(|item| item.into_fstring_vec())
             .collect()
+    }
+
+    fn execute(&self, command: TableCommand, index: usize) -> Result<(), Box<dyn Error>> {
+        match command {
+            TableCommand::Process(process_cmd) => {
+                let result = match process_cmd {
+                    KillProcess => self.data[index].kill(),
+                };
+
+                match result {
+                    true => Ok(()),
+                    false => Err("Failed to kill process".into()),
+                }
+            }
+        }
     }
 
     fn len(&self) -> usize {

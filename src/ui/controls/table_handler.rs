@@ -2,6 +2,7 @@ use fast_str::FastStr;
 use ratatui::widgets::*;
 use std::{
     cell::{RefCell, RefMut},
+    error::Error,
     ops::Deref,
     rc::Rc,
 };
@@ -9,7 +10,7 @@ use std::{
 use crate::{
     backend::process_data_holder::ProcessDataHolder,
     types::{
-        enums::table_position::TablePosition,
+        enums::{table_commands::TableCommand, table_position::TablePosition},
         traits::{table_data_holder::ITableDataHolder, table_handler::ITableHandler},
     },
 };
@@ -37,6 +38,10 @@ impl TableHandler {
             .is_empty()
     }
 
+    fn get_selected_index(&self) -> Option<usize> {
+        self.state.borrow().selected()
+    }
+
     fn new() -> TableHandler {
         let mut tmp_state = TableState::default();
         tmp_state.select(None);
@@ -49,19 +54,6 @@ impl TableHandler {
 
     pub fn new_rc() -> Rc<TableHandler> {
         Rc::new(TableHandler::new())
-    }
-}
-
-impl ITableHandler for TableHandler {
-    fn jump_to(&self, position: TablePosition) {
-        match position {
-            TablePosition::Down => self.next(),
-            TablePosition::Up => self.previous(),
-            TablePosition::First => self.first(),
-            TablePosition::Last => self.last(),
-            TablePosition::PageDown => todo!(),
-            TablePosition::PageUp => todo!(),
-        }
     }
 
     fn first(&self) {
@@ -114,6 +106,19 @@ impl ITableHandler for TableHandler {
         };
         self.state.borrow_mut().select(Some(i));
     }
+}
+
+impl ITableHandler for TableHandler {
+    fn jump_to(&self, position: TablePosition) {
+        match position {
+            TablePosition::Down => self.next(),
+            TablePosition::Up => self.previous(),
+            TablePosition::First => self.first(),
+            TablePosition::Last => self.last(),
+            TablePosition::PageDown => todo!(),
+            TablePosition::PageUp => todo!(),
+        }
+    }
 
     fn set_data(&self, data: Box<dyn ITableDataHolder>) {
         *self.data.borrow_mut() = Some(data);
@@ -130,5 +135,20 @@ impl ITableHandler for TableHandler {
 
     fn get_state(&self) -> RefMut<'_, TableState> {
         self.state.borrow_mut()
+    }
+
+    fn execute(&self, command: TableCommand) -> Result<(), Box<dyn Error>> {
+        let option_index = self.get_selected_index();
+        let index = match option_index {
+            Some(value) => Ok(value),
+            None => Err("Value not found"),
+        }?;
+
+        self.data
+            .borrow()
+            .deref()
+            .as_ref()
+            .unwrap()
+            .execute(command, index)
     }
 }
