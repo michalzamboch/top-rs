@@ -1,15 +1,16 @@
 use std::{collections::HashMap, rc::Rc};
 
 use super::{
+    config,
     controls::{
         selected_table::SelectedTable, spark_line_handler::SparkLineHandler,
-        table_handler::TableHandler,
+        status_handler::StatusHandler, table_handler::TableHandler,
     },
     paths::*,
 };
 use crate::types::traits::{
     creatable::ICreatable, selected_table::ISelectedTable, spark_line_handler::ISparkLineHandler,
-    table_handler::ITableHandler, ui_handler::IUiHandler,
+    status_handler::IStatusHandler, table_handler::ITableHandler, ui_handler::IUiHandler,
 };
 
 type TableHandlerMapElement = Rc<TableHandler>;
@@ -18,11 +19,14 @@ type TableHandlerMap = HashMap<String, TableHandlerMapElement>;
 type SparkLineMapElement = Rc<SparkLineHandler>;
 type SparkLineMap = HashMap<String, SparkLineMapElement>;
 
+type Status = Rc<StatusHandler>;
+
 #[derive(Debug, Default)]
 pub struct UiHandler {
     table_handler_map: TableHandlerMap,
     spark_line_map: SparkLineMap,
     table_selection: SelectedTable,
+    status: Status,
 }
 
 impl UiHandler {
@@ -52,6 +56,12 @@ impl UiHandler {
         selected_table.register_vec(vec![PROCESSES_TABLE_ID]);
         selected_table
     }
+
+    fn create_status() -> Status {
+        let status_handler = StatusHandler::new();
+        status_handler.set(config::WELCOME_MESSAGE);
+        Rc::new(status_handler)
+    }
 }
 
 impl ICreatable for UiHandler {
@@ -60,6 +70,7 @@ impl ICreatable for UiHandler {
             table_handler_map: Self::create_table_map(),
             spark_line_map: Self::create_spark_line_map(),
             table_selection: Self::create_table_selection(),
+            status: Self::create_status(),
         }
     }
 }
@@ -90,5 +101,9 @@ impl IUiHandler for UiHandler {
     fn get_selected_table(&self) -> Rc<dyn ITableHandler> {
         let id = self.table_selection.get();
         self.get_table_handler(id.as_str())
+    }
+
+    fn get_status(&self) -> Rc<dyn IStatusHandler> {
+        self.status.clone()
     }
 }

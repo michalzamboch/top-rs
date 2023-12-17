@@ -1,7 +1,14 @@
+#![allow(dead_code)]
+
 use ratatui::prelude::*;
 use std::rc::Rc;
 
-use super::{config, elemets::*, paths::*, util::*};
+use super::{
+    config,
+    elemets::{status_bar::get_status_bar, *},
+    paths::*,
+    util::*,
+};
 use crate::types::traits::app_accessor::IAppAccessor;
 
 pub fn handle_ui(f: &mut Frame, app_handler: &dyn IAppAccessor) {
@@ -118,4 +125,9 @@ fn build_network_spark_lines(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppA
     f.render_widget(received_spark_line, chunks[1]);
     f.render_widget(trasmitted_paragraph, chunks[2]);
     f.render_widget(transmitted_spark_line, chunks[3]);
+}
+
+fn build_status_bar(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppAccessor) {
+    let status_bar = get_status_bar(app_handler);
+    f.render_widget(status_bar, chunk);
 }
