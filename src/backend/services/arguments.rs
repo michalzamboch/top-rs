@@ -11,6 +11,9 @@ pub struct Arguments {
 
     #[arg(short = 'm', value_name = "MAX THREAD PRIORITY", long = "max-priority")]
     pub max_thread_priority: bool,
+
+    #[arg(short = 'l', value_name = "LOG", long = "log")]
+    pub log: bool,
 }
 
 impl ICreatable for Arguments {

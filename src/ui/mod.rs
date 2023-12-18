@@ -1,5 +1,4 @@
 mod app_handler;
-mod arguments;
 mod config;
 pub mod paths;
 pub mod runner;

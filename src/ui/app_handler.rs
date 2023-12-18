@@ -1,11 +1,11 @@
 #![allow(dead_code)]
 
-use super::{arguments::*, paths::*, ui_handler::UiHandler};
+use super::{paths::*, ui_handler::UiHandler};
 use thread_priority::*;
 
 use crate::{
-    backend::app::App,
-    backend::mock::MockApp,
+    backend::system::app::App,
+    backend::{services::arguments::Arguments, system::mock::MockApp},
     types::{
         enums::{
             selected_table::TableSelectionMove,
@@ -81,14 +81,6 @@ impl AppHandler {
         let processes = self.app.get_process_data_holder();
         let process_table = self.ui.get_table_handler(PROCESSES_TABLE_ID);
         process_table.set_data(processes);
-    }
-
-    fn update_disks(&self) {
-        /*
-        let disks = self.app.get_disks_vec_string();
-        let disk_table = self.ui.get_table_handler(DISKS_TABLE_ID);
-        disk_table.set_data(disks);
-        */
     }
 
     fn update_transmitted_network(&self) {
