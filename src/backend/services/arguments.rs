@@ -1,6 +1,6 @@
 use clap::*;
 
-use crate::types::traits::creatable::ICreatable;
+use crate::types::traits::{arguments::IArguments, creatable::ICreatable};
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -19,5 +19,19 @@ pub struct Arguments {
 impl ICreatable for Arguments {
     fn new() -> Self {
         Arguments::parse()
+    }
+}
+
+impl IArguments for Arguments {
+    fn get_log(&self) -> bool {
+        self.log
+    }
+
+    fn get_debug(&self) -> bool {
+        self.debug
+    }
+
+    fn get_max_priority(&self) -> bool {
+        self.max_thread_priority
     }
 }

@@ -1,7 +1,9 @@
 pub mod app;
 pub mod app_accessor;
+pub mod arguments;
 pub mod creatable;
 pub mod disk;
+pub mod logger;
 pub mod process;
 pub mod selected_table;
 pub mod spark_line_handler;
@@ -10,3 +12,4 @@ pub mod table_data_holder;
 pub mod table_handler;
 pub mod temperature;
 pub mod ui_handler;
+pub mod services;

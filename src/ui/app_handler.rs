@@ -1,11 +1,13 @@
 #![allow(dead_code)]
 
+use std::rc::Rc;
+
 use super::{paths::*, ui_handler::UiHandler};
 use thread_priority::*;
 
 use crate::{
     backend::system::app::App,
-    backend::{services::arguments::Arguments, system::mock::MockApp},
+    backend::{services::service_handler::Services, system::mock::MockApp},
     types::{
         enums::{
             selected_table::TableSelectionMove,
@@ -14,7 +16,8 @@ use crate::{
             table_position::TablePosition,
         },
         traits::{
-            app::IApp, app_accessor::IAppAccessor, creatable::ICreatable, ui_handler::IUiHandler,
+            app::IApp, app_accessor::IAppAccessor, creatable::ICreatable, services::IServices,
+            ui_handler::IUiHandler,
         },
     },
 };
@@ -23,7 +26,7 @@ use crate::{
 pub struct AppHandler {
     ui: Box<dyn IUiHandler>,
     app: Box<dyn IApp>,
-    cli_args: Box<Arguments>,
+    services: Rc<Services>,
     pause: bool,
 }
 
@@ -39,12 +42,12 @@ impl IAppAccessor for AppHandler {
 
 impl AppHandler {
     pub fn new() -> AppHandler {
-        let arguments = Arguments::new_boxed();
-        if arguments.max_thread_priority {
+        let tmp_services = Services::new_rc();
+        if tmp_services.get_arguments().get_max_priority() {
             _ = set_current_thread_priority(ThreadPriority::Max);
         }
 
-        let app: Box<dyn IApp> = match arguments.debug {
+        let app: Box<dyn IApp> = match tmp_services.get_arguments().get_debug() {
             true => MockApp::new_boxed(),
             false => App::new_boxed(),
         };
@@ -52,7 +55,7 @@ impl AppHandler {
         AppHandler {
             ui: UiHandler::new_boxed(),
             app,
-            cli_args: arguments,
+            services: tmp_services.clone(),
             pause: false,
         }
     }
