@@ -3,11 +3,11 @@ use ratatui::{prelude::*, widgets::*};
 use crate::ui::config;
 
 pub fn get_receive_sparkline(data: &[u64]) -> Sparkline<'_> {
-    create_spark_line(data, " Received ")
+    create_spark_line(data, config::RECEIVED_TITLE)
 }
 
 pub fn get_transmited_sparkline(data: &[u64]) -> Sparkline<'_> {
-    create_spark_line(data, " Transmitted ")
+    create_spark_line(data, config::TRANSMITTED_TITLE)
 }
 
 fn create_spark_line<'a>(data: &'a [u64], title: &'a str) -> Sparkline<'a> {
@@ -23,7 +23,9 @@ fn create_spark_line<'a>(data: &'a [u64], title: &'a str) -> Sparkline<'a> {
 }
 
 pub fn get_connection_total(data: String) -> Paragraph<'static> {
-    Paragraph::new(data)
-        .wrap(Wrap { trim: true })
-        .block(Block::default().borders(Borders::ALL).title("Total"))
+    Paragraph::new(data).wrap(Wrap { trim: true }).block(
+        Block::default()
+            .borders(Borders::ALL)
+            .title(config::TOTAL_TITLE),
+    )
 }

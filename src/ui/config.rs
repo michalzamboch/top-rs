@@ -12,6 +12,9 @@ pub const NETWORK_COLOR: Color = Color::Green;
 pub const CPU_USAGE_TITLE: &str = " CPU usage ";
 pub const MEM_USAGE_TITLE: &str = " Memory usage ";
 pub const SWAP_USAGE_TITLE: &str = " Swap usage ";
+pub const RECEIVED_TITLE: &str = " Received ";
+pub const TRANSMITTED_TITLE: &str = " Transmitted ";
+pub const TOTAL_TITLE: &str = "Total";
 
 pub const HUNDERED_PERCENT: u64 = 100;
 

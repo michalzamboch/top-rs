@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use std::rc::Rc;
 
 use super::{paths::*, ui_handler::UiHandler};
@@ -37,6 +35,10 @@ impl IAppAccessor for AppHandler {
 
     fn get_ui(&self) -> &dyn IUiHandler {
         self.ui.as_ref()
+    }
+
+    fn get_services(&self) -> Rc<dyn IServices> {
+        self.services.clone()
     }
 }
 

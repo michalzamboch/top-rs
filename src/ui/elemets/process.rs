@@ -13,22 +13,24 @@ pub fn get_process_table(app_handler: &dyn IAppAccessor) -> Table<'_> {
 
 fn get_process_table_from_vec(data: &[Vec<FastStr>]) -> Table<'static> {
     let rows = get_process_rows(data);
+    let widths = get_constraints();
     let header = get_process_header();
     let selected_style = Style::default().add_modifier(Modifier::REVERSED);
 
-    Table::new(
-        rows,
-        [
-            Constraint::Min(config::PID_COL_LEN),
-            Constraint::Max(get_terminal_width() as u16),
-            Constraint::Min(config::CPU_USAGE_COL_LEN),
-            Constraint::Min(config::PRETTY_BYTES_COL_LEN),
-            Constraint::Min(config::PRETTY_BYTES_COL_LEN),
-            Constraint::Min(config::PRETTY_BYTES_COL_LEN),
-        ],
-    )
-    .header(header)
-    .highlight_style(selected_style)
+    Table::new(rows, widths)
+        .header(header)
+        .highlight_style(selected_style)
+}
+
+fn get_constraints() -> [Constraint; 6] {
+    [
+        Constraint::Min(config::PID_COL_LEN),
+        Constraint::Max(get_terminal_width() as u16),
+        Constraint::Min(config::CPU_USAGE_COL_LEN),
+        Constraint::Min(config::PRETTY_BYTES_COL_LEN),
+        Constraint::Min(config::PRETTY_BYTES_COL_LEN),
+        Constraint::Min(config::PRETTY_BYTES_COL_LEN),
+    ]
 }
 
 fn get_process_rows(data: &[Vec<FastStr>]) -> impl Iterator<Item = Row<'static>> + '_ {
