@@ -7,6 +7,14 @@ static UNKNOWN: &str = "Unknown";
 
 pub fn get_sys_info(sys: &System) -> String {
     format!(
+        "System: {}, Host name: {}",
+        get_full_sys_name(sys),
+        get_host_name(sys),
+    )
+}
+
+fn get_full_sys_info(sys: &System) -> String {
+    format!(
         "System name: {}, Kernel version: {}, OS version: {}, Host name: {}",
         get_sys_name(sys),
         get_kernel_version(sys),
@@ -24,6 +32,10 @@ pub fn get_sys_info_vec(sys: &System) -> Rc<[Vec<String>]> {
         vec!["Boot time".to_owned(), get_boot_time(sys)],
     ]
     .into()
+}
+
+fn get_full_sys_name(sys: &System) -> String {
+    format!("{} {}", get_sys_name(sys), get_os_version(sys))
 }
 
 fn get_sys_name(sys: &System) -> String {

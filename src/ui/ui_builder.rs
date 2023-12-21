@@ -16,24 +16,21 @@ pub fn handle_ui(f: &mut Frame, app_handler: &dyn IAppAccessor) {
 
     build_info_paragraph(f, chunks[0], app_handler);
 
-    build_cpu_detail(f, chunks[1], app_handler);
+    build_cpu_paragraph(f, chunks[1], app_handler);
 
-    build_cpu_paragraph(f, chunks[2], app_handler);
+    build_memory_details(f, chunks[2], app_handler);
 
-    build_memory_details(f, chunks[3], app_handler);
+    build_memory_gauges(f, chunks[3], app_handler);
 
-    build_memory_gauges(f, chunks[4], app_handler);
+    build_process_table(f, chunks[4], app_handler);
 
-    build_process_table(f, chunks[5], app_handler);
-
-    build_network_spark_lines(f, chunks[6], app_handler);
+    build_network_spark_lines(f, chunks[5], app_handler);
 }
 
 fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
     Layout::default()
         .direction(Direction::Vertical)
         .constraints([
-            Constraint::Length(1),
             Constraint::Length(1),
             Constraint::Length(3),
             Constraint::Length(1),
@@ -68,12 +65,11 @@ fn create_network_chucks(size: Rect) -> Rc<[Rect]> {
 
 fn build_info_paragraph(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppAccessor) {
     let info_paragraph = pc_info::get_pc_info(app_handler.get_app());
-    f.render_widget(info_paragraph, chunk);
-}
-
-fn build_cpu_detail(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppAccessor) {
     let cpu_detail = cpu::get_cpu_detail(app_handler.get_app());
-    f.render_widget(cpu_detail, chunk);
+    let half_chunks = create_half_chucks(chunk);
+
+    f.render_widget(info_paragraph, half_chunks[1]);
+    f.render_widget(cpu_detail, half_chunks[0]);
 }
 
 fn build_cpu_paragraph(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppAccessor) {

@@ -25,6 +25,6 @@ pub fn get_cpu_detail(app: &dyn IApp) -> Paragraph<'_> {
 
     Paragraph::new(text)
         .wrap(Wrap { trim: true })
-        .alignment(Alignment::Right)
+        .alignment(Alignment::Left)
         .style(Style::default().fg(config::CPU_COLOR))
 }
