@@ -4,3 +4,13 @@ pub enum TableSelectionMove {
     Next,
     Previous,
 }
+
+impl ToString for TableSelectionMove {
+    #[inline]
+    fn to_string(&self) -> String {
+        match self {
+            TableSelectionMove::Next => "Next".to_string(),
+            TableSelectionMove::Previous => "Previous".to_string(),
+        }
+    }
+}

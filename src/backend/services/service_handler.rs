@@ -22,11 +22,11 @@ impl ICreatable for Services {
 }
 
 impl IServices for Services {
-    fn get_logger(&self) -> Rc<dyn ILogger> {
+    fn logger(&self) -> Rc<dyn ILogger> {
         self.logger.clone()
     }
 
-    fn get_arguments(&self) -> Rc<dyn IArguments> {
+    fn arguments(&self) -> Rc<dyn IArguments> {
         self.arguments.clone()
     }
 }

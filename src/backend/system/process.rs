@@ -74,6 +74,28 @@ pub fn arc_processes_sorted_by(sys: &System, sort_by: SortBy) -> Arc<[ProcessIte
     processes.into()
 }
 
+pub fn boxed_filtered_processes_sorted_by(
+    sys: &System,
+    sort_by: SortBy,
+    sub_str: Option<&str>,
+) -> Box<[ProcessItem]> {
+    let mut processes = match sub_str {
+        Some(tmp_str) => processes_into_boxed_filtered_items(sys, tmp_str),
+        None => processes_into_boxed_items(sys),
+    };
+    sort_processes_by(&mut processes, sort_by);
+
+    processes
+}
+
+fn processes_into_boxed_filtered_items(sys: &System, sub_str: &str) -> Box<[ProcessItem]> {
+    sys.processes()
+        .par_iter()
+        .filter(|item| item.1.name().contains(sub_str))
+        .map(|(pid, proc)| ProcessItem::new(*pid, proc))
+        .collect()
+}
+
 pub fn boxed_processes_sorted_by(sys: &System, sort_by: SortBy) -> Box<[ProcessItem]> {
     let mut processes = processes_into_boxed_items(sys);
     sort_processes_by(&mut processes, sort_by);

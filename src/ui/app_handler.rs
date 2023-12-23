@@ -8,6 +8,7 @@ use crate::{
     backend::{services::service_handler::Services, system::mock::MockApp},
     types::{
         enums::{
+            log_level::LogLevel::*,
             selected_table::TableSelectionMove,
             sort_by::SortBy,
             table_commands::{ProcessCommand, TableCommand},
@@ -45,11 +46,11 @@ impl IAppAccessor for AppHandler {
 impl AppHandler {
     pub fn new() -> AppHandler {
         let tmp_services = Services::new_rc();
-        if tmp_services.get_arguments().get_max_priority() {
+        if tmp_services.arguments().get_max_priority() {
             _ = set_current_thread_priority(ThreadPriority::Max);
         }
 
-        let app: Box<dyn IApp> = match tmp_services.get_arguments().get_debug() {
+        let app: Box<dyn IApp> = match tmp_services.arguments().get_debug() {
             true => MockApp::new_boxed(),
             false => App::new_boxed(),
         };
@@ -103,14 +104,17 @@ impl AppHandler {
     pub fn selected_table_jump_to(&self, position: TablePosition) {
         let process_table = self.ui.get_selected_table();
         process_table.jump_to(position);
+        self.services.logger().log(&position.to_string(), Info);
     }
 
     pub fn move_to_table(&self, move_to: TableSelectionMove) {
         self.ui.get_table_selection().move_to(move_to);
+        self.services.logger().log(&move_to.to_string(), Info);
     }
 
     pub fn sort_processes_by(&mut self, sort_by: SortBy) {
         self.app.sort_processes_by(sort_by);
+        self.services.logger().log(&sort_by.to_string(), Info);
     }
 
     pub fn pause_unpause(&mut self) {
@@ -122,9 +126,16 @@ impl AppHandler {
         let result = process_table.execute(TableCommand::Process(ProcessCommand::KillProcess));
 
         let status = self.ui.get_status();
+        let logger = self.services.logger();
         match result {
-            Ok(_) => status.set("Process successfully killed."),
-            Err(_) => status.set("Process could not be killed."),
+            Ok(_) => {
+                status.set("Process successfully killed.");
+                logger.log("Process successfully killed.", Info);
+            }
+            Err(_) => {
+                status.set("Process could not be killed.");
+                logger.log("Process could not be killed.", Warning);
+            }
         }
     }
 }

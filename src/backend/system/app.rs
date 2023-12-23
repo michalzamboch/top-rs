@@ -5,7 +5,7 @@ use crate::types::{
     traits::{app::IApp, creatable::ICreatable, table_data_holder::ITableDataHolder},
 };
 
-use super::*;
+use super::{process_data_holder::ProcessDataHolder, *};
 
 #[derive(Debug, Default)]
 pub struct App {
@@ -75,7 +75,7 @@ impl IApp for App {
     }
 
     fn get_process_data_holder(&self) -> Box<dyn ITableDataHolder> {
-        process_data_holder::ProcessDataHolder::new_box(&self.sys, self.processes_sorted_by)
+        ProcessDataHolder::new_box(&self.sys, self.processes_sorted_by)
     }
 
     fn get_network_total_sum(&self) -> (String, String) {

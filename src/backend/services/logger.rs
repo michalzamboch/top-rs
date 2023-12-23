@@ -29,7 +29,9 @@ impl ICreatable for Logger {
         )])
         .unwrap();
 
-        Self { allow: true }
+        Self {
+            allow: config::ALLOW_LOG,
+        }
     }
 }
 

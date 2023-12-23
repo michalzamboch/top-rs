@@ -22,4 +22,4 @@ pub const PID_COL_LEN: u16 = 9;
 pub const CPU_USAGE_COL_LEN: u16 = 9;
 pub const PRETTY_BYTES_COL_LEN: u16 = 11;
 
-pub const WELCOME_MESSAGE: &str = "Welcome!";
+pub const WELCOME_MESSAGE: &str = "Top-rs";

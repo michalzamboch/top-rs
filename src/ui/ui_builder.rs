@@ -5,7 +5,10 @@ use std::rc::Rc;
 
 use super::{
     config,
-    elemets::{status_bar::get_status_bar, *},
+    elemets::{
+        status_bar::{get_message_bar, get_time_bar},
+        *,
+    },
     paths::*,
     util::*,
 };
@@ -25,6 +28,8 @@ pub fn handle_ui(f: &mut Frame, app_handler: &dyn IAppAccessor) {
     build_process_table(f, chunks[4], app_handler);
 
     build_network_spark_lines(f, chunks[5], app_handler);
+
+    build_status_bar(f, chunks[6], app_handler);
 }
 
 fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
@@ -37,6 +42,7 @@ fn create_chucks(f: &mut Frame) -> Rc<[Rect]> {
             Constraint::Length(3),
             Constraint::Max(get_terminal_height() as u16),
             Constraint::Length(3),
+            Constraint::Length(1),
         ])
         .split(f.size())
 }
@@ -124,6 +130,10 @@ fn build_network_spark_lines(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppA
 }
 
 fn build_status_bar(f: &mut Frame, chunk: Rect, app_handler: &dyn IAppAccessor) {
-    let status_bar = get_status_bar(app_handler);
-    f.render_widget(status_bar, chunk);
+    let status_bar = get_message_bar(app_handler);
+    let time_bar = get_time_bar();
+    let half_chunks = create_half_chucks(chunk);
+
+    f.render_widget(status_bar, half_chunks[0]);
+    f.render_widget(time_bar, half_chunks[1]);
 }
