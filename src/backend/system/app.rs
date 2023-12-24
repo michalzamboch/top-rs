@@ -74,6 +74,10 @@ impl IApp for App {
         pc_info::get_sys_info(&self.sys)
     }
 
+    fn get_sys_load(&self) -> String {
+        sys_load::get_sys_load(&self.sys)
+    }
+
     fn get_process_data_holder(&self) -> Box<dyn ITableDataHolder> {
         ProcessDataHolder::new_box(&self.sys, self.processes_sorted_by)
     }

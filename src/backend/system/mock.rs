@@ -46,6 +46,10 @@ impl IApp for MockApp {
         "OS: Windows | Kernel: 69420".to_owned()
     }
 
+    fn get_sys_load(&self) -> String {
+        "1 min: 5%, 5 min: 10%, 15 min: 7%".to_string()
+    }
+
     fn get_network_total_sum(&self) -> (String, String) {
         ("100.00 MB".to_owned(), "200.00 MB".to_owned())
     }

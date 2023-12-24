@@ -9,6 +9,7 @@ mod network;
 mod pc_info;
 mod process;
 pub mod process_data_holder;
+mod sys_load;
 mod system_item;
 mod temperatures;
 mod utils;

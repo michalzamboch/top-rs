@@ -1,14 +1,9 @@
-#![allow(dead_code)]
-
 use ratatui::prelude::*;
 use std::rc::Rc;
 
 use super::{
     config,
-    elemets::{
-        status_bar::{get_message_bar, get_time_bar},
-        *,
-    },
+    elemets::{status_bar::*, *},
     paths::*,
     util::*,
 };

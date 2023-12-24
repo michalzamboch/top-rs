@@ -20,6 +20,16 @@ pub fn get_message_bar(app_handler: &dyn IAppAccessor) -> Paragraph<'_> {
         .alignment(Left)
 }
 
+pub fn get_load_bar(app_handler: &dyn IAppAccessor) -> Paragraph<'_> {
+    let msg = app_handler.get_app().get_sys_load();
+    let style = get_bar_style();
+
+    Paragraph::new(msg)
+        .wrap(Wrap { trim: true })
+        .style(style)
+        .alignment(Center)
+}
+
 pub fn get_time_bar() -> Paragraph<'static> {
     let now: DateTime<Utc> = Utc::now();
     let msg = format!("{}", now.format("%H:%M %d/%m/%Y"));

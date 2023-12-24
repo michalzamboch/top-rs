@@ -14,6 +14,7 @@ pub trait IApp: Send + Debug {
     fn get_total_cpu_usage(&self) -> u64;
     fn get_cpu_details(&self) -> String;
     fn get_sys_info(&self) -> String;
+    fn get_sys_load(&self) -> String;
     fn get_process_data_holder(&self) -> Box<dyn ITableDataHolder>;
 
     fn get_network_total_sum(&self) -> (String, String);

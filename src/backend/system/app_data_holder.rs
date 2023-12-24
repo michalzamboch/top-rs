@@ -18,6 +18,7 @@ pub struct AppDataHolder {
     total_cpu_usage: u64,
     cpu_details: String,
     sys_info: String,
+    sys_load: String,
     process_data: Box<dyn ITableDataHolder>,
     network_total_sum: (String, String),
     network_sum: (u64, u64),
@@ -73,6 +74,10 @@ impl IApp for AppDataHolder {
 
     fn get_sys_info(&self) -> String {
         self.sys_info.clone()
+    }
+
+    fn get_sys_load(&self) -> String {
+        self.sys_load.clone()
     }
 
     fn get_process_data_holder(&self) -> Box<dyn ITableDataHolder> {
