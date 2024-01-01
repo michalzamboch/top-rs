@@ -20,15 +20,16 @@ impl<T> SystemItem<T> {
         }
     }
 
-    pub fn update(&self, value_getter: &dyn Fn() -> T) {
+    pub fn get_updated(&self, value_getter: &dyn Fn() -> T) -> Rc<T> {
+        self.update(value_getter);
+        self.get()
+    }
+
+    fn update(&self, value_getter: &dyn Fn() -> T) {
         if self.time_to_update() {
             self.set(value_getter);
             *self.last_tick.borrow_mut() = Instant::now();
         }
-    }
-
-    pub fn get(&self) -> Rc<T> {
-        self.item.borrow().clone()
     }
 
     fn time_to_update(&self) -> bool {
@@ -38,5 +39,9 @@ impl<T> SystemItem<T> {
     fn set(&self, value_getter: &dyn Fn() -> T) {
         let value = value_getter();
         *self.item.borrow_mut() = Rc::new(value);
+    }
+
+    fn get(&self) -> Rc<T> {
+        self.item.borrow().clone()
     }
 }
