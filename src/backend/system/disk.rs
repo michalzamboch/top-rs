@@ -3,9 +3,9 @@
 use rayon::prelude::*;
 use sysinfo::*;
 
-use crate::{types::traits::disk::IDiskStringView, backend::utils::bytes};
+use crate::{backend::utils::bytes, types::traits::disk::IDiskStringView};
 
-use super::{utils::*, config::*};
+use super::{config::*, utils::*};
 
 #[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone)]
 struct DiskInfo {

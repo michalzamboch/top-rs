@@ -1,4 +1,4 @@
-use crate::backend::{utils::bytes, system::config::*};
+use crate::backend::{system::config::*, utils::bytes};
 
 use super::utils::*;
 use sysinfo::*;

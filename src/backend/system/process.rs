@@ -4,7 +4,10 @@ use rayon::prelude::*;
 use std::{cmp::Reverse, sync::Arc};
 use sysinfo::{ProcessExt, *};
 
-use crate::{types::{enums::sort_by::SortBy, traits::process::IProcessStringView}, backend::utils::bytes};
+use crate::{
+    backend::utils::bytes,
+    types::{enums::sort_by::SortBy, traits::process::IProcessStringView},
+};
 
 use super::config::REGULAR_DELIMITER;
 

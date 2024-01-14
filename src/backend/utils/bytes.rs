@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
-use std::cmp;
 use fast_str::FastStr;
+use std::cmp;
 
 pub fn convert_fstr(num: f64, regular_delimiter: bool) -> FastStr {
     FastStr::from_string(convert(num, regular_delimiter))
