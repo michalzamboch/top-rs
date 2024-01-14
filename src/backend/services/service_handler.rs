@@ -7,9 +7,13 @@ use crate::types::traits::{
 use super::{arguments::Arguments, logger::Logger};
 
 #[derive(Debug, Default)]
-pub struct Services {
+struct Services {
     arguments: Rc<Arguments>,
     logger: Rc<Logger>,
+}
+
+pub fn create_services() -> Rc<Box<dyn IServices>> {
+    Rc::new(Services::new_boxed())
 }
 
 impl ICreatable for Services {

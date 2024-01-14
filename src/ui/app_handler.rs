@@ -4,8 +4,7 @@ use super::{paths::*, ui_handler::UiHandler};
 use thread_priority::*;
 
 use crate::{
-    backend::system::app::App,
-    backend::{services::service_handler::Services, system::mock::MockApp},
+    backend::{services::service_handler::*, system::*},
     types::{
         enums::{
             log_level::LogLevel::*,
@@ -25,7 +24,7 @@ use crate::{
 pub struct AppHandler {
     ui: Box<dyn IUiHandler>,
     app: Box<dyn IApp>,
-    services: Rc<Services>,
+    services: Rc<Box<dyn IServices>>,
     pause: bool,
 }
 
@@ -38,22 +37,20 @@ impl IAppAccessor for AppHandler {
         self.ui.as_ref()
     }
 
-    fn get_services(&self) -> Rc<dyn IServices> {
+    fn get_services(&self) -> Rc<Box<dyn IServices>> {
         self.services.clone()
     }
 }
 
 impl AppHandler {
     pub fn new() -> AppHandler {
-        let tmp_services = Services::new_rc();
+        let tmp_services = create_services();
         if tmp_services.arguments().get_max_priority() {
             _ = set_current_thread_priority(ThreadPriority::Max);
         }
 
-        let app: Box<dyn IApp> = match tmp_services.arguments().get_debug() {
-            true => MockApp::new_boxed(),
-            false => App::new_boxed(),
-        };
+        let mock = tmp_services.arguments().get_debug();
+        let app = app_factory::create_app(mock);
 
         AppHandler {
             ui: UiHandler::new_boxed(),

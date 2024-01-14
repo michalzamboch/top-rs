@@ -1,11 +1,14 @@
-use pretty_bytes::*;
 use sysinfo::*;
+
+use crate::backend::utils::bytes;
+
+use super::config::*;
 
 pub fn get_total_connection_strings(sys: &System) -> (String, String) {
     let connection = get_total_connection_sum(sys);
     (
-        converter::convert(connection.0 as f64),
-        converter::convert(connection.1 as f64),
+        bytes::convert(connection.0 as f64, REGULAR_DELIMITER),
+        bytes::convert(connection.1 as f64, REGULAR_DELIMITER),
     )
 }
 

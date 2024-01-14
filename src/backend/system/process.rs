@@ -1,11 +1,12 @@
 #![allow(dead_code)]
 
-use pretty_bytes::converter;
 use rayon::prelude::*;
 use std::{cmp::Reverse, sync::Arc};
 use sysinfo::{ProcessExt, *};
 
-use crate::types::{enums::sort_by::SortBy, traits::process::IProcessStringView};
+use crate::{types::{enums::sort_by::SortBy, traits::process::IProcessStringView}, backend::utils::bytes};
+
+use super::config::REGULAR_DELIMITER;
 
 #[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone)]
 pub struct ProcessItem {
@@ -55,15 +56,15 @@ impl IProcessStringView for ProcessItem {
     }
 
     fn get_memory_usage(&self) -> String {
-        converter::convert(self.memory_usage as f64)
+        bytes::convert(self.memory_usage as f64, REGULAR_DELIMITER)
     }
 
     fn get_disk_read_usage(&self) -> String {
-        converter::convert(self.disk_read_usage as f64)
+        bytes::convert(self.disk_read_usage as f64, REGULAR_DELIMITER)
     }
 
     fn get_disk_write_usage(&self) -> String {
-        converter::convert(self.disk_write_usage as f64)
+        bytes::convert(self.disk_write_usage as f64, REGULAR_DELIMITER)
     }
 }
 

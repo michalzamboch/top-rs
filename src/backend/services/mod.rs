@@ -1,5 +1,5 @@
-pub mod arguments;
+mod arguments;
 mod config;
-pub mod logger;
+mod logger;
 pub mod service_handler;
-pub mod settings;
+mod settings;

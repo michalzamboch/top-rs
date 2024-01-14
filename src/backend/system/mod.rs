@@ -1,5 +1,6 @@
-pub mod app;
-pub mod app_data_holder;
+mod app;
+mod app_data_holder;
+pub mod app_factory;
 mod config;
 mod cpu;
 mod disk;

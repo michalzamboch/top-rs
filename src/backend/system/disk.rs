@@ -1,12 +1,11 @@
 #![allow(dead_code)]
 
-use pretty_bytes::*;
 use rayon::prelude::*;
 use sysinfo::*;
 
-use crate::types::traits::disk::IDiskStringView;
+use crate::{types::traits::disk::IDiskStringView, backend::utils::bytes};
 
-use super::utils::*;
+use super::{utils::*, config::*};
 
 #[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone)]
 struct DiskInfo {
@@ -22,15 +21,15 @@ impl IDiskStringView for DiskInfo {
     }
 
     fn get_free_space(&self) -> String {
-        converter::convert(self.free as f64)
+        bytes::convert(self.free as f64, REGULAR_DELIMITER)
     }
 
     fn get_used_space(&self) -> String {
-        converter::convert(self.used as f64)
+        bytes::convert(self.used as f64, REGULAR_DELIMITER)
     }
 
     fn get_total_space(&self) -> String {
-        converter::convert(self.total as f64)
+        bytes::convert(self.total as f64, REGULAR_DELIMITER)
     }
 }
 

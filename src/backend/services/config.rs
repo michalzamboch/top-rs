@@ -3,4 +3,4 @@ pub const LOG_CREATE: bool = true;
 pub const LOG_WRITE: bool = true;
 pub const LOG_APPEND: bool = true;
 
-pub const ALLOW_LOG: bool = true;
+pub const ALLOW_LOG: bool = false;
