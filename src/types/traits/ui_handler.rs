@@ -5,7 +5,6 @@ use super::{
     status_handler::IStatusHandler, table_handler::ITableHandler,
 };
 
-
 pub trait IUiHandler: Debug {
     fn get_table_handler(&self, id: &str) -> Rc<dyn ITableHandler>;
     fn get_spar_line(&self, id: &str) -> Rc<dyn ISparkLineHandler>;
