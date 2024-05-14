@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, Local};
 use ratatui::{
     layout::Alignment::*,
     style::{Modifier, Style},
@@ -31,7 +31,7 @@ pub fn get_load_bar(app_handler: &dyn IAppAccessor) -> Paragraph<'_> {
 }
 
 pub fn get_time_bar() -> Paragraph<'static> {
-    let now: DateTime<Utc> = Utc::now();
+    let now: DateTime<Local> = Local::now();
     let msg = format!("{}", now.format("%H:%M %d/%m/%Y"));
     let style = get_bar_style();
 

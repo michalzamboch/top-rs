@@ -10,7 +10,7 @@ use crate::{
             log_level::LogLevel::*,
             selected_table::TableSelectionMove,
             sort_by::SortBy,
-            table_commands::{ProcessCommand, TableCommand},
+            table_commands::*,
             table_position::TablePosition,
         },
         traits::{
